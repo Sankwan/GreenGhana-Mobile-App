@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/controllers/auth_controller.dart';
 import 'package:instagram_aa/controllers/form_fields_controller.dart';
 import 'package:instagram_aa/controllers/otp_controller.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
@@ -16,6 +17,8 @@ class _SignupPageState extends State<SignupPage> {
    final TextEditingController _numberController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  final authControl = AuthControlImplement();
 
 
   @override
@@ -77,12 +80,18 @@ class _SignupPageState extends State<SignupPage> {
                 height: 70,
               ),
               ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async{
                     if (_formKey.currentState!.validate()) {
-                      logger.d(_numberController.text);
-                      var numVerify = AuthControlla();
-                      numVerify.phoneSignIn(
-                          context, '+233${_numberController.text}');
+
+                    await authControl.phoneSignIn(
+                        phoneNumber: '+233${_numberController.text}',
+                        context: context
+                      );
+
+                      // logger.d(_numberController.text);
+                      // var numVerify = AuthControlla();
+                      // numVerify.phoneSignIn(
+                      //     context, '+233${_numberController.text}');
                     }
                   },
                   child: Container(

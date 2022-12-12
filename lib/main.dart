@@ -1,32 +1,19 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:instagram_aa/views/screens/request_seedling.dart';
-import 'package:instagram_aa/views/screens/request_status.dart';
-import 'package:instagram_aa/views/widgets/bottom_navigation_tabs.dart';
+import 'package:flutter/services.dart';
+import 'package:instagram_aa/initialize.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferences.getInstance();
+  await Firebase.initializeApp();
+
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark));
+  runApp(const Initialize());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        fontFamily: GoogleFonts.roboto().fontFamily,
-        textTheme: GoogleFonts.robotoTextTheme(
-          Theme.of(context).textTheme,
-        ),
-      ),
-      home: const BottomNavigationTabs(),
-    );
-  }
-}
 
