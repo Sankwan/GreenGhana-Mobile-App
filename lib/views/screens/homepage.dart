@@ -6,10 +6,11 @@ import 'package:instagram_aa/models/video.dart';
 import 'package:instagram_aa/provider/videoprovider.dart';
 import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/views/screens/feed_details_page.dart';
+import 'package:instagram_aa/views/screens/profile_page.dart';
 import 'package:instagram_aa/views/widgets/app_name.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/feedcontainer.dart';
 import 'package:instagram_aa/views/widgets/widgetextensions.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: GestureDetector(
               onTap: () {
-                // nextNav(context, ProfilePage());
+                nextNav(context, ProfilePage());
               },
               child: const CircleAvatar(
                 backgroundColor: Colors.white,
