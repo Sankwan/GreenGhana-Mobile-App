@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/animation/slideanimate.dart';
 import 'package:instagram_aa/animation/video_controller.dart';
 import 'package:instagram_aa/models/video.dart';
 import 'package:instagram_aa/provider/videoprovider.dart';
+import 'package:instagram_aa/utils/pagesnavigator.dart';
+import 'package:instagram_aa/views/screens/feed_details_page.dart';
 import 'package:instagram_aa/views/widgets/app_name.dart';
 import 'package:instagram_aa/views/widgets/feedcontainer.dart';
 import 'package:instagram_aa/views/widgets/widgetextensions.dart';
@@ -78,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   final vs = snapshot.data!.toList()[index];
-                  return FeedContainer(vids: vs, onimagePress: () {});
+                  return FeedContainer(vids: vs, onimagePress: () => nextScreen(context, SlideAnimate(FeedDetailsPage(vid: vs))));
                 },
               ),
             );

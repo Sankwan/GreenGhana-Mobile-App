@@ -82,7 +82,6 @@ class FeedContainer extends StatelessWidget {
                     VideoIcon(videourl: "${vids.videoUrl}", iconSize: 60)
                   ]),
                 ),
-
                 //LIKE COMMENT AND BOOKMARK CODE SECTION++++++++++++++++++++++++++++++++++++++++++++++++++++
                 Row(
                   mainAxisSize: MainAxisSize.max,
