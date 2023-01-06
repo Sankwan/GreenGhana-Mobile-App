@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/views/screens/home/mainhomepage.dart';
 import 'package:instagram_aa/views/screens/homepage.dart';
 import 'package:instagram_aa/views/screens/planting_info.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -46,7 +47,7 @@ class RequestStatus extends StatelessWidget {
                 onPressed: (){
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    MaterialPageRoute(builder: (context) => const MainHomepage()),
                     (route) => false,
                   );
               }, icon: Icon(Icons.dashboard_rounded), label: Text('Return Home')),
