@@ -79,42 +79,26 @@ packages:
     source: hosted
     version: "1.0.2"
   camera:
-<<<<<<< HEAD
     dependency: "direct main"
-=======
-    dependency: transitive
->>>>>>> f99a397043fbd1076b7a52dab63180cf884883ef
     description:
       name: camera
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "0.10.0+5"
-=======
     version: "0.10.1"
->>>>>>> f99a397043fbd1076b7a52dab63180cf884883ef
   camera_android:
     dependency: transitive
     description:
       name: camera_android
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "0.10.1"
-=======
     version: "0.10.2"
->>>>>>> f99a397043fbd1076b7a52dab63180cf884883ef
   camera_avfoundation:
     dependency: transitive
     description:
       name: camera_avfoundation
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "0.9.9"
-=======
     version: "0.9.10"
->>>>>>> f99a397043fbd1076b7a52dab63180cf884883ef
   camera_platform_interface:
     dependency: transitive
     description:
@@ -780,11 +764,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "3.1.0"
-=======
     version: "3.2.1"
->>>>>>> f99a397043fbd1076b7a52dab63180cf884883ef
   rxdart:
     dependency: transitive
     description:

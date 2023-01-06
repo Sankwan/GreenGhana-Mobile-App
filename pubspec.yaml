@@ -68,12 +68,9 @@ dependencies:
   flutter_spinkit: ^5.1.0
   bot_toast: ^4.0.3
   shimmer: ^2.0.0
-<<<<<<< HEAD
   camera: ^0.10.0+5
-=======
   better_player: ^0.0.83
   image_picker_plus: ^0.5.5+2
->>>>>>> f99a397043fbd1076b7a52dab63180cf884883ef
 
 dev_dependencies:
   flutter_test:
