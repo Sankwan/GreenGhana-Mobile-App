@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/provider/add_post_provider.dart';
 import 'package:instagram_aa/provider/homepageprovider.dart';
 import 'package:instagram_aa/provider/themeprovider.dart';
 import 'package:instagram_aa/provider/userprovider.dart';
@@ -26,6 +27,8 @@ class Initialize extends StatelessWidget {
                   create: (context) => UserProvider()),
               ChangeNotifierProvider<VideoProvider>(
                   create: (context) => VideoProvider()),
+              ChangeNotifierProvider<AddPostProvider>(
+                  create: (context) => AddPostProvider()),
             ],
             child: MaterialApp(
               builder: BotToastInit(),
