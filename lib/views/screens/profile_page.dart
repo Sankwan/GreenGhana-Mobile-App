@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/usermodel.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/loader.dart';
 import 'package:instagram_aa/views/widgets/profile_details.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String id;
+  const ProfilePage({super.key, required this.id});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -18,12 +20,12 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserModel>(
-      future: user.getUserDataAsync(),
+      future: user.getUserDataAsync(widget.id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(body: Center(child: StatusProgressLoader()));
         }
-        if (snapshot.hasError) {
+        if (snapshot.data == null) {
           return const Center(
             child: CircularProgressIndicator(
               color: Colors.pink,
@@ -31,17 +33,22 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         }
 
+        logger.d(snapshot.data!.userName);
+
         return Scaffold(
             appBar: AppBar(
               // iconTheme: IconThemeData(),
-              title: const Text('Profile'),
+              title: Text('Profile'),
               centerTitle: true,
               actions: [
                 IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
               ],
             ),
             body: RefreshIndicator(
-                child: ProfileDetails(user: snapshot.data!,), onRefresh: () => user.getUserDataAsync()));
+                child: ProfileDetails(
+                  user: snapshot.data!,
+                ),
+                onRefresh: () => user.getUserDataAsync(widget.id)));
       },
     );
   }
