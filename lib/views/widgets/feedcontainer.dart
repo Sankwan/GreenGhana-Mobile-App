@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instagram_aa/animation/slideanimate.dart';
 import 'package:instagram_aa/models/video.dart';
 import 'package:instagram_aa/utils/pagesnavigator.dart';
-import 'package:instagram_aa/views/screens/comments_screen.dart';
 import 'package:instagram_aa/views/widgets/cached_image.dart';
 import 'package:instagram_aa/views/widgets/cached_image_with_dark.dart';
 import 'package:instagram_aa/views/widgets/video_icon.dart';

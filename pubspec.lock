@@ -79,7 +79,7 @@ packages:
     source: hosted
     version: "1.0.2"
   camera:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: camera
       url: "https://pub.dartlang.org"

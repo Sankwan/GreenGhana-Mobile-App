@@ -8,9 +8,9 @@ class UserProvider with ChangeNotifier{
   
   UserModel? get usermodel => _usermodel;
 
-  Future getUserDataAsync() async{
-    UserModel um = await userControl.getUserDataAsync();
-    _usermodel = um;
-    notifyListeners();
-  }
+  // Future getUserDataAsync() async{
+  //   UserModel um = await userControl.getUserDataAsync();
+  //   _usermodel = um;
+  //   notifyListeners();
+  // }
 }

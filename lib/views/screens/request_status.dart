@@ -45,29 +45,18 @@ class RequestStatus extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               FloatingActionButton.extended(
-                  backgroundColor: Colors.grey,
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainHomepage()),
-                      (route) => false,
-                    );
-                  },
-                  icon: Icon(Icons.dashboard_rounded),
-                  label: const Text('Return Home')),
-              //the default back arrow on this page has to be fixed so that it
-              //doesnt take us back to the seedling checkout page
-
-              FloatingActionButton.extended(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const PlantingInfo()));
-                  },
-                  icon: Icon(FontAwesomeIcons.tree),
-                  label: const Text('Planting'))
+                backgroundColor: Colors.grey,
+                onPressed: (){
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainHomepage()),
+                    (route) => false,
+                  );
+              }, icon: Icon(Icons.dashboard_rounded), label: Text('Return Home')),
+              FloatingActionButton.extended(onPressed: (){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) =>const PlantingInfo()));
+              },icon: Icon(FontAwesomeIcons.tree), label: Text('Planting'))
             ],
           ),
         ],

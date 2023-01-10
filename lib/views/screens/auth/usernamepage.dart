@@ -71,7 +71,9 @@ class _UserNamePageState extends State<UserNamePage> {
     await userControl.addUser(usermodel: UserModel(
       userPhoneNumber: widget.phoneNumber,
       userName: userNameController.text.trim(),
-      avatar: ""
+      avatar: "",
+      followers: [],
+      following: []
     )).then((value) {
       cancelProgressLoader();
       nextscreenRemovePredicate(context, SlideAnimate(const MainHomepage()));

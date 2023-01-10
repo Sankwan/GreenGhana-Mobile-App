@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/animation/slideanimate.dart';
 import 'package:instagram_aa/animation/video_controller.dart';
+import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/models/video.dart';
 import 'package:instagram_aa/provider/videoprovider.dart';
+import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/views/screens/feed_details_page.dart';
 import 'package:instagram_aa/views/screens/profile_page.dart';
@@ -55,7 +57,8 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: GestureDetector(
               onTap: () {
-                nextNav(context, const ProfilePage());
+                // Sends Current User Id to Page to Access Current Users Account
+                nextNav(context, ProfilePage(id: auth.currentUser!.uid,));
               },
               child: const CircleAvatar(
                 backgroundColor: Colors.white,
