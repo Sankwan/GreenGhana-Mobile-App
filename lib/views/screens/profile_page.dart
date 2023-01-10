@@ -38,10 +38,40 @@ class _ProfilePageState extends State<ProfilePage> {
         return Scaffold(
             appBar: AppBar(
               // iconTheme: IconThemeData(),
-              title: Text('Profile'),
+              title: const Text('Profile'),
               centerTitle: true,
               actions: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
+                // IconButton(onPressed: () {
+
+                // }, icon: const Icon(Icons.menu))
+                PopupMenuButton(
+                    itemBuilder: (context) =>[
+                      PopupMenuItem(
+                        child: Row(
+                          children:const [Icon(Icons.help), Padding(
+                            padding: EdgeInsets.only(left: 20),
+                            child: Text('About App'),
+                          )],
+                        ),
+                    ),
+                    PopupMenuItem(
+                        child: Row(
+                          children:const [Icon(Icons.settings), Padding(
+                            padding: EdgeInsets.only(left: 20),
+                            child: Text('Settings'),
+                          )],
+                        ),
+                    ),
+                    PopupMenuItem(
+                        child: Row(
+                          children:const [Icon(Icons.logout), Padding(
+                            padding: EdgeInsets.only(left: 20),
+                            child: Text('Logout'),
+                          )],
+                        ),
+                    ),
+                    ],
+                    child: const Icon(Icons.menu))
               ],
             ),
             body: RefreshIndicator(
