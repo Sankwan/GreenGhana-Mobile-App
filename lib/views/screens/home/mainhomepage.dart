@@ -37,9 +37,9 @@ class _MainHomepageState extends State<MainHomepage> {
               label: ''
             ),
             BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.mapPin), label: 'Saved'),
+                icon: Icon(FontAwesomeIcons.mapPin), label: 'Map'),
             BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.chartSimple), label: 'Saved'),
+                icon: Icon(FontAwesomeIcons.chartSimple), label: 'Graph'),
           ]),
       body: IndexedStack(
         index: hp.tabIndex,

@@ -86,8 +86,8 @@ class FeedDetailsPage extends StatelessWidget {
                           ],
                         ),
                       
-                      )
-
+                      ),
+                      
 
                     ],
                   )
