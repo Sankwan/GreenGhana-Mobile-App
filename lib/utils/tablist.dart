@@ -8,7 +8,7 @@ import 'package:instagram_aa/views/screens/request_seedling.dart';
 const List<Widget> fragmentList = [
   HomePage(),
   RequestSeedling(),
-  AddPostPage(),
+  PostPage(),
   MapPage(),
   Graph(),
 ];

@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class InstaVideoPlayer extends StatefulWidget {
-   InstaVideoPlayer({Key? key, required this.videoUrl}) : super(key: key);
-  String videoUrl;
+   InstaVideoPlayer({Key? key,this.videoUrl, required this.file}) : super(key: key);
+  String? videoUrl;
+  File file;
 
   @override
   State<InstaVideoPlayer> createState() => _InstaVideoPlayerState();
@@ -20,7 +23,7 @@ class _InstaVideoPlayerState extends State<InstaVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    videoPlayerController = VideoPlayerController.network(widget.videoUrl)
+    videoPlayerController = VideoPlayerController.file(widget.file)
       ..initialize().then((value) {
         videoPlayerController.pause();
         videoPlayerController.setLooping(false);
@@ -40,7 +43,7 @@ class _InstaVideoPlayerState extends State<InstaVideoPlayer> {
     return Stack(  
       children: [
         VisibilityDetector(
-          key: Key(widget.videoUrl),
+          key: Key(widget.videoUrl!),
           onVisibilityChanged: (visibility) {
               if (visibility.visibleFraction == 0 && this.mounted) {
                 videoPlayerController.pause();
