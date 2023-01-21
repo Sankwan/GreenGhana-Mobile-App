@@ -30,16 +30,16 @@ class _MainHomepageState extends State<MainHomepage> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Home'),
             BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.seedling), label: 'Applied'),
+                icon: Icon(FontAwesomeIcons.seedling), label: 'Request'),
             // BottomNavigationBarItem(icon: Icon(Icons.image), label: 'Saved'),
             BottomNavigationBarItem(
               icon: Icon(Icons.camera),
               label: ''
             ),
             BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.mapPin), label: 'Saved'),
+                icon: Icon(FontAwesomeIcons.mapPin), label: 'Map'),
             BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.chartSimple), label: 'Saved'),
+                icon: Icon(FontAwesomeIcons.chartSimple), label: 'Graph'),
           ]),
       body: IndexedStack(
         index: hp.tabIndex,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/views/screens/home/mainhomepage.dart';
 import 'package:instagram_aa/views/screens/homepage.dart';
 import 'package:instagram_aa/views/screens/planting_info.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 //working
 class RequestStatus extends StatelessWidget {
   const RequestStatus({Key? key}) : super(key: key);
@@ -32,7 +34,8 @@ class RequestStatus extends StatelessWidget {
             height: 40,
           ),
           Text(
-            'Report to your chosen location to receive seedlings from our Officers', textAlign: TextAlign.center,
+            'Report to your chosen location to receive seedlings from our Officers',
+            textAlign: TextAlign.center,
             style: TextStyle(fontSize: 15),
           ),
           SizedBox(
@@ -46,7 +49,7 @@ class RequestStatus extends StatelessWidget {
                 onPressed: (){
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    MaterialPageRoute(builder: (context) => const MainHomepage()),
                     (route) => false,
                   );
               }, icon: Icon(Icons.dashboard_rounded), label: Text('Return Home')),

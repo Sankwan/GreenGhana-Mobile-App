@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/animation/slideanimate.dart';
 import 'package:instagram_aa/models/video.dart';
+import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/views/widgets/cached_image.dart';
 import 'package:instagram_aa/views/widgets/cached_image_with_dark.dart';
 import 'package:instagram_aa/views/widgets/video_icon.dart';
@@ -108,7 +110,12 @@ class FeedContainer extends StatelessWidget {
                         Row(
                           children: [
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  //i commented this out because i commented the comments page i created 
+
+                          //         nextScreen(
+                          // context, SlideAnimate(const CommentsScreen()));
+                                },
                                 icon: const Icon(Icons.chat, size: 30.0)),
                             Text(
                               '${vids.commentsCount}',

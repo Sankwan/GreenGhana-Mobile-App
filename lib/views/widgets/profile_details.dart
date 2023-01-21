@@ -32,7 +32,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               radius: 60,
               backgroundImage: user.avatar!.isNotEmpty
                   ? AssetImage(user.avatar!)
-                  : AssetImage(''),
+                  : null,
               child: user.avatar!.isEmpty
                   ? Icon(
                       CupertinoIcons.person_crop_circle,
@@ -50,8 +50,25 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             SizedBox(
               height: 7,
             ),
-            Text(user.userPhoneNumber!,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(children: [
+                  Text('Post', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                  Text('data'),
+                ],),
+                SizedBox(width: 20,),
+                Column(children: [
+                  Text('Followers', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                  Text(user.followers!.length.toString()),
+                ],),
+                SizedBox(width: 20,),
+                Column(children: [
+                  Text('Following', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                  Text(user.following!.length.toString()),
+                ],),
+              ],
+            ),
             SizedBox(
               height: 20,
             ),
