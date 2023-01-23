@@ -4,9 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddPostProvider with ChangeNotifier {
-  // File? _selectedPostImage;
-  // File? _selectedPostVideo;
-
   File? _setVideoFile;
   File? get videoFile => _setVideoFile;
 
@@ -15,16 +12,9 @@ class AddPostProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // File? get selectedPostImage => _selectedPostImage;
-  // File? get selectedPostVideo => _selectedPostVideo;
-
-  // void setPostImage(XFile file) {
-  //   _selectedPostImage = File(file.path);
-  //   notifyListeners();
-  // }
-
-  // void setPostVideo(XFile file) {
-  //   _selectedPostVideo = File(file.path);
-  //   notifyListeners();
-  // }
+  void clearImage(){
+    _setVideoFile = null;
+    notifyListeners();
+  }
+ 
 }

@@ -43,7 +43,7 @@
 //     );
 //   }
 
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, library_prefixes
 
 import 'dart:io';
 
@@ -52,22 +52,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_picker_plus/image_picker_plus.dart';
 import 'package:instagram_aa/animation/slideanimate.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/models/usermodel.dart';
-import 'package:instagram_aa/provider/add_post_provider.dart';
 import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/views/screens/upload_video_page.dart';
-import 'package:instagram_aa/views/widgets/customtextformfield.dart';
-import 'package:instagram_aa/views/widgets/insta_video_player.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 import 'package:path/path.dart' as Path;
+import 'package:provider/provider.dart';
 
 import '../../services/firebase_service.dart';
 import '../../utils/custom_theme.dart';
@@ -285,16 +281,16 @@ class _PostPageState extends State<PostPage> {
 
     bool isPosted = await controller.addPost(
       post: PostsModel(
-          userName: p?.userName,
-          videoUrl: "",
-          imageUrl: dwdImgList,
-          likes: [],
-          userAvatar: p?.avatar ?? p?.userName,
-          caption: captionController.
-          text.toString(),
-          datePublished: DateTime.now().toString(),
-          longitude: pos.longitude,
-          latitude: pos.latitude),
+        userName: p?.userName,
+        videoUrl: "",
+        imageUrl: dwdImgList,
+        likes: [],
+        userAvatar: p?.avatar ?? p?.userName,
+        caption: captionController.text.toString(),
+        datePublished: DateTime.now().toString(),
+        longitude: pos.longitude,
+        latitude: pos.latitude,
+      ),
     );
     if (isPosted) {
       cancelProgressLoader();
@@ -303,9 +299,9 @@ class _PostPageState extends State<PostPage> {
       dwdImgList!.clear();
       imagesList.clear();
       setState(() {
-      imagesList.clear();
-      dwdImgList!.clear();
-    });
+        imagesList.clear();
+        dwdImgList!.clear();
+      });
     } else {
       cancelProgressLoader();
       showSnackBar(context, 'Error something went wrong');

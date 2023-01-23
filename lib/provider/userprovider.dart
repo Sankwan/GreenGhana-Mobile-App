@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/usermodel.dart';
-import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/app_utils.dart';
 
 class UserProvider with ChangeNotifier{
