@@ -7,6 +7,7 @@ import 'package:instagram_aa/services/firebase_service.dart';
 abstract class PostController {
   Future<bool> addPost({PostsModel? post});
   Future<String?> getDownloadUrl(File file, String bucket);
+  Future<List<PostsModel>> loadPosts();
 }
 
 class PostControllerImplement implements PostController {
@@ -32,6 +33,12 @@ class PostControllerImplement implements PostController {
       logs.d(e);
       return null;
     }
+  }
+  
+  @override
+  Future<List<PostsModel>> loadPosts() async{
+    final posts = await postcol.orderBy('date_published', descending: false).get();
+    return posts.docs.map((e) => PostsModel.fromJson(e.data())).toList();
   }
   
 }
