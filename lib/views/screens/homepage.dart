@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final videocontrol = VideoControllerImplement();
+  // final videocontrol = VideoControllerImplement();
 
   @override
   Widget build(BuildContext context) {
@@ -69,37 +69,37 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: FutureBuilder<List<Video>>(
-          future: videocontrol.getAllVideos(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: pagePreload(context));
-            }
-            if (snapshot.hasError) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.pink,
-                ),
-              );
-            }
-            return RefreshIndicator(
-              onRefresh: () => videocontrol.getAllVideos(),
-              color: Theme.of(context).primaryColor,
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data!.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
-                itemBuilder: (context, index) {
-                  final vs = snapshot.data!.toList()[index];
-                  return FeedContainer(
-                      vids: vs,
-                      onimagePress: () => nextScreen(
-                          context, SlideAnimate(FeedDetailsPage(vid: vs))));
-                },
-              ),
-            );
-          }),
+      // body: FutureBuilder<List<Video>>(
+      //     future: videocontrol.getAllVideos(),
+      //     builder: (context, snapshot) {
+      //       if (snapshot.connectionState == ConnectionState.waiting) {
+      //         return Center(child: pagePreload(context));
+      //       }
+      //       if (snapshot.hasError) {
+      //         return const Center(
+      //           child: CircularProgressIndicator(
+      //             color: Colors.pink,
+      //           ),
+      //         );
+      //       }
+      //       return RefreshIndicator(
+      //         onRefresh: () => videocontrol.getAllVideos(),
+      //         color: Theme.of(context).primaryColor,
+      //         child: ListView.separated(
+      //           physics: const BouncingScrollPhysics(),
+      //           itemCount: snapshot.data!.length,
+      //           separatorBuilder: (context, index) =>
+      //               const SizedBox(height: 10),
+      //           itemBuilder: (context, index) {
+      //             final vs = snapshot.data!.toList()[index];
+      //             return FeedContainer(
+      //                 vids: vs,
+      //                 onimagePress: () => nextScreen(
+      //                     context, SlideAnimate(FeedDetailsPage(vid: vs))));
+      //           },
+      //         ),
+      //       );
+      //     }),
     );
   }
 }

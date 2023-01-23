@@ -4,7 +4,7 @@ import 'package:instagram_aa/services/firebase_service.dart';
 
 abstract class UserController{
   Future<bool> addUser({UserModel usermodel}); 
-  Future<UserModel> getUserDataAsync(String id);
+  Future<UserModel> getUserDataAsync();
 }
 
 class UserControllerImplement implements UserController{
@@ -16,8 +16,8 @@ class UserControllerImplement implements UserController{
   }
   
   @override
-  Future<UserModel> getUserDataAsync(String id) async{
-    DocumentSnapshot snapshot = await usercol.doc(id).get();
+  Future<UserModel> getUserDataAsync() async{
+    DocumentSnapshot snapshot = await usercol.doc(mAuth.currentUser!.uid).get();
     return UserModel.fromJson(snapshot);
   }
 

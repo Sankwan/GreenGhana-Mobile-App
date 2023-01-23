@@ -48,19 +48,28 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_plus/image_picker_plus.dart';
 import 'package:instagram_aa/animation/slideanimate.dart';
+import 'package:instagram_aa/controllers/post_controller.dart';
+import 'package:instagram_aa/models/posts_model.dart';
+import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/provider/add_post_provider.dart';
+import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/utils/pagesnavigator.dart';
+import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/views/screens/upload_video_page.dart';
 import 'package:instagram_aa/views/widgets/customtextformfield.dart';
 import 'package:instagram_aa/views/widgets/insta_video_player.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as Path;
 
+import '../../services/firebase_service.dart';
 import '../../utils/custom_theme.dart';
 import '../widgets/form_input_builder.dart';
 
@@ -72,13 +81,28 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-
   List<File> imagesList = [];
+  List<String>? dwdImgList = [];
+  double? value = 0;
   ImagePicker picker = ImagePicker();
+
+  late TextEditingController captionController;
+  PostControllerImplement controller = PostControllerImplement();
+
+  @override
+  void initState() {
+    captionController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    captionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final p = context.watch<AddPostProvider>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -88,11 +112,14 @@ class _PostPageState extends State<PostPage> {
         title: const Text("Add Post", style: TextStyle(color: Colors.black)),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.upload,
-              size: 26,
+          TextButton(
+            onPressed: () => addPost(),
+            child: Text(
+              'Post',
+              style: subtitlestlye.copyWith(
+                  color: Colors.green,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
             ),
           )
         ],
@@ -112,7 +139,6 @@ class _PostPageState extends State<PostPage> {
           ),
         ],
       ),
-
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         children: [
@@ -129,6 +155,7 @@ class _PostPageState extends State<PostPage> {
           FormInputBuilder(
             hintText: '...',
             maxlines: 2,
+            controller: captionController,
           ),
           const SizedBox(
             height: 16,
@@ -198,57 +225,6 @@ class _PostPageState extends State<PostPage> {
           ),
         ],
       ),
-
-      // body: p.selectedPostImage == null && p.selectedPostVideo == null
-      //     ? const Center(
-      //         child: Text(
-      //           "Select video or image to upload",
-      //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-      //         ),
-      //       )
-      //     : ListView(
-      //         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      //         children: [
-      //           p.selectedPostImage != null
-      //               ? Container(
-      //                   height: 200,
-      //                   width: double.infinity,
-      //                   decoration: BoxDecoration(
-      //                       border: Border.all(
-      //                           width: .5, color: Colors.blueGrey.shade200),
-      //                       color: Colors.grey.shade100,
-      //                       borderRadius: BorderRadius.circular(8)),
-      //                   child: Image.file(
-      //                     p.selectedPostImage!,
-      //                     fit: BoxFit.contain,
-      //                   ),
-      //                 )
-      //               : Container(
-      //                   height: 200,
-      //                   width: double.infinity,
-      //                   decoration: BoxDecoration(
-      //                       boxShadow: const [
-      //                         BoxShadow(
-      //                           color: Colors.grey,
-      //                           offset: Offset(0, 1),
-      //                           blurRadius: 5.0,
-      //                         ),
-      //                       ],
-      //                       color: Colors.grey.shade300,
-      //                       borderRadius: BorderRadius.circular(8)),
-      //                   child: InstaVideoPlayer(file: p.selectedPostVideo!)),
-      //           const SizedBox(height: 16),
-      //           CustomTextFormField(
-      //             hinttext: 'Add Caption',
-      //             label: "Add Caption",
-      //           ),
-      //           const SizedBox(height: 16),
-      //           CustomTextFormField(
-      //             hinttext: 'Location',
-      //             label: "Location",
-      //           ),
-      //         ],
-      //       ),
     );
   }
 
@@ -286,16 +262,53 @@ class _PostPageState extends State<PostPage> {
     }
   }
 
-// //to open camera for videos
-  // Future pickVideo() async {
-  //   // final pv = await _picker.pickVideo(source: ImageSource.gallery);
-  //   final pv = await picker.pickVideo(source: ImageSource.gallery);
-  //   final pp = context.read<AddPostProvider>();
-  //   if (pv != null) {
-  //     pp.setPostVideo(pv);
-  //   } else {
-  //     showSnackBar(context, 'No video selected');
-  //   }
-  //   // }
-  // }
+  void addPost() async {
+    UserModel? p = context.read<UserProvider>().usermodel;
+    final pos = context.read<UserProvider>();
+    if (captionController.text.isEmpty) {
+      return showSnackBar(context, 'please add caption');
+    }
+    showProgressLoader();
+    int i = 1;
+    for (var img in imagesList) {
+      setState(() {
+        value = i / imagesList.length;
+      });
+      Reference ref = storage.ref().child('posts/${Path.basename(img.path)}');
+      await ref.putFile(img).whenComplete(() async {
+        await ref.getDownloadURL().then((value) {
+          dwdImgList!.add(value);
+          i++;
+        });
+      });
+    }
+
+    bool isPosted = await controller.addPost(
+      post: PostsModel(
+          userName: p?.userName,
+          videoUrl: "",
+          imageUrl: dwdImgList,
+          likes: [],
+          userAvatar: p?.avatar ?? p?.userName,
+          caption: captionController.
+          text.toString(),
+          datePublished: DateTime.now().toString(),
+          longitude: pos.longitude,
+          latitude: pos.latitude),
+    );
+    if (isPosted) {
+      cancelProgressLoader();
+      showSnackBar(context, 'Post submitted');
+      captionController.clear();
+      dwdImgList!.clear();
+      imagesList.clear();
+      setState(() {
+      imagesList.clear();
+      dwdImgList!.clear();
+    });
+    } else {
+      cancelProgressLoader();
+      showSnackBar(context, 'Error something went wrong');
+    }
+  }
 }

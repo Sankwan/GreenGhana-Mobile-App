@@ -20,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserModel>(
-      future: user.getUserDataAsync(widget.id),
+      future: user.getUserDataAsync(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(body: Center(child: StatusProgressLoader()));
@@ -78,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: ProfileDetails(
                   user: snapshot.data!,
                 ),
-                onRefresh: () => user.getUserDataAsync(widget.id)));
+                onRefresh: () => user.getUserDataAsync()));
       },
     );
   }

@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/animation/fadeanimate.dart';
+import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/provider/videoprovider.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/screens/auth/signup_page.dart';
@@ -23,7 +24,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   Future afterSplash() async {
     if (mAuth.currentUser != null) {
-      await context.read<VideoProvider>().loadVideos();
+      await context.read<UserProvider>().getUserDataAsync();
+      
       Future.delayed(const Duration(seconds: 1)).then((value) {
         nextScreenClosePrev(context, FadeAnimate(const MainHomepage()));
       });

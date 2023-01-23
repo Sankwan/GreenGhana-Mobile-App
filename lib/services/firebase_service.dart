@@ -7,6 +7,6 @@ final mAuth = FirebaseAuth.instance;
 final storage = FirebaseStorage.instance;
 final firrstore = FirebaseFirestore.instance;
 final usercol = FirebaseFirestore.instance.collection('users');
-final videocol = FirebaseFirestore.instance.collection('videos');
+final postcol = FirebaseFirestore.instance.collection('posts');
 
 final logs = Logger();

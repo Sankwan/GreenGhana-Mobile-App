@@ -25,8 +25,8 @@ class Initialize extends StatelessWidget {
                   create: (context) => HomeProvider()),
               ChangeNotifierProvider<UserProvider>(
                   create: (context) => UserProvider()),
-              ChangeNotifierProvider<VideoProvider>(
-                  create: (context) => VideoProvider()),
+              // ChangeNotifierProvider<VideoProvider>(
+              //     create: (context) => VideoProvider()),
               ChangeNotifierProvider<AddPostProvider>(
                   create: (context) => AddPostProvider()),
             ],
