@@ -1,85 +1,42 @@
 {
   "project_info": {
-    "project_number": "664320941491",
-    "project_id": "greenghana-app",
-    "storage_bucket": "greenghana-app.appspot.com"
+    "project_number": "1097656554594",
+    "project_id": "green-ghana-3ea3b",
+    "storage_bucket": "green-ghana-3ea3b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:664320941491:android:5cc76072daa73ca0693fc6",
+        "mobilesdk_app_id": "1:1097656554594:android:e66c7f017fd79e0dfcad3b",
         "android_client_info": {
           "package_name": "com.example.instagram_aa"
         }
       },
       "oauth_client": [
         {
-          "client_id": "664320941491-mi4u95pdbsreak6uqkaamj9lv7lnvdah.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDKmJWt7BPojonxt3_m1AtJtX8PIBasFeA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "664320941491-mi4u95pdbsreak6uqkaamj9lv7lnvdah.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "664320941491-87oqsnoor6uv4n3dhc3ku8b7f2jsojuj.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.cwd.tiktokYt"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:664320941491:android:7168d36db8d491d5693fc6",
-        "android_client_info": {
-          "package_name": "com.forestry_commission.green_ghana"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "664320941491-fvuie4q8f4md0jv2o5m2lnjp60c94ina.apps.googleusercontent.com",
+          "client_id": "1097656554594-80jauh5tcn8b1t282acgi3squ6kte4h7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.forestry_commission.green_ghana",
-            "certificate_hash": "03772b8010cbe001e61465c9be1b86716fdca21b"
+            "package_name": "com.example.instagram_aa",
+            "certificate_hash": "92de58ab29ef7d59e1cf0a510b9cb3c237598f3a"
           }
         },
         {
-          "client_id": "664320941491-mi4u95pdbsreak6uqkaamj9lv7lnvdah.apps.googleusercontent.com",
+          "client_id": "1097656554594-qr8ptm2mal4m5ck8qpdnh00106k0oj8h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDKmJWt7BPojonxt3_m1AtJtX8PIBasFeA"
+          "current_key": "AIzaSyD4LBMfQ_TojdUDb4PS2Vvx0ZEPyoPDjIo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "664320941491-mi4u95pdbsreak6uqkaamj9lv7lnvdah.apps.googleusercontent.com",
+              "client_id": "1097656554594-qr8ptm2mal4m5ck8qpdnh00106k0oj8h.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "664320941491-87oqsnoor6uv4n3dhc3ku8b7f2jsojuj.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.cwd.tiktokYt"
-              }
             }
           ]
         }

@@ -24,8 +24,6 @@ class _SplashPageState extends State<SplashPage> {
   Future afterSplash() async {
     if (mAuth.currentUser != null) {
       await context.read<VideoProvider>().loadVideos();
-      // await context.read<JobsProvider>().initJobsProvider();
-
       Future.delayed(const Duration(seconds: 1)).then((value) {
         nextScreenClosePrev(context, FadeAnimate(const MainHomepage()));
       });

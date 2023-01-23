@@ -5,10 +5,18 @@ class UserModel {
   String? userPhoneNumber;
   String? avatar;
   String? userName;
-  List? followers;
-  List? following;
+  num? totalPosts;
+  num? totalLikes;
+  num? totalRequests;
 
-  UserModel({this.userId, this.userPhoneNumber, this.userName, this.avatar, this.followers, this.following});
+  UserModel(
+      {this.userId,
+      this.userPhoneNumber,
+      this.userName,
+      this.avatar,
+      this.totalPosts,
+      this.totalLikes,
+      this.totalRequests});
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -16,21 +24,21 @@ class UserModel {
       'user_phoneNumber': userPhoneNumber,
       'user_name': userName,
       'avatar': avatar,
-      'followers': followers,
-      'following': following,
+      'total_posts': totalPosts,
+      'total_likes': totalLikes,
+      'total_request': totalRequests
     };
   }
-
-  static UserModel fromJson(DocumentSnapshot? snap){
+  
+  static UserModel fromJson(DocumentSnapshot? snap) {
     Map snapshot = snap!.data() as Map<String, dynamic>;
     return UserModel(
-      userId: snapshot['user_id'],
-      userPhoneNumber: snapshot['user_phoneNumber'],
-      userName: snapshot['user_name'],
-      avatar: snapshot['avatar'],
-      followers: snapshot['followers'],
-      following: snapshot['following'],
-    );
+        userId: snapshot['user_id'],
+        userPhoneNumber: snapshot['user_phoneNumber'],
+        userName: snapshot['user_name'],
+        avatar: snapshot['avatar'],
+        totalPosts: snapshot['total_posts'],
+        totalLikes: snapshot['total_likes'],
+        totalRequests: snapshot['total_request']);
   }
-
 }

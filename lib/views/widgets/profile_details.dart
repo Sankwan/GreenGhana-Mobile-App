@@ -30,9 +30,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             ),
             CircleAvatar(
               radius: 60,
-              backgroundImage: user.avatar!.isNotEmpty
-                  ? AssetImage(user.avatar!)
-                  : null,
+              backgroundImage:
+                  user.avatar!.isNotEmpty ? AssetImage(user.avatar!) : null,
               child: user.avatar!.isEmpty
                   ? Icon(
                       CupertinoIcons.person_crop_circle,
@@ -53,27 +52,49 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(children: [
-                  Text('Post', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                  Text('data'),
-                ],),
-                SizedBox(width: 20,),
-                Column(children: [
-                  Text('Followers', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                  Text(user.followers!.length.toString()),
-                ],),
-                SizedBox(width: 20,),
-                Column(children: [
-                  Text('Following', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                  Text(user.following!.length.toString()),
-                ],),
+                Column(
+                  children: [
+                    const Text(
+                      'Likes',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    Text(user.totalLikes!.toString()),
+                  ],
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Column(
+                  children: [
+                    const Text(
+                      'Requests',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    Text(user.totalRequests!.toString()),
+                  ],
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Column(
+                  children: [
+                    const Text(
+                      'Posts',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    Text(user.totalPosts!.toString()),
+                  ],
+                ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            ElevatedButton(onPressed: () {}, child: Text('Edit Profile')),
-            SizedBox(
+            ElevatedButton(onPressed: () {}, child: const Text('Edit Profile')),
+            const SizedBox(
               height: 20,
             ),
           ],
@@ -83,9 +104,9 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             padding: const EdgeInsets.all(5),
             child: GridView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: 13,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, mainAxisSpacing: 5, crossAxisSpacing: 5),
               itemBuilder: (context, index) {
                 return Container(

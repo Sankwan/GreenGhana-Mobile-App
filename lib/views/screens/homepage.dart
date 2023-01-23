@@ -15,7 +15,6 @@ import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/feedcontainer.dart';
 import 'package:instagram_aa/views/widgets/widgetextensions.dart';
 
-import '../../animation/fadeanimate.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

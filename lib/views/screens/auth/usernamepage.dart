@@ -40,6 +40,7 @@ class _UserNamePageState extends State<UserNamePage> {
         backgroundColor: Theme.of(context).backgroundColor,
         elevation: .5,
         title: const Text('Personal Information'),
+        automaticallyImplyLeading: false,
         centerTitle: true,
       ),
       body: Padding(
@@ -72,8 +73,9 @@ class _UserNamePageState extends State<UserNamePage> {
       userPhoneNumber: widget.phoneNumber,
       userName: userNameController.text.trim(),
       avatar: "",
-      followers: [],
-      following: []
+      totalPosts: 0,
+      totalLikes: 0,
+      totalRequests: 0
     )).then((value) {
       cancelProgressLoader();
       nextscreenRemovePredicate(context, SlideAnimate(const MainHomepage()));
