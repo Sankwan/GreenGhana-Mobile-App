@@ -12,3 +12,18 @@ const List<Widget> fragmentList = [
   MapPage(),
   Graph(),
 ];
+
+const List<String> seedlingList = [
+  'Teak',
+  'Pear',
+  'Coconut',
+  'Largent',
+];
+
+const List<String> seedLocationList = [
+  "Forestry HQ",
+  "Accra Mall",
+  "WestHills Mall",
+  'Tema Central Mall',
+  'Central University',
+];

@@ -8,5 +8,6 @@ final storage = FirebaseStorage.instance;
 final firrstore = FirebaseFirestore.instance;
 final usercol = FirebaseFirestore.instance.collection('users');
 final postcol = FirebaseFirestore.instance.collection('posts');
+final requestcol = FirebaseFirestore.instance.collection('requests');
 
 final logs = Logger();

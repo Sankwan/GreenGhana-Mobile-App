@@ -67,7 +67,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/firebase_service.dart';
 import '../../utils/custom_theme.dart';
-import '../widgets/form_input_builder.dart';
+import '../widgets/requestwidgets/form_input_builder.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});
@@ -150,7 +150,6 @@ class _PostPageState extends State<PostPage> {
           ),
           FormInputBuilder(
             hintText: '...',
-            maxlines: 2,
             controller: captionController,
           ),
           const SizedBox(

@@ -7,7 +7,6 @@ import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/custombutton.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
-import 'package:instagram_aa/views/widgets/form_input_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -16,6 +15,8 @@ import '../../provider/userprovider.dart';
 import '../../utils/custom_theme.dart';
 import '../widgets/dottedContainer.dart';
 import 'package:path/path.dart' as Path;
+
+import '../widgets/requestwidgets/form_input_builder.dart';
 
 class UploadVideoPage extends StatefulWidget {
   const UploadVideoPage({super.key});
@@ -73,7 +74,6 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
           ),
           FormInputBuilder(
             hintText: '...',
-            maxlines: 2,
             controller: captionController,
           ),
           const SizedBox(

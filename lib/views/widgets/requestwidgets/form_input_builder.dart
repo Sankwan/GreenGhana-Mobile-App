@@ -1,29 +1,28 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class FormInputBuilder extends StatelessWidget {
   final String hintText;
-  final int? maxlines;
   final TextEditingController? controller;
-  IconData? prefixIcon;
+  final TextInputType? keyboardType;
 
-  FormInputBuilder(
-      {super.key, required this.hintText, this.controller, this.prefixIcon, this.maxlines});
+  const FormInputBuilder({
+    super.key,
+    required this.hintText,
+    this.controller,
+    this.keyboardType
+  });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      maxLines: maxlines,
-      keyboardType: TextInputType.multiline,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         filled: true,
         fillColor: Theme.of(context).scaffoldBackgroundColor,
         contentPadding: const EdgeInsets.only(
-          left: 12,
-          top: 8
-
+          left: 8,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

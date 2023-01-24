@@ -1,10 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_aa/views/screens/checkout_seedling.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
-//working
+import 'package:instagram_aa/provider/request_provider.dart';
+import 'package:instagram_aa/utils/tablist.dart';
+import 'package:provider/provider.dart';
+
+import '../../utils/custom_theme.dart';
+import '../../utils/custombutton.dart';
+import '../widgets/custominputfield.dart';
+import '../widgets/requestwidgets/form_input_builder.dart';
+
 class RequestSeedling extends StatefulWidget {
   const RequestSeedling({super.key});
 
@@ -13,225 +17,134 @@ class RequestSeedling extends StatefulWidget {
 }
 
 class _RequestSeedlingState extends State<RequestSeedling> {
-  User? user;
-  bool teak = false;
-  bool pear = false;
-  bool coconut = false;
-  bool largent = false;
-  int teakCount = 0;
-  int pearCount = 0;
-  int coconutCount = 0;
-  int largentCount = 0;
+  late TextEditingController seedCountController;
 
-  List seedling = ['Teak', 'Pear', 'Cocunut', 'Largent'];
-  List<bool> seedSeleted = [false, false, false, false];
-  List<int> seedCount = [1, 1, 1, 1];
+  @override
+  void initState() {
+    seedCountController = TextEditingController();
+    super.initState();
+  }
 
-  List<Map> addCart = [];
+  @override
+  void dispose() {
+    seedCountController.dispose();
+    super.dispose();
+  }
 
-  
   @override
   Widget build(BuildContext context) {
+    RequestProvider rp = context.watch<RequestProvider>();
     return Scaffold(
-      
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: const Text(
           'Make a Seedling Request',
           style: TextStyle(fontSize: 15),
         ),
         centerTitle: true,
+        elevation: .5,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 30, right: 30),
-        child: ListView(children: [
-          const SizedBox(
-            height: 50,
-          ),
-          const Text('Seedlings we have'),
-
-          // Availabe Seedlings
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: seedling.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Checkbox(
-                    value: seedSeleted[index],
-                    onChanged: (value) {
-                      setState(() {
-                        seedSeleted[index] = value!;
-                      });
-                    },
-                  ),
-                  title: Text(seedling[index]),
-                  trailing: seedSeleted[index]
-                      ? Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ElevatedButton(
-                              onPressed: seedCount[index] > 1
-                                  ? () {
-                                      setState(() {
-                                        seedCount[index] -= 1;
-                                      });
-                                    }
-                                  : null,
-                              child: const Text('-'),
-                              style: styleButton(),
-                            ),
-                            Text(seedCount[index].toString()),
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  seedCount[index] += 1;
-                                });
-                              },
-                              child: const Text('+'),
-                              style: styleButton(),
-                            )
-                          ],
-                        )
-                      : null,
-                );
-              },
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
+        shrinkWrap: true,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        children: [
+          Text(
+            'Select seedling type',
+            style: subtitlestlye.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 50),
-          DropdownSearch<String>(
-            popupProps: const PopupProps.menu(
-              showSelectedItems: true,
-              showSearchBox: true,
-              searchFieldProps: TextFieldProps(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide()),
-                  // labelText: 'type location here',
-                  hintText: 'select or type location here',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+          const SizedBox(height: 12),
+          CustomInputField(
+            childwidget: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                items: seedlingList.map<DropdownMenuItem<String>>((nv) {
+                  return DropdownMenuItem<String>(
+                      value: nv,
+                      child: Text(
+                        nv,
+                        style: subtitlestlye.copyWith(
+                            color: Theme.of(context).colorScheme.primary),
+                      ));
+                }).toList(),
+                hint: Text(
+                  rp.selectedSeed,
+                  style: subtitlestlye.copyWith(
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.primary),
                 ),
+                onChanged: rp.onSeedSelect,
+                icon: const Icon(Icons.unfold_more_outlined),
+                isExpanded: true,
               ),
             ),
-            items: const [
-              "Forestry HQ",
-              "Accra Mall",
-              "WestHills Mall",
-              'Tema Central Mall',
-              'Central University'
-            ],
-            dropdownDecoratorProps: const DropDownDecoratorProps(
-              dropdownSearchDecoration: InputDecoration(
-                labelText: "Location to receive seedlings",
-                labelStyle: TextStyle(fontSize: 18),
-              ),
-            ),
-            onChanged: print,
-            selectedItem: "Forestry HQ",
           ),
           const SizedBox(
-            height: 30,
+            height: 16,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 60, right: 60),
-            child: TextButton(
-              onPressed: (() async {
-                // var idx;
-                addCart.clear();
-
-                for (var i = 0; i < seedSeleted.length; i++) {
-                  if (seedSeleted[i] && addCart.isEmpty) {
-                    addCart.add({
-                      'name': seedling[i],
-                      'quantity': seedCount[i].toString()
-                    });
-                  } else if (seedSeleted[i] && addCart.isNotEmpty) {
-                    for (var idx = 0; idx < addCart.length; idx++) {
-                      if (addCart[idx]['name'] == seedling[i]) {
-                        addCart[idx] = {
-                          'name': seedling[i],
-                          'quantity': seedCount[i].toString()
-                        };
-                      }
-                    }
-                  }
-                  if (seedSeleted[i] &&
-                      !addCart.contains({
-                        'name': seedling[i],
-                        'quantity': seedCount[i].toString()
-                      })) {
-                    addCart.add({
-                      'name': seedling[i],
-                      'quantity': seedCount[i].toString()
-                    });
-                  }
-                  if (seedSeleted[i] &&
-                      addCart.contains({
-                        'name': seedling[i],
-                        'quantity': seedCount[i].toString()
-                      })) {
-                    addCart.remove({
-                      'name': seedling[i],
-                      'quantity': seedCount[i].toString()
-                    });
-                  }
-                }
-                if (seedSeleted.contains(true)) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => CheckoutSeedling(
-                            name: 'Current User',
-                            loc: 'Place',
-                            number: 'User number',
-                            cartItems: addCart,
-                          )),
-                    ),
-                  );
-                }
-              }),
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.green,
-              ),
-              child: const Padding(
-                padding: EdgeInsets.only(top: 0),
-                child: Text(
-                  'Proceed',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+          Text(
+            'Enter number of Seedlings for ${rp.selectedSeed == "seed..." ? "" : rp.selectedSeed}',
+            style: subtitlestlye.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          FormInputBuilder(
+            hintText: '...',
+            keyboardType: TextInputType.phone,
+            controller: seedCountController,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            'Select Location to receive the seedlings',
+            style: subtitlestlye.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          CustomInputField(
+            childwidget: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                items: seedLocationList.map<DropdownMenuItem<String>>((nv) {
+                  return DropdownMenuItem<String>(
+                      value: nv,
+                      child: Text(
+                        nv,
+                        style: subtitlestlye.copyWith(
+                            color: Theme.of(context).colorScheme.primary),
+                      ));
+                }).toList(),
+                hint: Text(
+                  rp.selectedLocation,
+                  style: subtitlestlye.copyWith(
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.primary),
                 ),
+                onChanged: rp.onLocationSelect,
+                icon: const Icon(Icons.unfold_more_outlined),
+                isExpanded: true,
               ),
             ),
           ),
-
-
-          //beginning of test dropdowns
-          //to implement this in the edit
-
-DropdownSearch<String>.multiSelection(
-    items: ["Teak", "Coco", "Guava", 'C', 'k','q','r', 's', 'braee','tectona'],
-    popupProps: PopupPropsMultiSelection.menu(
-        showSelectedItems: true,
-        showSearchBox: true,
-        searchFieldProps: TextFieldProps(
-          decoration: InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide()),
-                  // labelText: 'type location here',
-                  hintText: 'select or type specie(s) here',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-        ),
-    ),
-    onChanged: print,
-    selectedItems: ["Teak"],
-),
-        ]),
+          const SizedBox(
+            height: 24,
+          ),
+          CustomButton(
+            onpress: () {},
+            label: 'Send',
+          ),
+        ],
       ),
-    
     );
   }
 }
