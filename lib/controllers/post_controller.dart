@@ -37,7 +37,7 @@ class PostControllerImplement implements PostController {
   
   @override
   Future<List<PostsModel>> loadPosts() async{
-    final posts = await postcol.orderBy('date_published', descending: false).get();
+    final posts = await postcol.orderBy('date_published', descending: true).get();
     return posts.docs.map((e) => PostsModel.fromJson(e.data())).toList();
   }
   

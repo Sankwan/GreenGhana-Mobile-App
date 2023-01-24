@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/provider/add_post_provider.dart';
+import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/custombutton.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
@@ -184,11 +185,7 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
         .getDownloadUrl(
       pro.videoFile!,
       "posts/${Path.basename(pro.videoFile!.path)}",
-    )
-        .then((value) {
-      _videoPlayerController?.dispose();
-    });
-
+    );
     bool isPosted = await controller.addPost(
         post: PostsModel(
       userName: p.usermodel?.userName,

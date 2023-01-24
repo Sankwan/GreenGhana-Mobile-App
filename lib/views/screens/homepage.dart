@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
@@ -12,6 +13,7 @@ import 'package:instagram_aa/views/screens/profile_page.dart';
 import 'package:instagram_aa/views/screens/search_screen.dart';
 import 'package:instagram_aa/views/widgets/app_name.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/post_item_card.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,6 +25,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   PostControllerImplement controller = PostControllerImplement();
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async{ 
+      await context.read<PostProvider>().getPosts();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,48 +76,26 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: RefreshIndicator(
-        color: Colors.green,
-        onRefresh: () async {
-          await context.read<UserProvider>().getUserDataAsync();
-          await p.getPosts();
-        },
-        child: FutureBuilder<List<PostsModel>>(
-          future: controller.loadPosts(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return AppUtils().feedPreload(context);
-            }
-            if (snapshot.hasError) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.red,
-                ),
-              );
-            }
-            if (snapshot.data!.isEmpty) {
-              return const Center(
-                child: Text(
-                  "No Data",
-                  style: TextStyle(color: Colors.red, fontSize: 30),
-                ),
-              );
-            }
-            return AppUtils().feedPreload(context);
-            // return ListView.separated(
-            //   physics: const BouncingScrollPhysics(),
-            //   itemCount: snapshot.data!.length,
-            //   separatorBuilder: (context, i) {
-            //     return const SizedBox(
-            //       height: 10,
-            //     );
-            //   },
-            //   itemBuilder: (context, i) {
-            //     return Text(i.toString());
-            //   },
-            // );
+          color: Colors.green,
+          onRefresh: () async {
+            await p.getPosts();
           },
-        ),
-      ),
+          child:
+              ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemCount: p.postData.length,
+            separatorBuilder: (context, i) {
+              return const SizedBox(
+                height: 10,
+              );
+            },
+            itemBuilder: (context, i) {
+              final pp = p.postData[i];
+              return PostItemCard(
+                post: pp,
+              );
+            },
+          )),
     );
   }
 }
