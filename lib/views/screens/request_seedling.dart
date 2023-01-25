@@ -1,9 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/models/request_model.dart';
+import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/provider/request_provider.dart';
+import 'package:instagram_aa/provider/userprovider.dart';
+import 'package:instagram_aa/utils/progressloader.dart';
+import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/utils/tablist.dart';
 import 'package:provider/provider.dart';
 
+import '../../controllers/request_controller.dart';
 import '../../utils/custom_theme.dart';
 import '../../utils/custombutton.dart';
 import '../widgets/custominputfield.dart';
@@ -18,6 +26,7 @@ class RequestSeedling extends StatefulWidget {
 
 class _RequestSeedlingState extends State<RequestSeedling> {
   late TextEditingController seedCountController;
+  final RequestControllerImplement controller = RequestControllerImplement();
 
   @override
   void initState() {
@@ -140,11 +149,43 @@ class _RequestSeedlingState extends State<RequestSeedling> {
             height: 24,
           ),
           CustomButton(
-            onpress: () {},
+            onpress: () => uploadSeedling(),
             label: 'Send',
           ),
         ],
       ),
     );
+  }
+
+  Future uploadSeedling() async {
+    RequestProvider rp = context.read<RequestProvider>();
+    String seedQuantity = seedCountController.text.trim();
+    if (seedQuantity.isEmpty) {
+      return showSnackBar(context, 'Enter number of seedling');
+    }
+    if(rp.selectedSeed == "seed..."){
+      return showSnackBar(context, 'please selecet a valid seed');
+    }
+    if(rp.selectedLocation == "location..."){
+      return showSnackBar(context, 'please selecet pickup location');
+    }
+    showProgressLoader();
+    bool isRequested = await controller.addRequest(
+      request: RequestModel(
+          seedType: rp.selectedSeed,
+          seedQuantity: seedQuantity,
+          pickupLocation: rp.selectedLocation,
+          userPhoneNumber:
+              context.read<UserProvider>().usermodel?.userPhoneNumber),
+    );
+    if (isRequested) {
+      cancelProgressLoader();
+      showSnackBar(context, 'Request submitted successfully');
+      seedCountController.clear();
+      rp.clearFields();
+    } else {
+      cancelProgressLoader();
+      showSnackBar(context, 'Error requesting seedling');
+    }
   }
 }

@@ -3,7 +3,7 @@ class RequestModel{
   String? userId;
   String? seedType;
   String? dateRequested;
-  num? seedQuantity;
+  String? seedQuantity;
   String? pickupLocation;
   String? userPhoneNumber;
 

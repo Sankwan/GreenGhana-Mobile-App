@@ -1,16 +1,6 @@
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
-import 'package:instagram_aa/controllers/request_controller.dart';
-import 'package:instagram_aa/models/request_model.dart';
-
-import '../models/posts_model.dart';
 
 class RequestProvider with ChangeNotifier {
-
-  final RequestControllerImplement controller = RequestControllerImplement();
-
-
   String _selectedSeed = 'seed...';
   String _selectedLocation = "location...";
 
@@ -22,9 +12,14 @@ class RequestProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void onLocationSelect(s){
+  void onLocationSelect(s) {
     _selectedLocation = s;
     notifyListeners();
   }
 
+  void clearFields(){
+    _selectedSeed = 'seed...';
+    _selectedLocation = 'location';
+    notifyListeners();
+  }
 }
