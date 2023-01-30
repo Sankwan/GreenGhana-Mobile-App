@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:instagram_aa/controllers/firebase_services.dart';
+import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/provider/post_provider.dart';
+import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/tiktok_video_player.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -11,10 +14,17 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../models/posts_model.dart';
 import '../cached_image.dart';
 
-class PostImageContainer extends StatelessWidget {
+class PostImageContainer extends StatefulWidget {
   final PostsModel post;
 
   const PostImageContainer({super.key, required this.post});
+
+  @override
+  State<PostImageContainer> createState() => _PostImageContainerState();
+}
+
+class _PostImageContainerState extends State<PostImageContainer> {
+  PostControllerImplement pController = PostControllerImplement();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +41,9 @@ class PostImageContainer extends StatelessWidget {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              post.videoUrl == ""
+              widget.post.videoUrl == ""
                   ? CarouselSlider.builder(
-                      itemCount: post.imageUrl?.length,
+                      itemCount: widget.post.imageUrl?.length,
                       options: CarouselOptions(
                         padEnds: false,
                         viewportFraction: 1,
@@ -46,7 +56,7 @@ class PostImageContainer extends StatelessWidget {
                         },
                       ),
                       itemBuilder: (context, index, reas) {
-                        final img = post.imageUrl?[index];
+                        final img = widget.post.imageUrl?[index];
                         return Container(
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
@@ -67,7 +77,7 @@ class PostImageContainer extends StatelessWidget {
                         );
                       },
                     )
-                  : TikTokVideoPlayer(videoUrl: post.videoUrl!),
+                  : TikTokVideoPlayer(videoUrl: widget.post.videoUrl!),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -83,24 +93,81 @@ class PostImageContainer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Wrap(
-                        spacing: 16,
-                        children: const [
-                          Icon(
-                            Icons.favorite_border_outlined,
-                            size: 28,
-                            color: Colors.white,
+                        spacing: 0,
+                        children: [
+                          // Icon(
+                          //   Icons.favorite_border_outlined,
+                          //   size: 28,
+                          //   color: Colors.white,
+                          // ),
+                          IconButton(
+                            onPressed: () {
+                              // FirebaseServices().likedVideo(post.userId!);
+                              pController.likePost(postId: widget.post.postId);
+                            },
+                            icon: Icon(
+                              widget.post.likes!.contains(auth.currentUser!.uid)
+                                  ? Icons.favorite
+                                  : Icons.favorite_border_outlined,
+                              size: 28,
+                              color: widget.post.likes!
+                                      .contains(auth.currentUser!.uid)
+                                  ? Colors.red
+                                  : Colors.white,
+                            ),
                           ),
-                          Icon(
-                            Icons.comment_outlined,
-                            size: 28,
-                            color: Colors.white,
+                          IconButton(
+                            onPressed: () {
+                              try {
+                                showModalBottomSheet(
+                                  // shape: const RoundedRectangleBorder(
+                                  //     borderRadius: BorderRadius.vertical(
+                                  //         top: Radius.circular(20))),
+                                  // enableDrag: true,
+                                  // isScrollControlled: true,
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 10,
+                                          bottom: MediaQuery.of(context)
+                                              .viewInsets
+                                              .bottom),
+                                      child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.5,
+                                          child: Container(
+                                            height: 150,
+                                          )
+                                          // CommentScreen(id: data['id'])
+                                          ),
+                                    );
+                                  },
+                                );
+                              } catch (error) {
+                                logs.d(error);
+                              }
+                            },
+                            icon: Icon(
+                              Icons.comment_outlined,
+                              size: 28,
+                              color: Colors.white,
+                            ),
                           ),
+                          //  const Icon(
+                          //     Icons.comment_outlined,
+                          //     size: 28,
+                          //     color: Colors.white,
+                          //   ),
                         ],
                       ),
-                      post.imageUrl!.isNotEmpty || post.videoUrl == ""
+                      widget.post.imageUrl!.isNotEmpty ||
+                              widget.post.videoUrl == ""
                           ? AnimatedSmoothIndicator(
                               activeIndex: p.dotIndex,
-                              count: post.imageUrl!.length,
+                              count: widget.post.imageUrl!.length,
                               effect: const WormEffect(
                                 dotColor: Colors.white70,
                                 dotHeight: 8,
