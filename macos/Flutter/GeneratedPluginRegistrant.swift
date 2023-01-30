@@ -11,9 +11,9 @@ import firebase_core
 import firebase_storage
 import geolocator_apple
 import location
-import path_provider_macos
+import path_provider_foundation
 import photo_manager
-import shared_preferences_macos
+import shared_preferences_foundation
 import sqflite
 import video_compress
 import wakelock_macos
