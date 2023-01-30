@@ -66,14 +66,14 @@ class FirebaseServices {
   // Like Videos
   likedVideo(String id) async {
     DocumentSnapshot doc =
-        await firebaseFireStore.collection("videos").doc(id).get();
+        await firebaseFireStore.collection("posts").doc(id).get();
     var uid = auth.currentUser!.uid;
     if ((doc.data() as dynamic)['likes'].contains(uid)) {
-      await FirebaseFirestore.instance.collection("videos").doc(id).update({
+      await FirebaseFirestore.instance.collection("posts").doc(id).update({
         'likes': FieldValue.arrayRemove([uid]),
       });
     } else {
-      await FirebaseFirestore.instance.collection("videos").doc(id).update({
+      await FirebaseFirestore.instance.collection("posts").doc(id).update({
         'likes': FieldValue.arrayUnion([uid]),
       });
     }

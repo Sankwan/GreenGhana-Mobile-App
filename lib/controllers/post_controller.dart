@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
@@ -8,6 +10,7 @@ abstract class PostController {
   Future<bool> addPost({PostsModel? post});
   Future<String?> getDownloadUrl(File file, String bucket);
   Future<List<PostsModel>> loadPosts();
+  Future likePost({String? postId});
 }
 
 class PostControllerImplement implements PostController {
@@ -34,11 +37,27 @@ class PostControllerImplement implements PostController {
       return null;
     }
   }
-  
+
   @override
-  Future<List<PostsModel>> loadPosts() async{
-    final posts = await postcol.orderBy('date_published', descending: true).get();
+  Future<List<PostsModel>> loadPosts() async {
+    final posts =
+        await postcol.orderBy('date_published', descending: true).get();
     return posts.docs.map((e) => PostsModel.fromJson(e.data())).toList();
   }
-  
+
+  @override
+  Future likePost({String? postId}) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception("No user is signed in");
+    }
+    final ref = FirebaseFirestore.instance.collection("posts").doc(postId);
+    final post = await ref.get();
+    if (!post.exists) {
+      throw Exception("Post not found");
+    }
+    final liked = post.data()!["likes"] as List<dynamic>;
+    liked.add(user.uid);
+    await ref.update({"likes": liked});
+  }
 }

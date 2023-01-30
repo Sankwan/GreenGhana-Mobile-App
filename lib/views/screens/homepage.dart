@@ -89,6 +89,9 @@ class _HomePageState extends State<HomePage> {
               final pp = p.postData[i];
               return PostItemCard(
                 post: pp,
+                onPress: (){
+                  
+                },
               );
             },
           )),
