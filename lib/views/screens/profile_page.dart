@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/usermodel.dart';
+import 'package:instagram_aa/views/screens/about_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/loader.dart';
 import 'package:instagram_aa/views/widgets/profile_details.dart';
@@ -47,6 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 PopupMenuButton(
                     itemBuilder: (context) =>[
                       PopupMenuItem(
+                        value: 1,
                         child: Row(
                           children:const [Icon(Icons.help), Padding(
                             padding: EdgeInsets.only(left: 20),
@@ -55,14 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                     ),
                     PopupMenuItem(
-                        child: Row(
-                          children:const [Icon(Icons.settings), Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Text('Settings'),
-                          )],
-                        ),
-                    ),
-                    PopupMenuItem(
+                      value: 2,
                         child: Row(
                           children:const [Icon(Icons.logout), Padding(
                             padding: EdgeInsets.only(left: 20),
@@ -71,7 +66,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                     ),
                     ],
-                    child: const Icon(Icons.menu))
+                    onSelected: (int menu){
+                      if (menu ==1) { nextNav(context, const AboutPage());
+                      } else if (menu == 2){
+                        //function to logout of the app
+                      }
+                    },
+                    child: const Icon(Icons.more_vert))
               ],
             ),
             body: RefreshIndicator(

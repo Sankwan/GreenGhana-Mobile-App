@@ -164,10 +164,10 @@ class _RequestSeedlingState extends State<RequestSeedling> {
       return showSnackBar(context, 'Enter number of seedling');
     }
     if(rp.selectedSeed == "seed..."){
-      return showSnackBar(context, 'please selecet a valid seed');
+      return showSnackBar(context, 'please selecet a valid seedling');
     }
     if(rp.selectedLocation == "location..."){
-      return showSnackBar(context, 'please selecet pickup location');
+      return showSnackBar(context, 'please select pickup location');
     }
     showProgressLoader();
     bool isRequested = await controller.addRequest(

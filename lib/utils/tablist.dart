@@ -15,15 +15,28 @@ const List<Widget> fragmentList = [
 
 const List<String> seedlingList = [
   'Teak',
-  'Pear',
-  'Coconut',
-  'Largent',
+  'Gmelina',
+  'Eucalyptus',
+  'Cassia',
+  'Leuceana',
+  'Kusia',
+  'Cedrela',
+  'Emire',
+  'Wawa',
+  'Mahogany(Khaya ivorensis)',
+  'Mahogany(Khaya anthotheca)',
+  'Mansonia altissima',
+  'Ofram',
+  'Ceiba',
+
 ];
 
 const List<String> seedLocationList = [
-  "Forestry HQ",
-  "Accra Mall",
+  "Forestry Headquaters Gimpa",
+  "Accra Zoo",
   "WestHills Mall",
-  'Tema Central Mall',
+  'Tema TIDD',
   'Central University',
+  'Accra Mall',
+  'RMSC Kumasi',
 ];

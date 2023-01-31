@@ -76,6 +76,8 @@ dependencies:
   random_avatar: ^0.0.7
   jiffy: ^5.0.0
   smooth_page_indicator: ^1.0.0+2
+  url_launcher: ^6.1.8
+  
 
 dev_dependencies:
   flutter_test:
