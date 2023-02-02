@@ -19,17 +19,16 @@ class _SearchScreenState extends State<SearchScreen> {
             elevation: 0,
             title: TextFormField(
               cursorColor: Colors.black,
-              style: TextStyle(color: Colors.black),
+              style:const TextStyle(color: Colors.black),
               decoration: new InputDecoration(
                 filled: true,
                 fillColor: Colors.grey.shade300,
-
                 prefixIcon: Icon(
                   Icons.search,
                   color: Colors.grey.shade700,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(5),
                   borderSide: BorderSide.none,
                 ),
                 contentPadding:

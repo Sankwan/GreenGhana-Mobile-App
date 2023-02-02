@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/models/comment.dart';
+import 'package:instagram_aa/views/screens/auth/signup_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 var auth = FirebaseAuth.instance;
@@ -47,8 +48,8 @@ class FirebaseServices {
         .update({'username': name});
   }
 
-  logout() {
-    auth.signOut();
+  logout(BuildContext context) {
+    auth.signOut().whenComplete(() => nextNavRemoveHistory(context, SignupPage()));
   }
 
   // _uploadProPic(File image) async {
@@ -213,71 +214,11 @@ class FirebaseServices {
   }
 
   // Get User Info
-  getUserDat(String id) async {
-    var myVideos = await firebaseFireStore
-        .collection("videos")
-        .where("uid", isEqualTo: id)
+  getUserData(String id) {
+    return firebaseFireStore
+        .collection("posts")
+        .where("user_id", isEqualTo: id)
         .get();
-
-    for (int i = 0; i < myVideos.docs.length; i++) {
-      thumbnails.add((myVideos.docs[i].data() as dynamic)['thumbnail']);
-    }
-
-    DocumentSnapshot userDoc =
-        await firebaseFireStore.collection("users").doc(id).get();
-
-    final userData = userDoc.data() as dynamic;
-
-    String name = userDoc['name'];
-    String profilePic = userDoc['profilePic'];
-    int likes = 0;
-    int followers = 0;
-    int following = 0;
-    bool isFollowing = false;
-
-    for (var item in myVideos.docs) {
-      likes += (item.data()['likes'] as List).length;
-    }
-
-    var followerDoc = await firebaseFireStore
-        .collection("users")
-        .doc(id)
-        .collection("followers")
-        .get();
-    var followingDoc = await firebaseFireStore
-        .collection("users")
-        .doc(id)
-        .collection("following")
-        .get();
-
-    followers = followerDoc.docs.length;
-    following = followingDoc.docs.length;
-
-    firebaseFireStore
-        .collection("users")
-        .doc(id)
-        .collection("followers")
-        .doc(auth.currentUser!.uid)
-        .get()
-        .then((value) {
-      if (value.exists) {
-        //FOLLOW KRTA HAI
-        isFollowing = true;
-      } else {
-        //FOLLOW NHI KRTA HAI
-        isFollowing = false;
-      }
-    });
-
-    user = {
-      'followers': followers.toString(),
-      'following': following.toString(),
-      'likes': likes.toString(),
-      'profilePic': profilePic,
-      'name': name,
-      'isFollowing': isFollowing,
-      'thumbnails': thumbnails
-    };
   }
 
   // Get Followers

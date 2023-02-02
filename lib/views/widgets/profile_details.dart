@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:instagram_aa/models/usermodel.dart';
+import 'package:instagram_aa/views/screens/edit_profile.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 class ProfileDetails extends StatefulWidget {
   final UserModel user;
@@ -93,7 +93,9 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(onPressed: () {}, child: const Text('Edit Profile')),
+            ElevatedButton(onPressed: () {
+              nextNav(context, const EditProfile());
+            }, child: const Text('Edit Profile')),
             const SizedBox(
               height: 20,
             ),

@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/views/screens/about_page.dart';
@@ -37,39 +39,48 @@ class _ProfilePageState extends State<ProfilePage> {
         logger.d(snapshot.data!.userName);
 
         return Scaffold(
+            backgroundColor: Theme.of(context).backgroundColor,
             appBar: AppBar(
               // iconTheme: IconThemeData(),
               title: const Text('Profile'),
               centerTitle: true,
+              elevation: .5,
               actions: [
                 // IconButton(onPressed: () {
 
                 // }, icon: const Icon(Icons.menu))
                 PopupMenuButton(
-                    itemBuilder: (context) =>[
-                      PopupMenuItem(
-                        value: 1,
-                        child: Row(
-                          children:const [Icon(Icons.help), Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Text('About App'),
-                          )],
-                        ),
-                    ),
-                    PopupMenuItem(
-                      value: 2,
-                        child: Row(
-                          children:const [Icon(Icons.logout), Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Text('Logout'),
-                          )],
-                        ),
-                    ),
-                    ],
-                    onSelected: (int menu){
-                      if (menu ==1) { nextNav(context, const AboutPage());
-                      } else if (menu == 2){
-                        //function to logout of the app
+                    itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: Row(
+                              children: const [
+                                Icon(Icons.help),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                  child: Text('About App'),
+                                )
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 2,
+                            child: Row(
+                              children: const [
+                                Icon(Icons.logout),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                  child: Text('Logout'),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                    onSelected: (int menu) {
+                      if (menu == 1) {
+                        nextNav(context, const AboutPage());
+                      } else if (menu == 2) {
+                        FirebaseServices().logout(context);
                       }
                     },
                     child: const Icon(Icons.more_vert))
