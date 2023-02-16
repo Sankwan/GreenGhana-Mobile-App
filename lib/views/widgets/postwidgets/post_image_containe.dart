@@ -7,6 +7,7 @@ import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/provider/post_provider.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/comment_screen.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/tiktok_video_player.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -120,16 +121,16 @@ class _PostImageContainerState extends State<PostImageContainer> {
                             onPressed: () {
                               try {
                                 showModalBottomSheet(
-                                  // shape: const RoundedRectangleBorder(
-                                  //     borderRadius: BorderRadius.vertical(
-                                  //         top: Radius.circular(20))),
-                                  // enableDrag: true,
-                                  // isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(20))),
+                                  enableDrag: true,
+                                  isScrollControlled: true,
                                   context: context,
                                   builder: (context) {
                                     return Padding(
                                       padding: EdgeInsets.only(
-                                          top: 10,
+                                          top: 20,
                                           bottom: MediaQuery.of(context)
                                               .viewInsets
                                               .bottom),
@@ -138,9 +139,7 @@ class _PostImageContainerState extends State<PostImageContainer> {
                                                   .size
                                                   .height *
                                               0.5,
-                                          child: Container(
-                                            height: 150,
-                                          )
+                                          child: Comments(id: widget.post.postId!)
                                           // CommentScreen(id: data['id'])
                                           ),
                                     );
@@ -176,14 +175,15 @@ class _PostImageContainerState extends State<PostImageContainer> {
                               ),
                             )
                           : Container(),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.bookmark_outline,
-                          size: 28,
-                          color: Colors.white,
-                        ),
-                      )
+                          Container(width: 80,)
+                      // IconButton(
+                      //   onPressed: () {},
+                      //   icon: const Icon(
+                      //     Icons.bookmark_outline,
+                      //     size: 28,
+                      //     color: Colors.white,
+                      //   ),
+                      // )
                     ],
                   ),
                 ),

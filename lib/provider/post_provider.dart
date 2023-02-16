@@ -7,17 +7,17 @@ import 'package:instagram_aa/models/posts_model.dart';
 class PostProvider with ChangeNotifier {
   final postController = PostControllerImplement();
 
-  List<PostsModel> _postData = [];
-  UnmodifiableListView<PostsModel> get postData =>
-      UnmodifiableListView(_postData);
+  Stream<List<PostsModel>> _postData = Stream.fromIterable([]);
+  Stream<List<PostsModel>> get postData => _postData;
 
   int _dotIndex = 0;
   int get dotIndex => _dotIndex;
 
-  Future getPosts() async {
-    final p = await postController.loadPosts();
+  Stream getPosts() {
+    final p = postController.loadPosts();
     _postData = p;
     notifyListeners();
+    return _postData;
   }
 
   void onIndexChange(int newIndex) {

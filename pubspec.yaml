@@ -77,6 +77,8 @@ dependencies:
   jiffy: ^5.0.0
   smooth_page_indicator: ^1.0.0+2
   url_launcher: ^6.1.8
+  animations: ^2.0.7
+  fl_chart: ^0.60.0
   
 
 dev_dependencies:

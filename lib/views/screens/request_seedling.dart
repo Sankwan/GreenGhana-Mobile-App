@@ -10,6 +10,7 @@ import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/utils/tablist.dart';
+import 'package:instagram_aa/views/screens/planting_info.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -49,6 +50,11 @@ class _RequestSeedlingState extends State<RequestSeedling> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
+        actions: [
+          IconButton(onPressed: (){
+            nextNav(context, const PlantingInfo());
+          }, icon:const Icon(Icons.info, color: Colors.green,))
+        ],
         title: const Text(
           'Make a Seedling Request',
           style: TextStyle(fontSize: 15),

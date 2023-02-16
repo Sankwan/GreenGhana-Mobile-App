@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/views/widgets/seedling_chart.dart';
 
 class Graph extends StatefulWidget {
   const Graph({super.key});
@@ -17,6 +18,14 @@ class _GraphState extends State<Graph> {
           style: TextStyle(fontSize: 15),
         ),
         centerTitle: true,
+      ),
+      body: ListView(
+        children: [
+          SizedBox(
+            height: 400,
+            child: SeedlingChart(),
+          )
+        ],
       ),
     );
   }

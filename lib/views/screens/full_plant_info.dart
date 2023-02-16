@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 //working
 class FullPlantingInfo extends StatefulWidget {
   final String image;
@@ -26,7 +23,7 @@ class _FullPlantingInfoState extends State<FullPlantingInfo> {
           Container(
             height: 250,
             decoration:
-                BoxDecoration(image: DecorationImage(image: NetworkImage(widget.image))),
+                BoxDecoration(image: DecorationImage(image: NetworkImage(widget.image),fit: BoxFit.cover)),
           ),
           SizedBox(
             height: 20,
@@ -41,3 +38,26 @@ class _FullPlantingInfoState extends State<FullPlantingInfo> {
     );
   }
 }
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter/src/widgets/framework.dart';
+// import 'package:flutter/src/widgets/placeholder.dart';
+
+// class FullPlantInfo extends StatefulWidget {
+//   const FullPlantInfo({super.key});
+
+//   @override
+//   State<FullPlantInfo> createState() => _FullPlantInfoState();
+// }
+
+// class _FullPlantInfoState extends State<FullPlantInfo> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return   Scaffold(
+//       appBar: AppBar(
+//         title: Text('bbbbbb'),
+//         centerTitle: true,
+//       ) ,
+//     );
+//   }
+// }

@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserModel>(
-      future: user.getUserDataAsync(),
+      future: user.getUserDataAsync(widget.id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(body: Center(child: StatusProgressLoader()));
@@ -83,14 +83,17 @@ class _ProfilePageState extends State<ProfilePage> {
                         FirebaseServices().logout(context);
                       }
                     },
-                    child: const Icon(Icons.more_vert))
+                    child:const Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: const Icon(Icons.more_vert),
+                    ))
               ],
             ),
             body: RefreshIndicator(
                 child: ProfileDetails(
-                  user: snapshot.data!,
+                  user: snapshot.data!, username: null,
                 ),
-                onRefresh: () => user.getUserDataAsync()));
+                onRefresh: () => user.getUserDataAsync(widget.id)));
       },
     );
   }

@@ -5,11 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 abstract class PostController {
   Future<bool> addPost({PostsModel? post});
   Future<String?> getDownloadUrl(File file, String bucket);
-  Future<List<PostsModel>> loadPosts();
+  Stream<List<PostsModel>> loadPosts();
   Future likePost({String? postId});
 }
 
@@ -39,10 +40,13 @@ class PostControllerImplement implements PostController {
   }
 
   @override
-  Future<List<PostsModel>> loadPosts() async {
-    final posts =
-        await postcol.orderBy('date_published', descending: true).get();
-    return posts.docs.map((e) => PostsModel.fromJson(e.data())).toList();
+  Stream<List<PostsModel>> loadPosts() {
+    final posts = postcol
+        .orderBy('date_published', descending: true)
+        .snapshots()
+        .map((event) => event.docs.map((e) => PostsModel.fromJson(e.data())).toList());
+    return posts;
+    // return posts.docs.map((e) => PostsModel.fromJson(e.data())).toList();
   }
 
   @override
@@ -57,7 +61,12 @@ class PostControllerImplement implements PostController {
       throw Exception("Post not found");
     }
     final liked = post.data()!["likes"] as List<dynamic>;
-    liked.add(user.uid);
-    await ref.update({"likes": liked});
+    if (liked.contains(user.uid)) {
+      liked.remove(user.uid);
+      await ref.update({"likes": liked}).then((value) => logger.d('Unliked'));
+    } else {
+      liked.add(user.uid);
+      await ref.update({"likes": liked});
+    }
   }
 }

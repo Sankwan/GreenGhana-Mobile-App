@@ -278,13 +278,23 @@ class _PostPageState extends State<PostPage> {
       });
     }
 
+    if (dwdImgList!.isEmpty) {
+      cancelProgressLoader();
+      return showSnackBar(context, 'Please select image');
+    }
+
+    if (p?.userName == null) {
+      cancelProgressLoader();
+      return showSnackBar(context, 'User Empty');
+    }
+
     bool isPosted = await controller.addPost(
       post: PostsModel(
-        userName: p?.userName,
+        userName: p!.userName,
         videoUrl: "",
         imageUrl: dwdImgList,
         likes: [],
-        userAvatar: p?.avatar ?? p?.userName,
+        userAvatar: p!.avatar ?? p!.userName,
         caption: captionController.text.toString(),
         datePublished: DateTime.now().toString(),
         longitude: pos.longitude,

@@ -1,9 +1,13 @@
 import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+
+import '../../models/posts_model.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -16,6 +20,7 @@ class _MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   Position? currentLoc;
+  final post = PostControllerImplement();
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -60,21 +65,47 @@ class _MapPageState extends State<MapPage> {
               child: SizedBox(
                   height: 50, width: 50, child: CircularProgressIndicator()),
             )
-          : Stack(
-              children: [
-                GoogleMap(
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                      target:
-                          LatLng(currentLoc!.latitude, currentLoc!.longitude), zoom: 15,),
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
-                )
-              ],
-            ),
+          : StreamBuilder<List<PostsModel>>(
+            stream: post.loadPosts(), 
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return Container();
+              }
+              if (snapshot.data!.isEmpty) {
+                return Container();
+              }
+                var data = snapshot.data!;
+                logger.d(data[0].longitude);
+              Set<Marker> markers = Set<Marker>.from(data.map((e) {
+                return Marker(
+                    markerId: MarkerId('MarkerId'),
+                    position: LatLng(e.latitude!, e.longitude!),
+                    infoWindow: InfoWindow(
+                        title: 'Destination',
+                        snippet: 'Mr man planted here'),
+                    // icon: await BitmapDescriptor.fromAssetImage(
+                    //     ImageConfiguration(
+                    //         size: Size(1, 1), devicePixelRatio: 0.5),
+                    //     'assets/images/p-marker.png'),
+                  );
+
+              }));
+              return GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: CameraPosition(
+                  target:
+                      LatLng(currentLoc!.latitude, currentLoc!.longitude),
+                  zoom: 15,
+                ),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+                markers: markers,
+              );
+            },
+          ),
     );
   }
 }

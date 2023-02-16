@@ -8,6 +8,7 @@ class PostsModel {
   String? datePublished;
   List? imageUrl;
   List<dynamic>? likes;
+  List<dynamic>? comments;
   double? latitude;
   double? longitude;
 
@@ -18,6 +19,7 @@ class PostsModel {
       this.videoUrl,
       this.imageUrl,
       this.likes,
+      this.comments,
       this.latitude,
       this.longitude,
       this.userAvatar,
@@ -31,6 +33,7 @@ class PostsModel {
     videoUrl = snap['video_url'];
     imageUrl = snap['image_url'];
     likes = snap['likes'];
+    comments = snap['comments'];
     latitude = snap['latitude'];
     longitude = snap['longitude'];
     caption = snap['caption'];
@@ -46,6 +49,7 @@ class PostsModel {
     data['video_url'] = videoUrl;
     data['image_url'] = imageUrl;
     data['likes'] = likes;
+    data['comments'] = comments;
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['user_avatar'] = userAvatar;

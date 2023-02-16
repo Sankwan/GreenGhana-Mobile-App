@@ -62,10 +62,16 @@
 	<string>This app needs access to location when open.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location when in the background.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access your photos.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access your camera.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access your microphone.</string>
 	<key>LSApplicationQueriesSchemes</key>
-<array>
-  <string>sms</string>
-  <string>tel</string>
-</array>
+	<array>
+		<string>sms</string>
+		<string>tel</string>
+	</array>
 </dict>
 </plist>

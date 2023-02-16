@@ -1,16 +1,28 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:instagram_aa/controllers/post_controller.dart';
+import 'package:instagram_aa/controllers/user_controller.dart';
+import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/models/usermodel.dart';
+import 'package:instagram_aa/provider/user_posts.dart';
+import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/screens/edit_profile.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/post_image_containe.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/post_item_card.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/tiktok_video_player.dart';
+import 'package:provider/provider.dart';
 
 class ProfileDetails extends StatefulWidget {
   final UserModel user;
   const ProfileDetails({
     super.key,
     required this.user,
+    required username,
   });
 
   @override
@@ -18,9 +30,12 @@ class ProfileDetails extends StatefulWidget {
 }
 
 class _ProfileDetailsState extends State<ProfileDetails> {
+  var post = UserControllerImplement();
+  int likeCount = 0;
   @override
   Widget build(BuildContext context) {
     var user = widget.user;
+    var postCount = context.watch<UserPostsProvider>().postCount;
     return ListView(
       children: [
         Column(
@@ -59,7 +74,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
-                    Text(user.totalLikes!.toString()),
+                    Text(likeCount.toString()),
                   ],
                 ),
                 const SizedBox(
@@ -85,7 +100,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
-                    Text(user.totalPosts!.toString()),
+                    Text(postCount.toString()),
                   ],
                 ),
               ],
@@ -93,31 +108,73 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(onPressed: () {
-              nextNav(context, const EditProfile());
-            }, child: const Text('Edit Profile')),
+            user.userId == mAuth.currentUser!.uid
+                ? ElevatedButton(
+                    onPressed: () {
+                      nextNav(context, EditProfile(name: user.userName!, number: user.userPhoneNumber.toString().trim(),));
+                    },
+                    child: const Text('Edit Profile'))
+                : Container(),
             const SizedBox(
               height: 20,
             ),
           ],
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(5),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 13,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, mainAxisSpacing: 5, crossAxisSpacing: 5),
-              itemBuilder: (context, index) {
-                return Container(
-                  color: index % 2 == 0 ? Colors.red : Colors.green,
-                  height: 50,
-                );
-              },
-            ),
-          ),
+        FutureBuilder<List<PostsModel>>(
+          future: post.getUserProfileAsync(user.userId!),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasData) {
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+              // context
+              //     .read<UserPostsProvider>()
+              //     .getPostCount(snapshot.data!.length);
+              
+              });
+              // setState(() {});
+            }
+
+            if (snapshot.data!.isEmpty) {
+              return Column(
+                children: [
+                  Center(child: Text('No Posts')),
+                ],
+              );
+            }
+            logger.d(snapshot.data![0]);
+            List<PostsModel> data = snapshot.data!;
+            return Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: data.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 5,
+                      crossAxisSpacing: 5),
+                  itemBuilder: (context, index) {
+                    return data[index].imageUrl!.isNotEmpty
+                        ? Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        data[index].imageUrl!.isNotEmpty
+                                            ? data[index].imageUrl![0]
+                                            : data[index].videoUrl))),
+                          )
+                        : TikTokVideoPlayer(videoUrl: data[index].videoUrl!);
+                  },
+                ),
+              ),
+            );
+          },
         )
       ],
     );

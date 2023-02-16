@@ -14,9 +14,9 @@ class UserProvider with ChangeNotifier{
   double? get latitude => _latitiude;
   double? get longitude => _longitude;
 
-  Future getUserDataAsync() async{
+  Future getUserDataAsync(String id) async{
     Position position = await AppUtils().determinePosition();
-    UserModel um = await userControl.getUserDataAsync();
+    UserModel um = await userControl.getUserDataAsync(id);
     _usermodel = um;
     _latitiude = position.latitude;
     _longitude = position.longitude;

@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/animation/fadeanimate.dart';
 import 'package:instagram_aa/provider/userprovider.dart';
@@ -9,6 +8,7 @@ import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/screens/auth/signup_page.dart';
 import 'package:instagram_aa/views/screens/home/mainhomepage.dart';
 import 'package:instagram_aa/views/widgets/app_name.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/loader.dart';
 import 'package:provider/provider.dart';
 
@@ -24,12 +24,15 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   Future afterSplash() async {
     if (mAuth.currentUser != null) {
-      await context.read<UserProvider>().getUserDataAsync();
-      
+      logger.d(mAuth.currentUser);
+      // mAuth.signOut();
+      await context
+          .read<UserProvider>()
+          .getUserDataAsync(mAuth.currentUser!.uid);
+
       Future.delayed(const Duration(seconds: 1)).then((value) {
         nextScreenClosePrev(context, FadeAnimate(const MainHomepage()));
       });
-      
     } else {
       Future.delayed(const Duration(seconds: 1)).then((value) {
         nextScreenClosePrev(context, FadeAnimate(const SignupPage()));
@@ -63,8 +66,8 @@ class _SplashPageState extends State<SplashPage> {
               child: Wrap(
                 alignment: WrapAlignment.center,
                 runSpacing: 10,
-                children: const[
-                   SplashLoader(),
+                children: const [
+                  SplashLoader(),
                 ],
               ),
             ))

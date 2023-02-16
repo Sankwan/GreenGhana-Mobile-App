@@ -168,7 +168,7 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
       //     _videoPlayerController?.play();
       //   });
     } else {
-      showSnackBar(context, 'No image selected');
+      showSnackBar(context, 'No video selected');
     }
   }
 
@@ -177,22 +177,25 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
     AddPostProvider pro = context.read<AddPostProvider>();
 
     if (captionController.text.isEmpty) {
-      return showSnackBar(context, 'video captions is required');
+      return showSnackBar(context, 'video caption is required');
     }
 
     showProgressLoader();
-    String? videoUrl = await controller
-        .getDownloadUrl(
+    if (pro.videoFile == null) {
+      cancelProgressLoader();
+      return showSnackBar(context, 'Select video to upload');
+    }
+    String? videoUrl = await controller.getDownloadUrl(
       pro.videoFile!,
       "posts/${Path.basename(pro.videoFile!.path)}",
     );
     bool isPosted = await controller.addPost(
         post: PostsModel(
-      userName: p.usermodel?.userName,
+      userName: p.usermodel!.userName,
       videoUrl: videoUrl,
       imageUrl: [],
       likes: [],
-      userAvatar: p.usermodel?.avatar ?? p.usermodel?.userName,
+      userAvatar: p.usermodel!.avatar ?? p.usermodel!.userName,
       caption: captionController.text.toString(),
       datePublished: DateTime.now().toString(),
       longitude: p.longitude,
@@ -208,7 +211,7 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
       });
     } else {
       cancelProgressLoader();
-      showSnackBar(context, 'Error something went wrong');
+      showSnackBar(context, 'Error! something went wrong');
     }
   }
 }
