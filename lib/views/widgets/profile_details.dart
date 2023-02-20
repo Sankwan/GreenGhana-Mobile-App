@@ -44,13 +44,13 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               height: 20,
             ),
             CircleAvatar(
-              radius: 60,
+              radius: 40,
               backgroundImage:
                   user.avatar!.isNotEmpty ? AssetImage(user.avatar!) : null,
               child: user.avatar!.isEmpty
                   ? Icon(
                       CupertinoIcons.person_crop_circle,
-                      size: 120,
+                      size: 80,
                     )
                   : Container(),
             ),
@@ -59,7 +59,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             ),
             Text(
               user.userName!,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 7,
@@ -72,7 +72,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     const Text(
                       'Likes',
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                     Text(likeCount.toString()),
                   ],
@@ -85,7 +85,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     const Text(
                       'Requests',
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                     Text(user.totalRequests!.toString()),
                   ],
@@ -98,7 +98,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     const Text(
                       'Posts',
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                     Text(postCount.toString()),
                   ],
@@ -110,10 +110,11 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             ),
             user.userId == mAuth.currentUser!.uid
                 ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
                     onPressed: () {
                       nextNav(context, EditProfile(name: user.userName!, number: user.userPhoneNumber.toString().trim(),));
                     },
-                    child: const Text('Edit Profile'))
+                    child: const Text('Edit Profile', style: TextStyle(color: Colors.black),))
                 : Container(),
             const SizedBox(
               height: 20,
