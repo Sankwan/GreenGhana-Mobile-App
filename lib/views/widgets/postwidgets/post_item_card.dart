@@ -39,7 +39,7 @@ class _PostItemCardState extends State<PostItemCard> {
                     nextNav(context, ProfilePage(id: widget.post.userId!));
                   },
                   child:
-                      CustomCircleAvatar(avatar: "${widget.post}.userAvatar")),
+                      CustomCircleAvatar(avatar: widget.post.userAvatar!)),
               title: Text(
                 widget.post.userName!,
                 style: subtitlestlye.copyWith(

@@ -21,9 +21,16 @@ class CustomCircleAvatar extends StatelessWidget {
         imageUrl: avatar,
         radius: 30,
         errorWidget: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
-          child: randomAvatar(avatar),
-        ),
+            borderRadius: BorderRadius.circular(30),
+            child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                image: avatar == ''
+                    ? AssetImage('assets/images/default_image.jpg')
+                        as ImageProvider
+                    : NetworkImage(avatar),
+              )),
+            )),
       ),
     );
   }

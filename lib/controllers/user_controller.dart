@@ -14,7 +14,7 @@ class UserControllerImplement implements UserController {
   @override
   Future<bool> addUser({UserModel? usermodel}) async {
     usermodel!.userId = mAuth.currentUser!.uid;
-    await usercol.doc(mAuth.currentUser!.uid).set(usermodel.toJson());
+    await usercol.doc(mAuth.currentUser!.uid).set(usermodel.toJson(), SetOptions(merge: true));
     return true;
   }
 

@@ -34,7 +34,10 @@ class _CommentsState extends State<Comments> {
             stream: comments,
             builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.38,
+                  child: const Center(child: CircularProgressIndicator())
+                  );
               }
               if (snapshot.data == null) {
                 return const Text('No Comments');

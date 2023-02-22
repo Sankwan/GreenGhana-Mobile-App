@@ -1,10 +1,13 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/form_fields_controller.dart';
-import 'package:instagram_aa/views/screens/homepage.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/services/firebase_service.dart';
+import 'package:instagram_aa/views/widgets/edit_profile_pic.dart';
 // import 'package:tiktok_yt/constants.dart';
 // import 'package:tiktok_yt/controller/firebase_services.dart';
 // import 'package:tiktok_yt/view/widgets/custom_widget.dart';
@@ -20,6 +23,8 @@ class _ProfileSetterState extends State<ProfileSetter> {
   var firebaseServices = FirebaseServices();
   final TextEditingController nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  ImagePicker picker = ImagePicker();
+  String img = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +36,23 @@ class _ProfileSetterState extends State<ProfileSetter> {
             textAlign: TextAlign.center,
             // style: titleTextBrown,
           ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.18,
+          ),
+          InkWell(
+              onTap: () async {
+                var imgUrl = File('user/${mAuth.currentUser!.uid}');
+                Reference ref =
+                    storage.ref().child('user/${mAuth.currentUser!.uid}');
+                await ref.putFile(imgUrl).whenComplete(() async {
+                  await ref.getDownloadURL().then((value) {
+                    setState(() {
+                      img = value;
+                    });
+                  });
+                });
+              },
+              child: ProfilePic(imgUrl: img)),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.18,
           ),
@@ -63,6 +85,7 @@ class _ProfileSetterState extends State<ProfileSetter> {
           ),
         ],
       ),
-    );;
+    );
+    ;
   }
 }

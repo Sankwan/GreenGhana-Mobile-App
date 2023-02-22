@@ -283,7 +283,7 @@ class _PostPageState extends State<PostPage> {
       return showSnackBar(context, 'Please select image');
     }
 
-    if (p?.userName == null) {
+    if (p!.userName == null) {
       cancelProgressLoader();
       return showSnackBar(context, 'User Empty');
     }

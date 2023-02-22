@@ -1,5 +1,11 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/animation/slideanimate.dart';
+import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/utils/custombutton.dart';
@@ -7,6 +13,9 @@ import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/views/screens/home/mainhomepage.dart';
+
+import '../../../services/firebase_service.dart';
+import '../../widgets/edit_profile_pic.dart';
 
 class UserNamePage extends StatefulWidget {
   final String phoneNumber;
@@ -19,6 +28,8 @@ class UserNamePage extends StatefulWidget {
 class _UserNamePageState extends State<UserNamePage> {
   late TextEditingController userNameController;
   final userControl = UserControllerImplement();
+  ImagePicker picker = ImagePicker();
+  String img = '';
 
   @override
   void initState() {
@@ -49,6 +60,23 @@ class _UserNamePageState extends State<UserNamePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            InkWell(
+                onTap: () async {
+                  var res = await picker.pickImage(source: ImageSource.camera);
+                  var imgUrl = File(res!.path);
+                  Reference ref = storage
+                      .ref()
+                      .child('user/${mAuth.currentUser!.uid}/${imgUrl}');
+                  await ref.putFile(imgUrl).whenComplete(() async {
+                    await ref.getDownloadURL().then((value) {
+                      setState(() {
+                        img = value;
+                      });
+                    });
+                  });
+                },
+                child: ProfilePic(imgUrl: img)),
+            SizedBox(height: 80),
             TextField(
               controller: userNameController,
               decoration: const InputDecoration(
@@ -63,28 +91,39 @@ class _UserNamePageState extends State<UserNamePage> {
     );
   }
 
-  Future saveUserData() async{
-    if(userNameController.text.isEmpty){
+  Future saveUserData() async {
+    if (userNameController.text.isEmpty) {
       showSnackBar(context, 'username is required');
       return;
     }
     showProgressLoader();
-    await userControl.addUser(usermodel: UserModel(
-      userPhoneNumber: widget.phoneNumber,
-      userName: userNameController.text.trim(),
-      avatar: "",
-      totalPosts: 0,
-      totalLikes: 0,
-      totalRequests: 0
-    )).then((value) {
+    await userControl
+        .addUser(
+            usermodel: UserModel(
+                userPhoneNumber: widget.phoneNumber,
+                userName: userNameController.text.trim(),
+                avatar: img,
+                totalPosts: 0,
+                totalLikes: 0,
+                totalRequests: 0))
+        .then((value) {
+      firebaseFireStore
+          .collection('posts')
+          .where('user_id', isEqualTo: mAuth.currentUser!.uid)
+          .get()
+          .then((value) {
+        value.docs.map((e) {
+          firebaseFireStore.collection('posts').doc(e.id).set({
+            'user_name': userNameController.text.trim(),
+            'user_avatar': img
+          }, SetOptions(merge: true));
+        });
+      });
       cancelProgressLoader();
       nextscreenRemovePredicate(context, SlideAnimate(const MainHomepage()));
     }).onError((error, stackTrace) {
       showSnackBar(context, error.toString());
       cancelProgressLoader();
     });
-
-
-
   }
 }
