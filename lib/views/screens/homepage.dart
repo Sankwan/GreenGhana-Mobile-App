@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
+import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/provider/post_provider.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
@@ -26,6 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   PostControllerImplement controller = PostControllerImplement();
+  UserControllerImplement user = UserControllerImplement();
 
   @override
   void initState() {

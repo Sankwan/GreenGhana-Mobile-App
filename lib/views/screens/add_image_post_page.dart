@@ -290,11 +290,9 @@ class _PostPageState extends State<PostPage> {
 
     bool isPosted = await controller.addPost(
       post: PostsModel(
-        userName: p!.userName,
         videoUrl: "",
         imageUrl: dwdImgList,
         likes: [],
-        userAvatar: p!.avatar ?? p!.userName,
         caption: captionController.text.toString(),
         datePublished: DateTime.now().toString(),
         longitude: pos.longitude,

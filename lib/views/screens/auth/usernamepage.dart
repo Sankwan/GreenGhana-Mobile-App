@@ -62,7 +62,7 @@ class _UserNamePageState extends State<UserNamePage> {
           children: [
             InkWell(
                 onTap: () async {
-                  var res = await picker.pickImage(source: ImageSource.camera);
+                  var res = await picker.pickImage(source: ImageSource.gallery);
                   var imgUrl = File(res!.path);
                   Reference ref = storage
                       .ref()
