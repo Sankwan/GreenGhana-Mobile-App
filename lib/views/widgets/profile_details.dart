@@ -46,13 +46,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             CircleAvatar(
               radius: 40,
               backgroundImage:
-                  user.avatar!.isNotEmpty ? NetworkImage(user.avatar!) : AssetImage('assetName') as ImageProvider,
-              child: user.avatar!.isEmpty
-                  ? Icon(
-                      CupertinoIcons.person_crop_circle,
-                      size: 80,
-                    )
-                  : Container(),
+                  user.avatar!.isNotEmpty ? NetworkImage(user.avatar!) : AssetImage('assets/images/default_image.jpg') as ImageProvider,
             ),
             SizedBox(
               height: 20,
