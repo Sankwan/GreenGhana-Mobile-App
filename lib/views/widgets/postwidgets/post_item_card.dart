@@ -29,7 +29,7 @@ class _PostItemCardState extends State<PostItemCard> {
         future: user.getUserDataAsync(widget.post.userId!),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return Container();
           }
           return InkWell(
             onTap: widget.onPress,

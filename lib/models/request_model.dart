@@ -4,7 +4,7 @@ class RequestModel{
   // String? seedType;
   String? dateRequested;
   // String? seedQuantity;
-  // String? pickupLocation;
+  String? pickupLocation;
   String? userPhoneNumber;
   List? seedRequest;
 
@@ -16,7 +16,7 @@ class RequestModel{
     // this.seedQuantity,
     this.seedRequest,
     this.dateRequested,
-    // this.pickupLocation,
+    this.pickupLocation,
     this.userPhoneNumber
   });
 
@@ -26,7 +26,7 @@ class RequestModel{
     // seedType = snap['seed_type'];
     // seedQuantity = snap['seed_quantity'];
     seedRequest = snap['seed_request'];
-    // pickupLocation = snap['pickup_location'];
+    pickupLocation = snap['pickup_location'];
     userPhoneNumber = snap['user_phone_number'];
     dateRequested = snap['date_requested'];
   }
@@ -38,7 +38,7 @@ class RequestModel{
     // data['seed_type'] = seedType;
     // data['seed_quantity'] = seedQuantity;
     data['seed_request'] = seedRequest;
-    // data['pickup_location'] = pickupLocation;
+    data['pickup_location'] = pickupLocation;
     data['user_phone_number'] = userPhoneNumber;
     data['date_requested'] = dateRequested;
 
