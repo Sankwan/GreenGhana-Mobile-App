@@ -4,11 +4,14 @@ import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/utils/custom_theme.dart';
+import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/views/screens/profile_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/image_loader.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/post_image_containe.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PostItemCard extends StatefulWidget {
   final PostsModel post;
@@ -30,6 +33,7 @@ class _PostItemCardState extends State<PostItemCard> {
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Container();
+            //use shimmer in place of container
           }
           return InkWell(
             onTap: widget.onPress,
