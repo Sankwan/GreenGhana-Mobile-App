@@ -65,45 +65,45 @@ class _MapPageState extends State<MapPage> {
                   height: 50, width: 50, child: CircularProgressIndicator()),
             )
           : StreamBuilder<List<PostsModel>>(
-            stream: post.loadPosts(), 
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return Container();
-              }
-              if (snapshot.data!.isEmpty) {
-                return Container();
-              }
+              stream: post.loadPosts(),
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return Container();
+                }
+                if (snapshot.data!.isEmpty) {
+                  return Container();
+                }
                 var data = snapshot.data!;
-              Set<Marker> markers = Set<Marker>.from(data.map((e) {
-                return Marker(
+                Set<Marker> markers = Set<Marker>.from(data.map((e) {
+                  return Marker(
+                    
                     markerId: MarkerId('MarkerId'),
                     position: LatLng(e.latitude!, e.longitude!),
                     infoWindow: InfoWindow(
-                        title: 'Destination',
-                        snippet: 'Mr man planted here'),
+                        title: 'Destination', snippet: 'Mr man planted here'),
                     // icon: await BitmapDescriptor.fromAssetImage(
                     //     ImageConfiguration(
                     //         size: Size(1, 1), devicePixelRatio: 0.5),
                     //     'assets/images/p-marker.png'),
                   );
-
-              }));
-              return GoogleMap(
-                mapType: MapType.normal,
-                initialCameraPosition: CameraPosition(
-                  target:
-                      LatLng(currentLoc!.latitude, currentLoc!.longitude),
-                  zoom: 15,
-                ),
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-                myLocationEnabled: true,
-                myLocationButtonEnabled: true,
-                markers: markers,
-              );
-            },
-          ),
+                }));
+                return GoogleMap(
+                  padding: EdgeInsets.only(top: 20),
+                  mapType: MapType.normal,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(currentLoc!.latitude, currentLoc!.longitude),
+                    zoom: 15,
+                  ),
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: true,
+                  zoomControlsEnabled: false,
+                  markers: markers,
+                );
+              },
+            ),
     );
   }
 }

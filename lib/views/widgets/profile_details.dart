@@ -45,8 +45,10 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             ),
             CircleAvatar(
               radius: 40,
-              backgroundImage:
-                  user.avatar!.isNotEmpty ? NetworkImage(user.avatar!) : AssetImage('assets/images/default_image.jpg') as ImageProvider,
+              backgroundImage: user.avatar!.isNotEmpty
+                  ? NetworkImage(user.avatar!)
+                  : AssetImage('assets/images/default_image.jpg')
+                      as ImageProvider,
             ),
             SizedBox(
               height: 20,
@@ -94,11 +96,21 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             ),
             user.userId == mAuth.currentUser!.uid
                 ? ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.white),
                     onPressed: () {
-                      nextNav(context, EditProfile(name: user.userName!, number: user.userPhoneNumber.toString().trim(),));
+                      nextNav(
+                          context,
+                          EditProfile(
+                            name: user.userName!,
+                            number: user.userPhoneNumber.toString().trim(),
+                            avatar: user.avatar!,
+                          ));
                     },
-                    child: const Text('Edit Profile', style: TextStyle(color: Colors.black),))
+                    child: const Text(
+                      'Edit Profile',
+                      style: TextStyle(color: Colors.black),
+                    ))
                 : Container(),
             const SizedBox(
               height: 20,
@@ -115,10 +127,9 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             }
             if (snapshot.hasData) {
               SchedulerBinding.instance.addPostFrameCallback((_) {
-              // context
-              //     .read<UserPostsProvider>()
-              //     .getPostCount(snapshot.data!.length);
-              
+                // context
+                //     .read<UserPostsProvider>()
+                //     .getPostCount(snapshot.data!.length);
               });
               // setState(() {});
             }

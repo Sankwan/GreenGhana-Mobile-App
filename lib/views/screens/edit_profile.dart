@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/custom_theme.dart';
+import 'package:instagram_aa/utils/showsnackbar.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/requestwidgets/form_input_builder.dart';
 import 'package:instagram_aa/views/widgets/showOtpDialog.dart';
 
@@ -13,8 +16,13 @@ import '../../utils/progressloader.dart';
 
 class EditProfile extends StatefulWidget {
   final String name;
+  final String avatar;
   final String number;
-  const EditProfile({super.key, required this.name, required this.number});
+  const EditProfile(
+      {super.key,
+      required this.name,
+      required this.number,
+      required this.avatar});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -29,13 +37,20 @@ class _EditProfileState extends State<EditProfile> {
   bool _verificationFailed = false;
   bool _phoneNumberUpdated = false;
 
-  void _updateUserDetails(String newPhoneNumber, String newName, PhoneAuthCredential credential) async {
-    final user = await mAuth.currentUser!;
-    await user.updatePhoneNumber(credential);
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user.uid)
-        .update({'user_phoneNumber': newPhoneNumber, 'user_name': newName});
+  void _updateUserDetails(String newPhoneNumber, String newName,
+      PhoneAuthCredential credential) async {
+    final user = mAuth.currentUser!;
+    await user
+        .updatePhoneNumber(credential)
+        .then((value) => FirebaseFirestore.instance
+            .collection("users")
+            .doc(user.uid)
+            .update({'user_phoneNumber': newPhoneNumber, 'user_name': newName}))
+        .then((value) => showSnackBar(context, 'Details Updated'))
+        .catchError((error) {
+      List<String> errmsg = error.toString().split('] ');
+      showSnackBar(context, errmsg[1]);
+    });
 
     setState(() {
       _verifying = false;
@@ -59,6 +74,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    String avatar = widget.avatar;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -93,11 +109,12 @@ class _EditProfileState extends State<EditProfile> {
                         ],
                         shape: BoxShape.circle,
                         //how to make users profile image appear here by default and then change after edit is done
-                        image: const DecorationImage(
+                        image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(
-                            "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
-                          ),
+                          image: avatar.isNotEmpty
+                              ? NetworkImage(avatar)
+                              : AssetImage('assets/images/default_image.jpg')
+                                  as ImageProvider,
                         ),
                       ),
                     ),
@@ -161,7 +178,9 @@ class _EditProfileState extends State<EditProfile> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.white),
                     child: const Text("CANCEL",
@@ -177,12 +196,26 @@ class _EditProfileState extends State<EditProfile> {
                         _verifying = true;
                       });
 
+                      if (widget.number == editNumberController.text) {
+                        return firebaseFireStore
+                            .collection('users')
+                            .doc(mAuth.currentUser!.uid)
+                            .update({
+                          'user_name': editNameController.text
+                        }).then((value) {
+                          setState(() {
+                            _verifying = false;
+                            showSnackBar(context, 'Details Upated');
+                          });
+                        });
+                      }
+
                       try {
                         final PhoneVerificationCompleted verificationCompleted =
                             (PhoneAuthCredential phoneAuthCredential) {
-                          mAuth.signInWithCredential(phoneAuthCredential);
+                          // mAuth.signInWithCredential(phoneAuthCredential);
                           _updateUserDetails(editNumberController.text,
-                              editNumberController.text, phoneAuthCredential);
+                              editNameController.text, phoneAuthCredential);
                         };
 
                         final PhoneVerificationFailed verificationFailed =
@@ -191,7 +224,7 @@ class _EditProfileState extends State<EditProfile> {
                             _verifying = false;
                             _verificationFailed = true;
                           });
-                          print(
+                          showSnackBar(context,
                               'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
                         };
 
@@ -211,15 +244,13 @@ class _EditProfileState extends State<EditProfile> {
                                 smsCode: codeController.text.trim(),
                               );
                               // !!! Works only on Android, iOS !!!
-                              await mAuth.signInWithCredential(credential);
+                              // await mAuth.signInWithCredential(credential);
                               _updateUserDetails(editNumberController.text,
-                              editNumberController.text, credential);
+                                  editNameController.text, credential);
                               cancelProgressLoader();
                               Navigator.of(context).pop();
                             },
                           );
-                          print(
-                              'Please check your phone for the verification code. Verification ID: $verificationId');
                         }
 
                         final PhoneCodeAutoRetrievalTimeout
@@ -237,7 +268,9 @@ class _EditProfileState extends State<EditProfile> {
                             verificationFailed: verificationFailed,
                             codeSent: codeSent,
                             codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
-                      } catch (error) {}
+                      } catch (error) {
+                        snackBar(context, error.toString());
+                      }
                     },
                     child: const Text(
                       "SAVE",
@@ -254,26 +287,6 @@ class _EditProfileState extends State<EditProfile> {
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: CircularProgressIndicator(),
-                  ),
-                ),
-              if (_verificationFailed)
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Verification Failed',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ),
-                ),
-              if (_phoneNumberUpdated)
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Phone Number Updated',
-                      style: TextStyle(color: Colors.green),
-                    ),
                   ),
                 ),
             ],
