@@ -68,21 +68,11 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
-                    Text(likeCount.toString()),
+                    Text(user.totalLikes.toString()),
                   ],
                 ),
                 const SizedBox(
                   width: 20,
-                ),
-                Column(
-                  children: [
-                    const Text(
-                      'Requests',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                    ),
-                    Text(user.totalRequests!.toString()),
-                  ],
                 ),
                 const SizedBox(
                   width: 20,
@@ -94,7 +84,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
-                    Text(postCount.toString()),
+                    Text(user.totalPosts.toString()),
                   ],
                 ),
               ],

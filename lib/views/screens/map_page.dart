@@ -46,7 +46,6 @@ class _MapPageState extends State<MapPage> {
     }
     currentLoc = await Geolocator.getCurrentPosition();
     setState(() {});
-    logger.d(currentLoc);
     return currentLoc!;
   }
 
@@ -75,7 +74,6 @@ class _MapPageState extends State<MapPage> {
                 return Container();
               }
                 var data = snapshot.data!;
-                logger.d(data[0].longitude);
               Set<Marker> markers = Set<Marker>.from(data.map((e) {
                 return Marker(
                     markerId: MarkerId('MarkerId'),

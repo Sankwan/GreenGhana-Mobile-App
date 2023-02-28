@@ -7,6 +7,7 @@ import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/provider/post_provider.dart';
+import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/views/screens/profile_page.dart';
 import 'package:instagram_aa/views/screens/search_screen.dart';
@@ -29,10 +30,44 @@ class _HomePageState extends State<HomePage> {
   PostControllerImplement controller = PostControllerImplement();
   UserControllerImplement user = UserControllerImplement();
 
+  updatePostCount() async {
+    final getPost = await firebaseFireStore
+        .collection('posts')
+        .where('user_id', isEqualTo: mAuth.currentUser!.uid)
+        .get();
+    return firebaseFireStore
+        .collection('users')
+        .doc(mAuth.currentUser!.uid)
+        .update({'total_posts': getPost.docs.length});
+  }
+
+  updateLikeCount() async {
+    int likeCount = 0;
+    final getLikes = await firebaseFireStore
+        .collection('posts')
+        .where('user_id', isEqualTo: mAuth.currentUser!.uid)
+        .get()
+        .then((value) {
+      var list = value.docs.map((e) {
+        var count = PostsModel.fromJson(e.data());
+        likeCount += count.likes!.length;
+      });
+      list;
+      logger.d(list);
+      // logger.d(likeCount);
+    });
+    return firebaseFireStore
+        .collection('users')
+        .doc(mAuth.currentUser!.uid)
+        .update({'total_likes': likeCount});
+  }
+
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      updatePostCount();
+      updateLikeCount();
       await context.read<PostProvider>().getPosts();
     });
   }
