@@ -49,7 +49,9 @@ class FirebaseServices {
   }
 
   logout(BuildContext context) {
-    auth.signOut().whenComplete(() => nextNavRemoveHistory(context, SignupPage()));
+    auth
+        .signOut()
+        .whenComplete(() => nextNavRemoveHistory(context, SignupPage()));
   }
 
   // _uploadProPic(File image) async {
@@ -323,6 +325,4 @@ class FirebaseServices {
       //     .delete();
     }
   }
-
-  
 }

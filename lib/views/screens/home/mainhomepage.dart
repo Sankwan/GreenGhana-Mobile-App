@@ -18,7 +18,7 @@ class _MainHomepageState extends State<MainHomepage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       bottomNavigationBar: BottomNavigationBar(
-        showUnselectedLabels: true,
+          showUnselectedLabels: true,
           selectedFontSize: 14,
           unselectedFontSize: 14,
           elevation: 0,
@@ -32,10 +32,7 @@ class _MainHomepageState extends State<MainHomepage> {
             BottomNavigationBarItem(
                 icon: Icon(FontAwesomeIcons.seedling), label: 'Request'),
             // BottomNavigationBarItem(icon: Icon(Icons.image), label: 'Saved'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.camera),
-              label: ''
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.camera), label: ''),
             BottomNavigationBarItem(
                 icon: Icon(FontAwesomeIcons.mapPin), label: 'Map'),
             BottomNavigationBarItem(

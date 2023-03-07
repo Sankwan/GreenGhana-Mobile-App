@@ -111,10 +111,10 @@ class FeedContainer extends StatelessWidget {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  //i commented this out because i commented the comments page i created 
+                                  //i commented this out because i commented the comments page i created
 
-                          //         nextScreen(
-                          // context, SlideAnimate(const CommentsScreen()));
+                                  //         nextScreen(
+                                  // context, SlideAnimate(const CommentsScreen()));
                                 },
                                 icon: const Icon(Icons.chat, size: 30.0)),
                             Text(

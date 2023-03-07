@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';

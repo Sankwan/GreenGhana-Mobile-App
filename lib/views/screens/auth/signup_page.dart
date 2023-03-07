@@ -50,7 +50,8 @@ class _SignupPageState extends State<SignupPage> {
                   if (_formKey.currentState!.validate()) {
                     String normalNumber =
                         AppUtils.normalizePhoneNumber(_numberController.text);
-                    FirebaseAuthMethod().phoneSignIn(context, "+233$normalNumber");
+                    FirebaseAuthMethod()
+                        .phoneSignIn(context, "+233$normalNumber");
                   }
                 },
                 child: Container(

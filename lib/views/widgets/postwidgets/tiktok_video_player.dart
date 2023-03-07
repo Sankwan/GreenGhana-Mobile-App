@@ -1,11 +1,15 @@
-
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/models/posts_model.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/single_post.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class TikTokVideoPlayer extends StatefulWidget {
-  TikTokVideoPlayer({Key? key, required this.videoUrl}) : super(key: key);
-  String videoUrl;
+  final bool play;
+  TikTokVideoPlayer({Key? key, required this.data, required this.play})
+      : super(key: key);
+  PostsModel data;
 
   @override
   State<TikTokVideoPlayer> createState() => _TikTokVideoPlayerState();
@@ -19,7 +23,7 @@ class _TikTokVideoPlayerState extends State<TikTokVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    videoPlayerController = VideoPlayerController.network(widget.videoUrl)
+    videoPlayerController = VideoPlayerController.network(widget.data.videoUrl!)
       ..initialize().then((value) {
         videoPlayerController.pause();
         videoPlayerController.setLooping(false);
@@ -38,14 +42,18 @@ class _TikTokVideoPlayerState extends State<TikTokVideoPlayer> {
     return Stack(
       children: [
         VisibilityDetector(
-          key: Key(widget.videoUrl),
+          key: Key(widget.data.videoUrl!),
           onVisibilityChanged: (visibility) {
-              if (visibility.visibleFraction == 0 && this.mounted) {
-                videoPlayerController.pause();
-              }
-            },
+            if (visibility.visibleFraction == 0 && this.mounted) {
+              videoPlayerController.pause();
+            }
+          },
           child: GestureDetector(
             onTap: () {
+              if (!widget.play) {
+                nextNav(context, SinglePost(post: widget.data));
+                return;
+              }
               if (videoPlayerController.value.isPlaying) {
                 videoPlayerController.pause().then((value) => setState(() {
                       isPaused = true;
@@ -98,7 +106,7 @@ class _TikTokVideoPlayerState extends State<TikTokVideoPlayer> {
                 height: 500,
                 child: Icon(
                   Icons.play_arrow_rounded,
-                  color: Colors.grey,
+                  color: Colors.white70,
                   size: 100,
                 ),
               ),

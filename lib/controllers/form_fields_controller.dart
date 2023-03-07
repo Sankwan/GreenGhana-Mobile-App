@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:instagram_aa/views/widgets/colors.dart';
-
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 var textFieldBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
     borderSide: const BorderSide(color: Color(0xFF8e8e8e)));
 
-
 //Phone Number TextField
-Widget numberFormField(
-    TextEditingController controller) {
+Widget numberFormField(TextEditingController controller) {
   return TextFormField(
     controller: controller,
     keyboardType: TextInputType.phone,
@@ -60,7 +57,8 @@ opt(BuildContext context, hasError, pin, onChange(value)) {
 }
 
 Widget textFormField(
-    TextEditingController controller,) {
+  TextEditingController controller,
+) {
   return TextFormField(
     controller: controller,
     keyboardType: TextInputType.text,
@@ -80,8 +78,6 @@ Widget textFormField(
     },
   );
 }
-
-
 
 class TextInputField extends StatelessWidget {
   final TextEditingController controller;
@@ -108,12 +104,12 @@ class TextInputField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide:const BorderSide(
+            borderSide: const BorderSide(
               color: borderColor,
             )),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide:const BorderSide(
+            borderSide: const BorderSide(
               color: borderColor,
             )),
       ),

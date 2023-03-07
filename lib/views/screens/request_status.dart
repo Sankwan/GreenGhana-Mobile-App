@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram_aa/views/screens/home/mainhomepage.dart';
 import 'package:instagram_aa/views/screens/homepage.dart';
 import 'package:instagram_aa/views/screens/planting_info.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //working
 class RequestStatus extends StatelessWidget {
@@ -45,18 +45,26 @@ class RequestStatus extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               FloatingActionButton.extended(
-                backgroundColor: Colors.grey,
-                onPressed: (){
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MainHomepage()),
-                    (route) => false,
-                  );
-              }, icon: Icon(Icons.dashboard_rounded), label: Text('Return Home')),
-              FloatingActionButton.extended(onPressed: (){
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) =>const PlantingInfo()));
-              },icon: Icon(FontAwesomeIcons.tree), label: Text('Planting'))
+                  backgroundColor: Colors.grey,
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainHomepage()),
+                      (route) => false,
+                    );
+                  },
+                  icon: Icon(Icons.dashboard_rounded),
+                  label: Text('Return Home')),
+              FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PlantingInfo()));
+                  },
+                  icon: Icon(FontAwesomeIcons.tree),
+                  label: Text('Planting'))
             ],
           ),
         ],

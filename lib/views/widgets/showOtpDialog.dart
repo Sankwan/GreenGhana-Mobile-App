@@ -9,6 +9,7 @@ void showOTPDialog({
     context: context,
     barrierDismissible: false,
     builder: (context) => AlertDialog(
+      actionsAlignment: MainAxisAlignment.center,
       title: const Text("Enter OTP"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -26,6 +27,12 @@ void showOTPDialog({
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             child: const Text("Verify"),
           ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text("Cancel"),
         ),
       ],
     ),

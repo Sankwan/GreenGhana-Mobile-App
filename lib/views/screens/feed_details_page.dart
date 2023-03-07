@@ -70,7 +70,6 @@ class FeedDetailsPage extends StatelessWidget {
                           )
                         ],
                       ),
-
                       Container(
                         margin: const EdgeInsets.all(10.0),
                         width: double.infinity,
@@ -78,17 +77,13 @@ class FeedDetailsPage extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25.0),
                           boxShadow: const [
-                             BoxShadow(
-                            color: Colors.black45,
-                            offset: Offset(8, 5),
-                            blurRadius: 8.0
-                          )
+                            BoxShadow(
+                                color: Colors.black45,
+                                offset: Offset(8, 5),
+                                blurRadius: 8.0)
                           ],
                         ),
-                      
                       ),
-                      
-
                     ],
                   )
                 ],

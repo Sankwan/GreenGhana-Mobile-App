@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/animation/fadeanimate.dart';
-import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/provider/post_provider.dart';
+import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/screens/auth/signup_page.dart';
 import 'package:instagram_aa/views/screens/home/mainhomepage.dart';

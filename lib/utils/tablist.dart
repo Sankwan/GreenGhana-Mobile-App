@@ -28,7 +28,6 @@ const List<String> seedlingList = [
   'Mansonia altissima',
   'Ofram',
   'Ceiba',
-
 ];
 
 const List<String> seedLocationList = [

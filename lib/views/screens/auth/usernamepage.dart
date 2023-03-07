@@ -113,10 +113,9 @@ class _UserNamePageState extends State<UserNamePage> {
           .get()
           .then((value) {
         value.docs.map((e) {
-          firebaseFireStore.collection('posts').doc(e.id).set({
-            'user_name': userNameController.text.trim(),
-            'user_avatar': img
-          }, SetOptions(merge: true));
+          firebaseFireStore.collection('posts').doc(e.id).set(
+              {'user_name': userNameController.text.trim(), 'user_avatar': img},
+              SetOptions(merge: true));
         });
       });
       cancelProgressLoader();

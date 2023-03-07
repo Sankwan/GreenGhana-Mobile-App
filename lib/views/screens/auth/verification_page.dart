@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/views/widgets/text_input.dart';
 
-
 class VerificationPage extends StatefulWidget {
   final String number;
   const VerificationPage({Key? key, required this.number}) : super(key: key);

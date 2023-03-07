@@ -6,7 +6,7 @@ class VideoPlayerWidget extends StatelessWidget {
   final VideoPlayerController controller;
 
   const VideoPlayerWidget({
-     Key? key,
+    Key? key,
     required this.controller,
   }) : super(key: key);
 

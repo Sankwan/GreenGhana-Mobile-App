@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
@@ -29,6 +31,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   PostControllerImplement controller = PostControllerImplement();
   UserControllerImplement user = UserControllerImplement();
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  getToken() async {
+    String? token = await messaging.getToken();
+    firebaseFireStore
+        .collection('users')
+        .doc(mAuth.currentUser!.uid)
+        .set({'token': token}, SetOptions(merge: true));
+  }
 
   updatePostCount() async {
     final getPost = await firebaseFireStore
@@ -68,6 +79,7 @@ class _HomePageState extends State<HomePage> {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
       updatePostCount();
       updateLikeCount();
+      getToken();
       await context.read<PostProvider>().getPosts();
     });
   }
@@ -76,6 +88,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     PostProvider p = context.watch<PostProvider>();
     return Scaffold(
+      // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         centerTitle: false,
@@ -146,6 +159,11 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               })),
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.only(top: 50.0),
+      //   child: FloatingActionButton.extended
+      //   (onPressed: (){}, label: Text('how to plant seedlings'),),
+      // ),
     );
   }
 }

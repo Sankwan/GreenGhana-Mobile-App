@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/custom_theme.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/views/widgets/edit_profile_pic.dart';
 import 'package:instagram_aa/views/widgets/requestwidgets/form_input_builder.dart';
 import 'package:instagram_aa/views/widgets/showOtpDialog.dart';
 
@@ -32,6 +37,8 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController editNameController = TextEditingController();
   TextEditingController editNumberController = TextEditingController();
   TextEditingController codeController = TextEditingController();
+  ImagePicker picker = ImagePicker();
+  String img = '';
 
   bool _verifying = false;
   bool _verificationFailed = false;
@@ -74,6 +81,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    // String img = widget.avatar;
     String avatar = widget.avatar;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -91,54 +99,26 @@ class _EditProfileState extends State<EditProfile> {
           child: ListView(
             children: [
               Center(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 4,
-                            color: Theme.of(context).scaffoldBackgroundColor),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              color: Colors.black.withOpacity(0.1),
-                              offset: Offset(0, 10))
-                        ],
-                        shape: BoxShape.circle,
-                        //how to make users profile image appear here by default and then change after edit is done
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: avatar.isNotEmpty
-                              ? NetworkImage(avatar)
-                              : AssetImage('assets/images/default_image.jpg')
-                                  as ImageProvider,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                            ),
-                            color: Colors.green,
-                          ),
-                          child: const Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                          ),
-                        )),
-                  ],
-                ),
+                child: InkWell(
+                    onTap: () async {
+                      var res =
+                          await picker.pickImage(source: ImageSource.gallery);
+                      var imgUrl = File(res!.path);
+                      Reference ref = storage
+                          .ref()
+                          .child('user/${mAuth.currentUser!.uid}/${imgUrl}');
+                      await ref.putFile(imgUrl).whenComplete(() async {
+                        await ref.getDownloadURL().then((value) {
+                          setState(() {
+                            img = value;
+                          });
+                          logger.d(img);
+                        });
+                      });
+                    },
+                    child: img.isEmpty
+                        ? ProfilePic(imgUrl: widget.avatar)
+                        : ProfilePic(imgUrl: img)),
               ),
               const SizedBox(
                 height: 35,
@@ -201,7 +181,8 @@ class _EditProfileState extends State<EditProfile> {
                             .collection('users')
                             .doc(mAuth.currentUser!.uid)
                             .update({
-                          'user_name': editNameController.text
+                          'user_name': editNameController.text,
+                          'avatar': img.isEmpty ? widget.avatar : img
                         }).then((value) {
                           setState(() {
                             _verifying = false;

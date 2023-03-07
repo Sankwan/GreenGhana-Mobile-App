@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
@@ -76,7 +75,6 @@ class _MapPageState extends State<MapPage> {
                 var data = snapshot.data!;
                 Set<Marker> markers = Set<Marker>.from(data.map((e) {
                   return Marker(
-                    
                     markerId: MarkerId('MarkerId'),
                     position: LatLng(e.latitude!, e.longitude!),
                     infoWindow: InfoWindow(

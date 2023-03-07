@@ -25,7 +25,7 @@ class _GraphState extends State<Graph> {
     super.initState();
   }
 
-  getConnectivity() async{
+  getConnectivity() async {
     await Future.delayed(const Duration(seconds: 10));
     subscription = Connectivity().onConnectivityChanged.listen(
       (ConnectivityResult result) async {

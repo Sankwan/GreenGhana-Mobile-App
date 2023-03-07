@@ -7,7 +7,11 @@ class CustomTextFormField extends StatelessWidget {
   final String label;
   TextInputType? keybaordtype;
   CustomTextFormField(
-      {super.key, this.controller, required this.hinttext, this.keybaordtype, required this.label});
+      {super.key,
+      this.controller,
+      required this.hinttext,
+      this.keybaordtype,
+      required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,9 @@ class CustomTextFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label),
-        const SizedBox(height: 8,),
+        const SizedBox(
+          height: 8,
+        ),
         Container(
           height: 55,
           width: double.infinity,

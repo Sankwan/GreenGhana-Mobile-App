@@ -13,7 +13,6 @@ class CheckoutSeedling extends StatefulWidget {
       required this.number,
       required this.loc})
       : super(key: key);
-  
 
   @override
   State<CheckoutSeedling> createState() => _CheckoutSeedlingState();
@@ -22,7 +21,6 @@ class CheckoutSeedling extends StatefulWidget {
 class _CheckoutSeedlingState extends State<CheckoutSeedling> {
   @override
   Widget build(BuildContext context) {
-    
     var cart = widget.cartItems.removeAt(0);
     return Scaffold(
       appBar: AppBar(
@@ -64,15 +62,17 @@ class _CheckoutSeedlingState extends State<CheckoutSeedling> {
               );
             },
           )),
-         const SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 60, right: 60),
             child: TextButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) =>const RequestStatus()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RequestStatus()));
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.green,
@@ -90,6 +90,5 @@ class _CheckoutSeedlingState extends State<CheckoutSeedling> {
         ],
       ),
     );
-  
   }
 }

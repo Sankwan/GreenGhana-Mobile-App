@@ -14,6 +14,7 @@ import 'package:instagram_aa/views/screens/edit_profile.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/post_image_containe.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/post_item_card.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/single_post.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/tiktok_video_player.dart';
 import 'package:provider/provider.dart';
 
@@ -51,26 +52,28 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       as ImageProvider,
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Text(
               user.userName!,
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             SizedBox(
-              height: 7,
+              height: 15,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
                   children: [
-                    const Text(
-                      'Likes',
+                    Text(
+                      user.totalLikes.toString(),
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
-                    Text(user.totalLikes.toString()),
+                    const Text(
+                      'Likes',
+                    ),
                   ],
                 ),
                 const SizedBox(
@@ -81,12 +84,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 ),
                 Column(
                   children: [
+                    Text(
+                      user.totalPosts.toString(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
                     const Text(
                       'Posts',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
-                    Text(user.totalPosts.toString()),
                   ],
                 ),
               ],
@@ -151,21 +156,47 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: data.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 0.8,
                       crossAxisCount: 3,
-                      mainAxisSpacing: 5,
-                      crossAxisSpacing: 5),
+                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 2),
                   itemBuilder: (context, index) {
                     return data[index].imageUrl!.isNotEmpty
-                        ? Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                        data[index].imageUrl!.isNotEmpty
-                                            ? data[index].imageUrl![0]
-                                            : data[index].videoUrl))),
+                        ? InkWell(
+                            onTap: () {
+                              nextNav(context, SinglePost(post: data[index]));
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                              data[index].imageUrl!.isNotEmpty
+                                                  ? data[index].imageUrl![0]
+                                                  : data[index].videoUrl))),
+                                ),
+                              ],
+                            ),
                           )
-                        : TikTokVideoPlayer(videoUrl: data[index].videoUrl!);
+                        : InkWell(
+                            onTap: () {
+                              nextNav(context, SinglePost(post: data[index]));
+                            },
+                            child: Stack(
+                              children: [
+                                TikTokVideoPlayer(
+                                    play: false, data: data[index]),
+                                Positioned(
+                                    bottom: 5,
+                                    child: Icon(
+                                      Icons.play_arrow_rounded,
+                                      color: Colors.white,
+                                      size: 30,
+                                    ))
+                              ],
+                            ));
                   },
                 ),
               ),

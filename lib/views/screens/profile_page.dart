@@ -31,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (snapshot.data == null) {
           return const Center(
             child: CircularProgressIndicator(
-              color: Colors.pink,
+              color: Colors.black,
             ),
           );
         }
@@ -83,15 +83,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         FirebaseServices().logout(context);
                       }
                     },
-                    child:const Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: const Icon(Icons.more_vert),
+                    child: const Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Icon(Icons.more_vert),
                     ))
               ],
             ),
             body: RefreshIndicator(
                 child: ProfileDetails(
-                  user: snapshot.data!, username: null,
+                  user: snapshot.data!,
+                  username: null,
                 ),
                 onRefresh: () => user.getUserDataAsync(widget.id)));
       },

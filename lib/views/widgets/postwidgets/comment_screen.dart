@@ -35,6 +35,7 @@ class _CommentsState extends State<Comments> {
     return ListView(children: [
       Column(
         children: [
+          Text('Comments'),
           StreamBuilder<DocumentSnapshot>(
             stream: comments,
             builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -89,7 +90,10 @@ class _CommentsState extends State<Comments> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text(commentData['comment']),
+                                  Text(
+                                    commentData['comment'],
+                                    style: TextStyle(fontSize: 15),
+                                  ),
                                 ],
                               ),
                               subtitle: Text(
@@ -101,6 +105,7 @@ class _CommentsState extends State<Comments> {
                                         Theme.of(context).colorScheme.secondary,
                                     fontWeight: FontWeight.w400),
                               ),
+                              // trailing: IconButton(onPressed: (){}, icon: Icon(Icons.favorite), iconSize: 16,),
                             );
                           },
                         );

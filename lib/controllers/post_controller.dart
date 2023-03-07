@@ -44,7 +44,8 @@ class PostControllerImplement implements PostController {
     final posts = postcol
         .orderBy('date_published', descending: true)
         .snapshots()
-        .map((event) => event.docs.map((e) => PostsModel.fromJson(e.data())).toList());
+        .map((event) =>
+            event.docs.map((e) => PostsModel.fromJson(e.data())).toList());
     return posts;
     // return posts.docs.map((e) => PostsModel.fromJson(e.data())).toList();
   }

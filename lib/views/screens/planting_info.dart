@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:instagram_aa/controllers/firebase_services.dart';
+import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/screens/full_plant_info.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
@@ -13,8 +18,8 @@ class PlantingInfo extends StatefulWidget {
 }
 
 class _PlantingInfoState extends State<PlantingInfo> {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
   List seedlingInfo = [];
-
   var dio = Dio();
 
   getItems() async {
@@ -27,9 +32,24 @@ class _PlantingInfoState extends State<PlantingInfo> {
     logger.d(seedlingInfo);
   }
 
+  _initToken() async {
+    await messaging.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: false,
+      criticalAlert: true,
+      provisional: false,
+      sound: true,
+    );
+  }
+
   @override
   void initState() {
     getItems();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      _initToken();
+    });
     // TODO: implement initState
     super.initState();
   }
@@ -57,7 +77,13 @@ class _PlantingInfoState extends State<PlantingInfo> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              nextNav(context,  FullPlantingInfo(image: images[index], title: titles[index], description: descriptions[index],));
+              nextNav(
+                  context,
+                  FullPlantingInfo(
+                    image: images[index],
+                    title: titles[index],
+                    description: descriptions[index],
+                  ));
             },
             child: Card(
               elevation: 5,
@@ -70,12 +96,16 @@ class _PlantingInfoState extends State<PlantingInfo> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         image: DecorationImage(
-                            image: NetworkImage(images[index]), fit: BoxFit.cover),
+                            image: NetworkImage(images[index]),
+                            fit: BoxFit.cover),
                       ),
                     ),
-                    const SizedBox(height: 5,),
-                     Text(
-                      titles[index], style:const TextStyle(fontWeight: FontWeight.bold),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      titles[index],
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       textAlign: TextAlign.start,

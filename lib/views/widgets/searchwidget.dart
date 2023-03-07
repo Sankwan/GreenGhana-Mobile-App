@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/views/screens/profile_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
 
 class SearchWidget extends SearchDelegate {
   final CollectionReference _firebaseFirestore =
@@ -75,9 +76,7 @@ class SearchWidget extends SearchDelegate {
                         nextNav(context, ProfilePage(id: id));
                       },
                       title: Text(userName),
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(avatar),
-                      ),
+                      leading: CustomCircleAvatar(avatar: avatar),
                     );
                   })
                 ],

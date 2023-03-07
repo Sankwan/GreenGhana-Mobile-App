@@ -253,7 +253,8 @@ class _RequestSeedlingState extends State<RequestSeedling> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
                           actionsAlignment: MainAxisAlignment.center,
                           title: Icon(
                             Icons.warning_rounded,
@@ -281,10 +282,10 @@ class _RequestSeedlingState extends State<RequestSeedling> {
                   },
                   label: 'Confirm')
               : Container(),
-          cart.length < 1
-              ? Text(
-                  'asdfadsfgertnrgngnsynmgndfgnfgnfg blkusdgklsdnfklbsflkhbiosfhbioshiofbhoi;efhoibhwerio')
-              : Container()
+          // cart.length < 1
+          //     ? Text(
+          //         'asdfadsfgertnrgngnsynmgndfgnfgnfg blkusdgklsdnfklbsflkhbiosfhbioshiofbhoi;efhoibhwerio')
+          //     : Container()
         ],
       ),
     );

@@ -48,14 +48,11 @@ class _PostItemCardState extends State<PostItemCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
+                    onTap: () {
+                      nextNav(context, ProfilePage(id: widget.post.userId!));
+                    },
                     contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                    leading: InkWell(
-                        onTap: () {
-                          nextNav(
-                              context, ProfilePage(id: widget.post.userId!));
-                        },
-                        child: CustomCircleAvatar(
-                            avatar: snapshot.data!.avatar!)),
+                    leading: CustomCircleAvatar(avatar: snapshot.data!.avatar!),
                     title: Text(
                       snapshot.data!.userName!,
                       style: subtitlestlye.copyWith(
@@ -107,6 +104,19 @@ class _PostItemCardState extends State<PostItemCard> {
                         ),
                       ),
                     ],
+                  ),
+                  //text to label the caption
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 5.0,
+                    ),
+                    child: Text(
+                      'Post Caption',
+                      style: subtitlestlye.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.green,
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
