@@ -11,6 +11,7 @@ import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/provider/post_provider.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
+import 'package:instagram_aa/views/screens/planting_info.dart';
 import 'package:instagram_aa/views/screens/profile_page.dart';
 import 'package:instagram_aa/views/screens/search_screen.dart';
 import 'package:instagram_aa/views/widgets/app_name.dart';
@@ -88,7 +89,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     PostProvider p = context.watch<PostProvider>();
     return Scaffold(
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         centerTitle: false,
@@ -159,11 +160,20 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               })),
-      // floatingActionButton: Padding(
-      //   padding: const EdgeInsets.only(top: 50.0),
-      //   child: FloatingActionButton.extended
-      //   (onPressed: (){}, label: Text('how to plant seedlings'),),
-      // ),
+      floatingActionButton: SizedBox(
+        height: 70,
+        width: 40,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40, right: 4, bottom: 3),
+          child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            child: Icon(Icons.info, color: Colors.green,),
+            onPressed: () {
+              nextNav(context, PlantingInfo());
+            },
+          ),
+        ),
+      ),
     );
   }
 }

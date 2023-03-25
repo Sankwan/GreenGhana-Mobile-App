@@ -11,7 +11,9 @@ import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/provider/user_posts.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/screens/edit_profile.dart';
+import 'package:instagram_aa/views/widgets/cached_image.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/post_image_containe.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/post_item_card.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/single_post.dart';
@@ -44,13 +46,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             SizedBox(
               height: 20,
             ),
-            CircleAvatar(
-              radius: 40,
-              backgroundImage: user.avatar!.isNotEmpty
-                  ? NetworkImage(user.avatar!)
-                  : AssetImage('assets/images/default_image.jpg')
-                      as ImageProvider,
-            ),
+            CustomCircleAvatar(avatar: user!.avatar!),
             SizedBox(
               height: 10,
             ),
@@ -166,36 +162,21 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                             onTap: () {
                               nextNav(context, SinglePost(post: data[index]));
                             },
-                            child: Stack(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                              data[index].imageUrl!.isNotEmpty
-                                                  ? data[index].imageUrl![0]
-                                                  : data[index].videoUrl))),
-                                ),
-                              ],
-                            ),
+                            child: CustomCacheImage(imageUrl: data[index].imageUrl![0], radius: 0),
                           )
                         : InkWell(
                             onTap: () {
                               nextNav(context, SinglePost(post: data[index]));
                             },
                             child: Stack(
-                              children: [
-                                TikTokVideoPlayer(
-                                    play: false, data: data[index]),
-                                Positioned(
-                                    bottom: 5,
-                                    child: Icon(
-                                      Icons.play_arrow_rounded,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ))
-                              ],
+                              children: 
+                                    [TikTokVideoPlayer(
+                                    play: false,
+                                    data: data[index]),
+                                    Positioned(
+                                      bottom: 5,
+                                      child: Icon(Icons.play_arrow_rounded, color: Colors.white,))
+                                  ],
                             ));
                   },
                 ),

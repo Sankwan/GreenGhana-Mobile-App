@@ -12,6 +12,7 @@ import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/utils/tablist.dart';
 import 'package:instagram_aa/views/screens/planting_info.dart';
+import 'package:instagram_aa/views/screens/request_history.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -129,31 +130,35 @@ class _RequestSeedlingState extends State<RequestSeedling> {
           const SizedBox(
             height: 24,
           ),
-          CustomButton(
-            onpress: () {
-              RequestProvider rp = context.read<RequestProvider>();
-              String seedQuantity = seedCountController.text.trim();
-              if (seedQuantity.isEmpty) {
-                return showSnackBar(context, 'Enter number of seedling');
-              }
-              if (rp.selectedSeed == "seed...") {
-                return showSnackBar(context, 'please selecet a valid seedling');
-              }
-              // if (rp.selectedLocation == "location...") {
-              //   return showSnackBar(context, 'please select pickup location');
-              // }
-              cart.add({
-                'seed_type': rp.selectedSeed,
-                'seed_quantity': seedQuantity,
-                // 'pickup_location': rp.selectedLocation
-              });
-              setState(() {});
-              if (seedQuantity == '...') {
-                cart.removeAt(0);
-              }
-              logger.d(cart);
-            },
-            label: 'Add',
+          Padding(
+            padding: const EdgeInsets.only(left: 50, right: 50),
+            child: CustomButton(
+              onpress: () {
+                RequestProvider rp = context.read<RequestProvider>();
+                String seedQuantity = seedCountController.text.trim();
+                if (seedQuantity.isEmpty) {
+                  return showSnackBar(context, 'Enter number of seedling');
+                }
+                if (rp.selectedSeed == "seed...") {
+                  return showSnackBar(
+                      context, 'please selecet a valid seedling');
+                }
+                // if (rp.selectedLocation == "location...") {
+                //   return showSnackBar(context, 'please select pickup location');
+                // }
+                cart.add({
+                  'seed_type': rp.selectedSeed,
+                  'seed_quantity': seedQuantity,
+                  // 'pickup_location': rp.selectedLocation
+                });
+                setState(() {});
+                if (seedQuantity == '...') {
+                  cart.removeAt(0);
+                }
+                logger.d(cart);
+              },
+              label: 'Add',
+            ),
           ),
           SizedBox(
             height: 35,
@@ -262,7 +267,7 @@ class _RequestSeedlingState extends State<RequestSeedling> {
                             color: Colors.orangeAccent,
                           ),
                           content: Text(
-                              'Once Order has been made, you cannot make another order, do you still wish to continue or add more seedlings to your request?'),
+                              'Once Request has been made, you cannot make another request.\n Do you wish to continue or add more seedlings to your request?'),
                           actions: [
                             TextButton(
                                 onPressed: () {
@@ -280,12 +285,15 @@ class _RequestSeedlingState extends State<RequestSeedling> {
                       },
                     );
                   },
-                  label: 'Confirm')
+                  label: 'Submit')
               : Container(),
-          // cart.length < 1
-          //     ? Text(
-          //         'asdfadsfgertnrgngnsynmgndfgnfgnfg blkusdgklsdnfklbsflkhbiosfhbioshiofbhoi;efhoibhwerio')
-          //     : Container()
+          cart.length < 1
+              ? ElevatedButton(
+                  onPressed: () {
+                    nextNav(context, RequestHistory());
+                  },
+                  child: Text('Check Request History'))
+              : Container()
         ],
       ),
     );

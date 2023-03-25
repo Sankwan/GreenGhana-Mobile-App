@@ -15,7 +15,7 @@ class SearchWidget extends SearchDelegate {
     return <Widget>[
       IconButton(
         onPressed: () {
-          // query = '';
+          query = '';
         },
         icon: const Icon(Icons.close),
       ),

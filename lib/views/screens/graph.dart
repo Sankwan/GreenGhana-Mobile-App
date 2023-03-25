@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:dio/dio.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +14,12 @@ class Graph extends StatefulWidget {
 }
 
 class _GraphState extends State<Graph> {
-  //added an internet checker to check for internet connections. Works allover the app not only here
+  //added an internet checker to check for internet connections.
+  //Works allover the app not only here
   late StreamSubscription subscription;
   bool isDeviceConnected = false;
   bool isAlertSet = false;
+  var dio = Dio();
 
   @override
   void initState() {
@@ -68,11 +70,18 @@ class _GraphState extends State<Graph> {
 //dialogue is returned if internet connection is lost
   showDialogBox() => showCupertinoDialog<String>(
         context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-          title: const Text('No Connection'),
-          content: const Text('Please check your internet connectivity'),
+        builder: (BuildContext context) => AlertDialog(
+          actionsAlignment: MainAxisAlignment.center,
+          title: const Text(
+            'No Connection',
+            textAlign: TextAlign.center,
+          ),
+          content: const Text(
+            'Please check your internet connectivity',
+            textAlign: TextAlign.center,
+          ),
           actions: <Widget>[
-            TextButton(
+            ElevatedButton(
               onPressed: () async {
                 Navigator.pop(context, 'Cancel');
                 await Future.delayed(Duration(seconds: 10));

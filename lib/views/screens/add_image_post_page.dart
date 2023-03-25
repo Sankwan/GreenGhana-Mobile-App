@@ -287,6 +287,9 @@ class _PostPageState extends State<PostPage> {
       cancelProgressLoader();
       return showSnackBar(context, 'User Empty');
     }
+    if(pos == null) {
+      return showSnackBar(context, 'No Location');
+    }
 
     bool isPosted = await controller.addPost(
       post: PostsModel(

@@ -1,8 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/provider/post_provider.dart';
@@ -93,7 +91,8 @@ class _PostImageContainerState extends State<PostImageContainer> {
                         },
                       )
                     : TikTokVideoPlayer(play: true, data: widget.post),
-                //animation for likes
+                //double tap animation for likes (incomplete)
+                //not connected to like button and like count yet
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 200),
                   opacity: isLikeAnimating ? 1 : 0,
@@ -188,7 +187,7 @@ class _PostImageContainerState extends State<PostImageContainer> {
                                 }
                               },
                               icon: Icon(
-                                Icons.comment_outlined,
+                                CupertinoIcons.text_bubble,
                                 size: 28,
                                 color: Colors.white,
                               ),
@@ -215,13 +214,20 @@ class _PostImageContainerState extends State<PostImageContainer> {
                             : Container(),
                         Container(
                           width: 80,
-                        )
+                        ),
                         // IconButton(
-                        //   onPressed: () {},
-                        //   icon: const Icon(
-                        //     Icons.bookmark_outline,
-                        //     size: 28,
-                        //     color: Colors.white,
+                        //   onPressed: () {
+
+                        //   },
+                        //   icon: Icon(widget.post.likes!
+                        //                 .contains(auth.currentUser!.uid)
+                        //             ? Icons.bookmark
+                        //             : Icons.bookmark_border_outlined,
+                        //         size: 28,
+                        //         color: widget.post.likes!
+                        //                 .contains(auth.currentUser!.uid)
+                        //             ? Colors.white
+                        //             : Colors.black,
                         //   ),
                         // )
                       ],

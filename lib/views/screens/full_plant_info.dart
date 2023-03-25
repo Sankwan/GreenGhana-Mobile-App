@@ -38,26 +38,3 @@ class _FullPlantingInfoState extends State<FullPlantingInfo> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter/src/widgets/framework.dart';
-// import 'package:flutter/src/widgets/placeholder.dart';
-
-// class FullPlantInfo extends StatefulWidget {
-//   const FullPlantInfo({super.key});
-
-//   @override
-//   State<FullPlantInfo> createState() => _FullPlantInfoState();
-// }
-
-// class _FullPlantInfoState extends State<FullPlantInfo> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return   Scaffold(
-//       appBar: AppBar(
-//         title: Text('bbbbbb'),
-//         centerTitle: true,
-//       ) ,
-//     );
-//   }
-// }

@@ -3,18 +3,16 @@ import 'package:instagram_aa/controllers/auth_controller.dart';
 import 'package:instagram_aa/controllers/form_fields_controller.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/app_utils.dart';
-import 'package:instagram_aa/views/screens/auth/login_page.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/glitch.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _numberController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -30,15 +28,15 @@ class _SignupPageState extends State<SignupPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 60,),
+               SizedBox(height: 60,),
               GlithEffect(
                   child: const Text(
-                "Welcome To \nGreen Ghana",
+                "Welcome Back To \nGreen Ghana",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
               )),
               SizedBox(height: 20,),
-              Text('Dont have an account? \nEnter your number to Register', textAlign: TextAlign.center,),
+              Text('Enter your number to \nreturn to your account', textAlign: TextAlign.center,),
               const SizedBox(
                 height: 70,
               ),
@@ -55,26 +53,16 @@ class _SignupPageState extends State<SignupPage> {
                   if (_formKey.currentState!.validate()) {
                     String normalNumber =
                         AppUtils.normalizePhoneNumber(_numberController.text);
-                    FirebaseAuthMethod()
+                    FirebaseAuthLoginMethod()
                         .phoneSignIn(context, "+233$normalNumber");
                   }
                 },
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                  child: const Text("Register"),
+                  child: const Text("Login"),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Already with Us?'),
-                  SizedBox(width: 10,),
-                  ElevatedButton(onPressed: (){
-                    nextNav(context, LoginPage());
-                  }, child: Text('Login')),
-                ],
-              )
             ],
           ),
         ),

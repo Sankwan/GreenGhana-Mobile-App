@@ -16,6 +16,6 @@ class StatusProgressLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SpinKitFadingCircle(color: dapsColor, size: 35);
+    return const SpinKitFadingCircle(color: acceptedColor, size: 35);
   }
 }

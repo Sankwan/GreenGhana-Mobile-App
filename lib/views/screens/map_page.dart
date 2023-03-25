@@ -78,7 +78,7 @@ class _MapPageState extends State<MapPage> {
                     markerId: MarkerId('MarkerId'),
                     position: LatLng(e.latitude!, e.longitude!),
                     infoWindow: InfoWindow(
-                        title: 'Destination', snippet: 'Mr man planted here'),
+                        title: 'Green Ghana Day', snippet: 'A seedling was planted here'),
                     // icon: await BitmapDescriptor.fromAssetImage(
                     //     ImageConfiguration(
                     //         size: Size(1, 1), devicePixelRatio: 0.5),

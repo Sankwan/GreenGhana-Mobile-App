@@ -7,6 +7,7 @@ import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/custom_theme.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
 import 'package:instagram_aa/views/widgets/requestwidgets/form_input_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -73,13 +74,8 @@ class _CommentsState extends State<Comments> {
                             }
                             // var data = snapshot.data
                             return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: snapshot
-                                        .data!.avatar!.isNotEmpty
-                                    ? NetworkImage(snapshot.data!.avatar!)
-                                    : AssetImage(
-                                            'assets/images/default_image.jpg')
-                                        as ImageProvider,
+                              leading:
+                              CustomCircleAvatar(avatar: snapshot.data!.avatar!
                               ),
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +101,7 @@ class _CommentsState extends State<Comments> {
                                         Theme.of(context).colorScheme.secondary,
                                     fontWeight: FontWeight.w400),
                               ),
-                              // trailing: IconButton(onPressed: (){}, icon: Icon(Icons.favorite), iconSize: 16,),
+                              trailing: IconButton(onPressed: (){}, icon: Icon(Icons.favorite), iconSize: 16,),
                             );
                           },
                         );
@@ -158,6 +154,8 @@ class _CommentsState extends State<Comments> {
           Padding(
             padding: const EdgeInsets.only(bottom: 30),
             child: ListTile(
+              //add comment avatar not completed
+              leading: CustomCircleAvatar(avatar: '',),
               title: FormInputBuilder(
                 hintText: 'Add Comment',
                 controller: comment,

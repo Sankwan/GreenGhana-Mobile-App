@@ -46,9 +46,6 @@ class _ProfilePageState extends State<ProfilePage> {
               centerTitle: true,
               elevation: .5,
               actions: [
-                // IconButton(onPressed: () {
-
-                // }, icon: const Icon(Icons.menu))
                 PopupMenuButton(
                     itemBuilder: (context) => [
                           PopupMenuItem(

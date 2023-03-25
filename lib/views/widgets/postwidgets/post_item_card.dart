@@ -111,7 +111,7 @@ class _PostItemCardState extends State<PostItemCard> {
                       left: 5.0,
                     ),
                     child: Text(
-                      'Post Caption',
+                      'Caption',
                       style: subtitlestlye.copyWith(
                         fontWeight: FontWeight.w500,
                         color: Colors.green,
