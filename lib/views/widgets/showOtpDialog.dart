@@ -10,7 +10,12 @@ void showOTPDialog({
     barrierDismissible: false,
     builder: (context) => AlertDialog(
       actionsAlignment: MainAxisAlignment.center,
-      title: const Text("Enter OTP"),
+      title: Column(
+        children: [
+          const Text('A 6-digit number has been sent to you via sms. Enter it below'),
+          
+        ],
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 import '../../models/posts_model.dart';
 
@@ -78,7 +77,7 @@ class _MapPageState extends State<MapPage> {
                     markerId: MarkerId('MarkerId'),
                     position: LatLng(e.latitude!, e.longitude!),
                     infoWindow: InfoWindow(
-                        title: 'Green Ghana Day', snippet: 'A seedling was planted here'),
+                        title: 'Green Ghana Day', snippet: 'A seedling was requested from this location'),
                     // icon: await BitmapDescriptor.fromAssetImage(
                     //     ImageConfiguration(
                     //         size: Size(1, 1), devicePixelRatio: 0.5),

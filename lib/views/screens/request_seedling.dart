@@ -1,19 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/models/request_model.dart';
-import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/provider/request_provider.dart';
 import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/utils/tablist.dart';
-import 'package:instagram_aa/views/screens/planting_info.dart';
-import 'package:instagram_aa/views/screens/request_history.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/views/widgets/glitch.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/request_controller.dart';
@@ -33,6 +30,19 @@ class _RequestSeedlingState extends State<RequestSeedling> {
   late TextEditingController seedCountController;
   final RequestControllerImplement controller = RequestControllerImplement();
   var cart = [];
+  RequestModel user_request = RequestModel();
+
+  // Checking if user has a request already
+  check_request() async {
+    var request = await firebaseFireStore
+        .collection('seedlings-request')
+        .where('user_id', isEqualTo: mAuth.currentUser!.uid)
+        .get();
+    if (request.docs.isNotEmpty) {
+      user_request = RequestModel.fromJson(request.docs[0].data());
+      // logger.d(request.docs[0].data());
+    }
+  }
 
   @override
   void initState() {
@@ -48,19 +58,33 @@ class _RequestSeedlingState extends State<RequestSeedling> {
 
   @override
   Widget build(BuildContext context) {
+    check_request();
     RequestProvider rp = context.watch<RequestProvider>();
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         actions: [
-          IconButton(
-              onPressed: () {
-                nextNav(context, const PlantingInfo());
-              },
-              icon: const Icon(
-                Icons.info,
-                color: Colors.green,
-              ))
+          GlithEffect(
+            child: IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: Text('Guide to Make a Request'),
+                            content: Text(
+                                'Making one Seedling Request:\n1. Select the type of Seedling\n2. Enter the number of Seedlings you want for the selected seedling\n3. Tap the Add Button below\n4. If you are okay with the request, select the location where you want to pick-up the seedling.\n5. Tap Submit\n\nMaking multiple requests:\n1. Follow steps 1 to 3 above\n2. After tapping the Add button, go back and repeat steps 1 to 3 to add additional seedlings to your requests.\n3. You can do this over and over before selecting a location.\nNote: After submitting your request in the end, you can\'t make another request'),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('Ok'))
+                            ],
+                          ));
+                },
+                icon: const Icon(
+                  Icons.info,
+                  color: Colors.green,
+                )),
+          )
         ],
         title: const Text(
           'Make a Seedling Request',
@@ -151,7 +175,10 @@ class _RequestSeedlingState extends State<RequestSeedling> {
                   'seed_quantity': seedQuantity,
                   // 'pickup_location': rp.selectedLocation
                 });
-                setState(() {});
+                setState(() {
+                  seedCountController.clear();
+                });
+                //check how rightly implemented this is
                 if (seedQuantity == '...') {
                   cart.removeAt(0);
                 }
@@ -206,6 +233,7 @@ class _RequestSeedlingState extends State<RequestSeedling> {
             height: 35,
           ),
           cart.length > 0
+              // Location Input
               ? Column(
                   children: [
                     Text(
@@ -252,6 +280,7 @@ class _RequestSeedlingState extends State<RequestSeedling> {
             height: 35,
           ),
           cart.length > 0
+              // Upload Seedling
               ? CustomButton(
                   onpress: () {
                     showDialog(
@@ -290,7 +319,60 @@ class _RequestSeedlingState extends State<RequestSeedling> {
           cart.length < 1
               ? ElevatedButton(
                   onPressed: () {
-                    nextNav(context, RequestHistory());
+                    user_request.userId == null
+                        ? showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              content: Text('No Requests Made'),
+                            ),
+                          )
+                        : showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              actionsAlignment: MainAxisAlignment.center,
+                              title: Text('Request History'),
+                              content: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Text('Username: ${}'),
+                                  Text(
+                                      'Phone Number: ${user_request!.userPhoneNumber!}'),
+                                  Column(
+                                    children:
+                                        user_request.seedRequest!.map((each) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text('Request'),
+                                            Text(
+                                                'Seed Quantity: ${each['seed_quantity']}'),
+                                            Text(
+                                                'Seed Type: ${each['seed_type']}')
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  Text(
+                                    'Pickup Location: ${user_request.pickupLocation}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Close'))
+                              ],
+                            ),
+                          );
                   },
                   child: Text('Check Request History'))
               : Container()

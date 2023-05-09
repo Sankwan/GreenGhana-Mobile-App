@@ -1,17 +1,15 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/utils/custom_theme.dart';
-import 'package:instagram_aa/utils/progressloader.dart';
+import 'package:instagram_aa/views/screens/homepage.dart';
 import 'package:instagram_aa/views/screens/profile_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
-import 'package:instagram_aa/views/widgets/postwidgets/image_loader.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/post_image_containe.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:shimmer/shimmer.dart';
 
 class PostItemCard extends StatefulWidget {
   final PostsModel post;
@@ -24,6 +22,28 @@ class PostItemCard extends StatefulWidget {
 
 class _PostItemCardState extends State<PostItemCard> {
   UserControllerImplement user = UserControllerImplement();
+  bool _isLoading = false;
+
+//prevents multiple pages of to open when we tap this multiple times
+  void _onTap() async {
+    if (!_isLoading) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      await Future.delayed(Duration.zero, () async {
+        await updateLikeCount(widget.post.userId);
+        await updatePostCount(widget.post.userId);
+      });
+
+      await nextNav(context, ProfilePage(id: widget.post.userId!));
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   bool expand = false;
   Widget build(BuildContext context) {
@@ -48,9 +68,12 @@ class _PostItemCardState extends State<PostItemCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
-                    onTap: () {
-                      nextNav(context, ProfilePage(id: widget.post.userId!));
-                    },
+                    onTap: _onTap,
+                    // () async {
+                    //   await updateLikeCount(widget.post.userId);
+                    //   await updatePostCount(widget.post.userId);
+                    //   nextNav(context, ProfilePage(id: widget.post.userId!));
+                    // },
                     contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                     leading: CustomCircleAvatar(avatar: snapshot.data!.avatar!),
                     title: Text(

@@ -7,18 +7,34 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1097656554594:android:e66c7f017fd79e0dfcad3b",
+        "mobilesdk_app_id": "1:1097656554594:android:b783ed2b1acc6d34fcad3b",
         "android_client_info": {
-          "package_name": "com.example.instagram_aa"
+          "package_name": "org.fcghana.green_ghana"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1097656554594-80jauh5tcn8b1t282acgi3squ6kte4h7.apps.googleusercontent.com",
+          "client_id": "1097656554594-1298115auhboi3u6ov83oosl4hrv25f9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.instagram_aa",
-            "certificate_hash": "92de58ab29ef7d59e1cf0a510b9cb3c237598f3a"
+            "package_name": "org.fcghana.green_ghana",
+            "certificate_hash": "d6dd095665c7da35fce960a2de090fc2ce9554ef"
+          }
+        },
+        {
+          "client_id": "1097656554594-4mkm9n8abf38lvqln03av3jhvc6afroi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.fcghana.green_ghana",
+            "certificate_hash": "d9b0020afc05940fecb6f4da44503abf58548476"
+          }
+        },
+        {
+          "client_id": "1097656554594-nji4cfdlesqnj4i74r27v1sutde9bbdn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.fcghana.green_ghana",
+            "certificate_hash": "881d7a2ea5f5fd240dadf14c64a1314d6f45fde6"
           }
         },
         {
@@ -37,6 +53,13 @@
             {
               "client_id": "1097656554594-qr8ptm2mal4m5ck8qpdnh00106k0oj8h.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1097656554594-uqqikj4o5qstdftca2if2ihi4260ahee.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.instagramAa"
+              }
             }
           ]
         }

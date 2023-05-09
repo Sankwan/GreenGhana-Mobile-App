@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/usermodel.dart';
-import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/custom_theme.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
 import 'package:instagram_aa/views/widgets/requestwidgets/form_input_builder.dart';
-import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Comments extends StatefulWidget {
@@ -101,48 +98,48 @@ class _CommentsState extends State<Comments> {
                                         Theme.of(context).colorScheme.secondary,
                                     fontWeight: FontWeight.w400),
                               ),
-                              trailing: IconButton(onPressed: (){}, icon: Icon(Icons.favorite), iconSize: 16,),
+                              // trailing: IconButton(onPressed: (){}, icon: Icon(Icons.favorite), iconSize: 16,),
                             );
                           },
                         );
-                        getUser() async {
-                          DocumentReference commentUser = firebaseFireStore
-                              .collection('users')
-                              .doc(data['comments'][index]['user_id']);
-                          await commentUser.get().then((value) {
-                            userData = value.data() as Map<String, dynamic>;
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(userData['avatar']),
-                              ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    userData['user_name'],
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(commentData['comment']),
-                                ],
-                              ),
-                              subtitle: Text(
-                                timeago
-                                    .format(commentData['createdAt'].toDate()),
-                                style: subtitlestlye.copyWith(
-                                    fontSize: 12,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            );
-                          });
-                        }
+                        // getUser() async {
+                        //   DocumentReference commentUser = firebaseFireStore
+                        //       .collection('users')
+                        //       .doc(data['comments'][index]['user_id']);
+                        //   await commentUser.get().then((value) {
+                        //     userData = value.data() as Map<String, dynamic>;
+                        //     return ListTile(
+                        //       leading: CircleAvatar(
+                        //         backgroundImage:
+                        //             NetworkImage(userData['avatar']),
+                        //       ),
+                        //       title: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           Text(
+                        //             userData['user_name'],
+                        //             style: const TextStyle(
+                        //                 fontSize: 14,
+                        //                 fontWeight: FontWeight.bold),
+                        //           ),
+                        //           Text(commentData['comment']),
+                        //         ],
+                        //       ),
+                        //       subtitle: Text(
+                        //         timeago
+                        //             .format(commentData['createdAt'].toDate()),
+                        //         style: subtitlestlye.copyWith(
+                        //             fontSize: 12,
+                        //             color:
+                        //                 Theme.of(context).colorScheme.secondary,
+                        //             fontWeight: FontWeight.w400),
+                        //       ),
+                        //     );
+                        //   });
+                        // }
 
-                        getUser();
-                        return Container();
+                        // getUser();
+                        // return Container();
                       }),
                 ),
               );
@@ -155,7 +152,7 @@ class _CommentsState extends State<Comments> {
             padding: const EdgeInsets.only(bottom: 30),
             child: ListTile(
               //add comment avatar not completed
-              leading: CustomCircleAvatar(avatar: '',),
+              // leading: CustomCircleAvatar(avatar: '',),
               title: FormInputBuilder(
                 hintText: 'Add Comment',
                 controller: comment,

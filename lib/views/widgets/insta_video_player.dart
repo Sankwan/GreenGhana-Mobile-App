@@ -102,7 +102,7 @@ class _InstaVideoPlayerState extends State<InstaVideoPlayer> {
                 height: 500,
                 child: Icon(
                   Icons.play_arrow_rounded,
-                  color: Colors.white54,
+                  color: Colors.white,
                   size: 100,
                 ),
               ),

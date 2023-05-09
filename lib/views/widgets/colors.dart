@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 const borderColor = Colors.grey;
-const iconColor = Colors.black54;
+// const iconColor = Colors.black54;
 
 // getRandomColor() => Colors.primaries[Random().nextInt(Colors.primaries.length)];
 

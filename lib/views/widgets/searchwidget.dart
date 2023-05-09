@@ -57,33 +57,40 @@ class SearchWidget extends SearchDelegate {
                 child: Text('No such user found'),
               );
             } else {
-              //fetch data here
-              return ListView(
-                children: [
-                  ...snapshot.data!.docs
-                      .where((QueryDocumentSnapshot<Object?> element) =>
-                          element['user_name']
-                              .toString()
-                              .toLowerCase()
-                              .contains(query.toLowerCase()))
-                      .map((QueryDocumentSnapshot<Object?> data) {
-                    final String userName = data.get('user_name');
-                    final String avatar = data.get('avatar');
-                    final String id = data.get('user_id');
+              // fetch data here
+              if (query.isEmpty) {
+                return const Center(
+                  child: Text('No Username has been entered'),
+                );
+              } else {
+                return ListView(
+                  children: [
+                    ...snapshot.data!.docs
+                        .where((QueryDocumentSnapshot<Object?> element) =>
+                            element['user_name']
+                                .toString()
+                                .toLowerCase()
+                                .contains(query.toLowerCase()))
+                        .map((QueryDocumentSnapshot<Object?> data) {
+                      final String userName = data.get('user_name');
+                      final String avatar = data.get('avatar');
+                      final String id = data.get('user_id');
 
-                    return ListTile(
-                      onTap: () {
-                        nextNav(context, ProfilePage(id: id));
-                      },
-                      title: Text(userName),
-                      leading: CustomCircleAvatar(avatar: avatar),
-                    );
-                  })
-                ],
-              );
+                      return ListTile(
+                        onTap: () {
+                          nextNav(context, ProfilePage(id: id));
+                        },
+                        title: Text(userName),
+                        leading: CustomCircleAvatar(avatar: avatar),
+                      );
+                    })
+                  ],
+                );
+              }
             }
           }
-        });
+        }
+        );
   }
 
   @override

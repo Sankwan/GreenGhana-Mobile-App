@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/animation/slideanimate.dart';
+import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
@@ -28,8 +29,8 @@ class FirebaseAuthMethod {
       },
       // Displays a message when verification fails
       verificationFailed: (e) {
-        showSnackBar(context, e.message!);
         cancelProgressLoader();
+        showSnackBar(context, e.message!);
       },
       // Displays a dialog box when OTP is sent
       codeSent: ((String verificationId, int? resendToken) async {
@@ -39,20 +40,25 @@ class FirebaseAuthMethod {
           context: context,
           onPressed: () async {
             showProgressLoader();
-            PhoneAuthCredential credential = PhoneAuthProvider.credential(
-              verificationId: verificationId,
-              smsCode: codeController.text.trim(),
-            );
-            // !!! Works only on Android, iOS !!!
-            await mAuth.signInWithCredential(credential);
-            cancelProgressLoader();
-            // Navigator.of(context).pop(); // Remove the dialog box
-            nextScreenClosePrev(
-              context,
-              SlideAnimate(
-                UserNamePage(phoneNumber: phoneNumber),
-              ),
-            );
+            try {
+              PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                verificationId: verificationId,
+                smsCode: codeController.text.trim(),
+              );
+              // !!! Works only on Android, iOS !!!
+              await mAuth.signInWithCredential(credential);
+              cancelProgressLoader();
+              // Navigator.of(context).pop(); // Remove the dialog box
+              nextScreenClosePrev(
+                context,
+                SlideAnimate(
+                  UserNamePage(phoneNumber: phoneNumber),
+                ),
+              );
+            } catch (e) {
+              cancelProgressLoader();
+              showSnackBar(context, e.toString());
+            }
           },
         );
       }),
@@ -66,8 +72,9 @@ class FirebaseAuthMethod {
 
 //new auth for login page
 //skips the username page
+//need to handle errors for wrong username. Same for wrong OTP
 class FirebaseAuthLoginMethod {
-  Future<void> phoneSignIn(
+  Future<void> phoneLogIn(
     BuildContext context,
     String phoneNumber,
   ) async {
@@ -81,8 +88,8 @@ class FirebaseAuthLoginMethod {
       },
       // Displays a message when verification fails
       verificationFailed: (e) {
-        showSnackBar(context, e.message!);
         cancelProgressLoader();
+        showSnackBar(context, e.message!);
       },
       // Displays a dialog box when OTP is sent
       codeSent: ((String verificationId, int? resendToken) async {
@@ -92,20 +99,33 @@ class FirebaseAuthLoginMethod {
           context: context,
           onPressed: () async {
             showProgressLoader();
-            PhoneAuthCredential credential = PhoneAuthProvider.credential(
-              verificationId: verificationId,
-              smsCode: codeController.text.trim(),
-            );
-            // !!! Works only on Android, iOS !!!
-            await mAuth.signInWithCredential(credential);
-            cancelProgressLoader();
-            // Navigator.of(context).pop(); // Remove the dialog box
-            nextscreenRemovePredicate(
-              context,
-              SlideAnimate(
-                MainHomepage(),
-              ),
-            );
+            if (mAuth.currentUser != null) {
+              nextscreenRemovePredicate(
+                context,
+                SlideAnimate(
+                  MainHomepage(),
+                ),
+              );
+            }
+            try {
+              PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                verificationId: verificationId,
+                smsCode: codeController.text.trim(),
+              );
+              // !!! Works only on Android, iOS !!!
+              await mAuth.signInWithCredential(credential);
+              cancelProgressLoader();
+              // Navigator.of(context).pop(); // Remove the dialog box
+              nextscreenRemovePredicate(
+                context,
+                SlideAnimate(
+                  MainHomepage(),
+                ),
+              );
+            } catch (e) {
+              cancelProgressLoader();
+              showSnackBar(context, e.toString());
+            }
           },
         );
       }),

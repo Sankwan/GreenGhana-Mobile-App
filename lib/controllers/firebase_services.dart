@@ -9,6 +9,8 @@ import 'package:instagram_aa/models/comment.dart';
 import 'package:instagram_aa/views/screens/auth/signup_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
+import '../views/screens/auth/login_page.dart';
+
 var auth = FirebaseAuth.instance;
 var firebaseFireStore = FirebaseFirestore.instance;
 
@@ -48,10 +50,12 @@ class FirebaseServices {
         .update({'username': name});
   }
 
+//takes user to loginPage
+//login and logout edited. take note
   logout(BuildContext context) {
     auth
         .signOut()
-        .whenComplete(() => nextNavRemoveHistory(context, SignupPage()));
+        .whenComplete(() => nextNavRemoveHistory(context, LoginPage()));
   }
 
   // _uploadProPic(File image) async {

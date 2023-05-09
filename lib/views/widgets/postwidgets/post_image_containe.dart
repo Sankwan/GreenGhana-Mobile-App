@@ -26,6 +26,22 @@ class PostImageContainer extends StatefulWidget {
 class _PostImageContainerState extends State<PostImageContainer> {
   bool isLikeAnimating = false;
   PostControllerImplement pController = PostControllerImplement();
+  
+  // playVideo(VideoPlayerController video, bool play, bool isPaused) {
+  //   if (!play) {
+  //     nextNav(context, SinglePost(post: widget.post));
+  //     return;
+  //   }
+  //   if (video.value.isPlaying) {
+  //     video.pause().then((value) => setState(() {
+  //           isPaused = true;
+  //         }));
+  //   } else {
+  //     video.play().then((value) => setState(() {
+  //           isPaused = false;
+  //         }));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +57,7 @@ class _PostImageContainerState extends State<PostImageContainer> {
           ),
           child: GestureDetector(
             onDoubleTap: () {
-              // FireStoreMethods().likePost(
-              //   widget.snap['postId'].toString(),
-              //   user.uid,
-              //   widget.snap['likes'],
-              // );
+              pController.likePost(postId: widget.post.postId);
               setState(() {
                 isLikeAnimating = true;
               });

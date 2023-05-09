@@ -1,12 +1,15 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 class SeedlingChart extends StatefulWidget {
-  SeedlingChart({super.key});
+  final num target;
+  final num distributed;
+  SeedlingChart({super.key, required this.target, required this.distributed});
   final Color leftBarColor = Colors.greenAccent;
-  final Color rightBarColor = Colors.redAccent;
-  final Color avgColor =
-      Colors.blueAccent;
+  final Color rightBarColor = Colors.brown;
+  final Color avgColor = Colors.blueAccent;
   @override
   State<StatefulWidget> createState() => SeedlingChartState();
 }
@@ -16,14 +19,21 @@ class SeedlingChartState extends State<SeedlingChart> {
 
   late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
+  double target = 0;
+  double distributed = 0;
 
   int touchedGroupIndex = -1;
 
   @override
   void initState() {
     super.initState();
-    final barGroup1 = makeGroupData(0, 5, 12);
-    final barGroup2 = makeGroupData(1, 16, 12);
+      target = widget.target / 1000000;
+      distributed = widget.distributed / 1000000;
+
+    final barGroup1 = makeGroupData(0, 0, target);
+    final barGroup2 = makeGroupData(1, distributed, 0);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+    });
 
     final items = [
       barGroup1,
@@ -37,6 +47,7 @@ class SeedlingChartState extends State<SeedlingChart> {
 
   @override
   Widget build(BuildContext context) {
+    // logger.d(target);
     return AspectRatio(
       aspectRatio: 1,
       child: Padding(
@@ -44,13 +55,13 @@ class SeedlingChartState extends State<SeedlingChart> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const SizedBox(
-              height: 38,
+            SizedBox(
+              height: target < 10 ? 38 : 200,
             ),
             Expanded(
               child: BarChart(
                 BarChartData(
-                  maxY: 20,
+                  maxY: target,
                   barTouchData: BarTouchData(
                     touchTooltipData: BarTouchTooltipData(
                       tooltipBgColor: Colors.grey,
@@ -140,6 +151,8 @@ class SeedlingChartState extends State<SeedlingChart> {
   }
 
   Widget leftTitles(double value, TitleMeta meta) {
+    double target = widget.target / 1000000;
+    double distributed = widget.distributed / 1000000;
     const style = TextStyle(
       color: Color(0xff7589a2),
       fontWeight: FontWeight.bold,
@@ -147,11 +160,11 @@ class SeedlingChartState extends State<SeedlingChart> {
     );
     String text;
     if (value == 0) {
-      text = '1K';
-    } else if (value == 10) {
-      text = '5K';
-    } else if (value == 19) {
-      text = '10K';
+      text = '1M';
+    } else if (value == target / 2) {
+      text = '${(target / 2).toInt()}M';
+    } else if (value == target) {
+      text = '${target.toInt()}M';
     } else {
       return Container();
     }
@@ -187,19 +200,16 @@ class SeedlingChartState extends State<SeedlingChart> {
       x: x,
       barRods: [
         BarChartRodData(
-          toY: y1,
-          color: widget.leftBarColor,
-          width: width,
-          borderRadius: BorderRadius.circular(0)
-        ),
+            toY: y1,
+            color: widget.leftBarColor,
+            width: width,
+            borderRadius: BorderRadius.circular(0)),
         BarChartRodData(
-          toY: y2,
-          color: widget.rightBarColor,
-          width: width,
-          borderRadius: BorderRadius.circular(0)
-        ),
+            toY: y2,
+            color: widget.rightBarColor,
+            width: width,
+            borderRadius: BorderRadius.circular(0)),
       ],
     );
   }
-
 }

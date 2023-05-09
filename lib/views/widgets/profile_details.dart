@@ -1,10 +1,5 @@
-import 'dart:ui';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/models/usermodel.dart';
@@ -14,8 +9,6 @@ import 'package:instagram_aa/views/screens/edit_profile.dart';
 import 'package:instagram_aa/views/widgets/cached_image.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
-import 'package:instagram_aa/views/widgets/postwidgets/post_image_containe.dart';
-import 'package:instagram_aa/views/widgets/postwidgets/post_item_card.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/single_post.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/tiktok_video_player.dart';
 import 'package:provider/provider.dart';
@@ -144,42 +137,40 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             }
             logger.d(snapshot.data![0]);
             List<PostsModel> data = snapshot.data!;
-            return Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 0.8,
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 2,
-                      crossAxisSpacing: 2),
-                  itemBuilder: (context, index) {
-                    return data[index].imageUrl!.isNotEmpty
-                        ? InkWell(
-                            onTap: () {
-                              nextNav(context, SinglePost(post: data[index]));
-                            },
-                            child: CustomCacheImage(imageUrl: data[index].imageUrl![0], radius: 0),
-                          )
-                        : InkWell(
-                            onTap: () {
-                              nextNav(context, SinglePost(post: data[index]));
-                            },
-                            child: Stack(
-                              children: 
-                                    [TikTokVideoPlayer(
-                                    play: false,
-                                    data: data[index]),
-                                    Positioned(
-                                      bottom: 5,
-                                      child: Icon(Icons.play_arrow_rounded, color: Colors.white,))
-                                  ],
-                            ));
-                  },
-                ),
+            return Padding(
+              padding: const EdgeInsets.all(5),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: data.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.8,
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 2,
+                    crossAxisSpacing: 2),
+                itemBuilder: (context, index) {
+                  return data[index].imageUrl!.isNotEmpty
+                      ? InkWell(
+                          onTap: () {
+                            nextNav(context, SinglePost(post: data[index]));
+                          },
+                          child: CustomCacheImage(imageUrl: data[index].imageUrl![0], radius: 0),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            nextNav(context, SinglePost(post: data[index]));
+                          },
+                          child: Stack(
+                            children: 
+                                  [TikTokVideoPlayer(
+                                  play: false,
+                                  data: data[index]),
+                                  Positioned(
+                                    bottom: 5,
+                                    child: Icon(Icons.play_arrow_rounded, color: Colors.white,))
+                                ],
+                          ));
+                },
               ),
             );
           },

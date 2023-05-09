@@ -1,4 +1,4 @@
-package com.example.instagram_aa
+package org.fcghana.green_ghana
 
 import io.flutter.embedding.android.FlutterActivity
 
