@@ -21,7 +21,7 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
   Future afterSplash() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('intro')) {
@@ -37,6 +37,9 @@ class _SplashPageState extends State<SplashPage> {
         nextScreenClosePrev(context, FadeAnimate(const MainHomepage()));
       });
     } else {
+      // await context
+      //     .read<UserProvider>()
+      //     .getUserDataAsync(mAuth.currentUser!.uid);
       Future.delayed(const Duration(seconds: 1)).then((value) async {
         nextScreenClosePrev(context,
             FadeAnimate(intro! ? const OnBoardingScreen() : const LoginPage()));
@@ -47,6 +50,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     afterSplash();
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 

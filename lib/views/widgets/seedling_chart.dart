@@ -156,7 +156,7 @@ class SeedlingChartState extends State<SeedlingChart> {
     const style = TextStyle(
       color: Color(0xff7589a2),
       fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 12,
     );
     String text;
     if (value == 0) {

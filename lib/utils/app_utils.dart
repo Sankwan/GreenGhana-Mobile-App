@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AppUtils {
@@ -23,26 +24,34 @@ class AppUtils {
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
+      logger.d(serviceEnabled);
+      serviceEnabled = await Geolocator.openLocationSettings();
+      if (!serviceEnabled) {
+        return Future.error('Location services are disabled.');
+      }
     }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
+      logger.d(permission);
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
+        logger.d(permission);
         return Future.error('Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
+      logger.d(permission);
       return Future.error('Location permissions are permanently denied,'
           ' we cannot request permissions.');
     }
-    Position position = await Geolocator.getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    logger.d(position);
     return position;
   }
 
-
-    Shimmer feedPreload(BuildContext context) {
+  Shimmer feedPreload(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: Colors.grey.shade300,
       highlightColor: Colors.grey.shade100,

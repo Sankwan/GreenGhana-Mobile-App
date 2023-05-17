@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:instagram_aa/controllers/auth_controller.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/form_fields_controller.dart';
@@ -11,7 +12,6 @@ import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/views/screens/auth/signup_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
-import 'package:instagram_aa/views/widgets/glitch.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../animation/slideanimate.dart';
@@ -55,7 +55,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     handlePermissions();
-    // TODO: implement initState
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      handlePermissions();
+    });
     super.initState();
   }
 
@@ -130,8 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                   Text('Don\'t have Account?'),
                   TextButton(
                       onPressed: () {
-                        nextScreen(
-                            context, SlideAnimate(const SignupPage()));
+                        nextScreen(context, SlideAnimate(const SignupPage()));
                       },
                       child: Text(
                         'Register',

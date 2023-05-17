@@ -10,6 +10,7 @@ import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/provider/post_provider.dart';
+import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/screens/planting_info.dart';
 import 'package:instagram_aa/views/screens/profile_page.dart';
@@ -34,7 +35,7 @@ updatePostCount(id) async {
 
 updateLikeCount(id) async {
   int likeCount = 0;
-  final getLikes = await firebaseFireStore
+  await firebaseFireStore
       .collection('posts')
       .where('user_id', isEqualTo: id)
       .get()
@@ -43,9 +44,8 @@ updateLikeCount(id) async {
       var count = PostsModel.fromJson(e.data());
       likeCount += count.likes!.length;
     });
-    list;
     logger.d(list);
-    // logger.d(likeCount);
+    logger.d(likeCount);
   });
   return firebaseFireStore
       .collection('users')
@@ -80,6 +80,9 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
       getToken();
+      await context
+          .read<UserProvider>()
+          .getUserDataAsync(mAuth.currentUser!.uid);
       await context.read<PostProvider>().getPosts();
     });
   }
@@ -139,7 +142,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
-            child: GestureDetector(
+            child: InkWell(
               onTap: _onTap,
               child: const CircleAvatar(
                 backgroundColor: Colors.white,

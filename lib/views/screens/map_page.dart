@@ -77,7 +77,7 @@ class _MapPageState extends State<MapPage> {
                     markerId: MarkerId('MarkerId'),
                     position: LatLng(e.latitude!, e.longitude!),
                     infoWindow: InfoWindow(
-                        title: 'Green Ghana Day', snippet: 'A seedling was requested from this location'),
+                        title: 'Green Ghana Day', snippet: 'A seedling was planted here'),
                     // icon: await BitmapDescriptor.fromAssetImage(
                     //     ImageConfiguration(
                     //         size: Size(1, 1), devicePixelRatio: 0.5),
@@ -89,7 +89,7 @@ class _MapPageState extends State<MapPage> {
                   mapType: MapType.normal,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(currentLoc!.latitude, currentLoc!.longitude),
-                    zoom: 15,
+                    zoom: 10,
                   ),
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);

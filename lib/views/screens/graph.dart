@@ -200,23 +200,6 @@ class _GraphState extends State<Graph> {
                   )),
             ),
           ),
-          //BUTTON to test Dio
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 60, right: 60),
-          //   child: ElevatedButton(
-          //       onPressed: () {
-          //         getHTTP();
-          //       },
-          //       child: Text('Dio test')),
-          // ),
-          // Text(jsonList.isEmpty ? 'No Data' : jsonList.toString()),
-          // SizedBox(height: 30,),
-          // Text(str.isEmpty ? 'No Data' : str)
-          // ListView.builder(
-
-          //   itemBuilder: (context, index) {
-
-          // },)
         ],
       ),
     );

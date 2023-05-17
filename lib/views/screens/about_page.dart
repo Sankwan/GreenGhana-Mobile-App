@@ -17,6 +17,22 @@ class _AboutPageState extends State<AboutPage> {
       appBar: AppBar(
         title: Text('About Green Ghana'),
         centerTitle: true,
+        actions: [
+           TextButton(
+              onPressed: () async {
+                final url = 'https://www.green-ghana.fcghana.org/#features';
+
+                openBrowserURL(
+                  url: url,
+                  inApp: false,
+                );
+              },
+              child: const Text(
+                'Privacy Policy',
+                style:
+                    TextStyle(color: Colors.blue, fontStyle: FontStyle.italic),
+              )),
+        ],
       ),
       body: ListView(
         children: [
@@ -64,13 +80,13 @@ class _AboutPageState extends State<AboutPage> {
               style: TextStyle(color: Colors.green),
             ),
           ),
-          TextButton(
+                    TextButton(
             onPressed: () {
-              launchEmail();
+          launchEmail();
             },
             child: Text(
-              'Email Us',
-              style: TextStyle(color: Colors.green),
+          'Email Us',
+          style: TextStyle(color: Colors.green),
             ),
           ),
         ],
