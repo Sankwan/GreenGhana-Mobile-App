@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'image_loader.dart';
+import 'package:photo_view/photo_view.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
   final String avatar;
@@ -32,3 +33,4 @@ class CustomCircleAvatar extends StatelessWidget {
     );
   }
 }
+

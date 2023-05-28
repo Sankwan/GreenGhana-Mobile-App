@@ -2,16 +2,11 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/form_fields_controller.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/widgets/edit_profile_pic.dart';
-// import 'package:tiktok_yt/constants.dart';
-// import 'package:tiktok_yt/controller/firebase_services.dart';
-// import 'package:tiktok_yt/view/widgets/custom_widget.dart';
 
 class ProfileSetter extends StatefulWidget {
   const ProfileSetter({super.key});
@@ -87,6 +82,5 @@ class _ProfileSetterState extends State<ProfileSetter> {
         ],
       ),
     );
-    ;
   }
 }

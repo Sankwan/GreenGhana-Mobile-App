@@ -26,22 +26,6 @@ class PostImageContainer extends StatefulWidget {
 class _PostImageContainerState extends State<PostImageContainer> {
   bool isLikeAnimating = false;
   PostControllerImplement pController = PostControllerImplement();
-  
-  // playVideo(VideoPlayerController video, bool play, bool isPaused) {
-  //   if (!play) {
-  //     nextNav(context, SinglePost(post: widget.post));
-  //     return;
-  //   }
-  //   if (video.value.isPlaying) {
-  //     video.pause().then((value) => setState(() {
-  //           isPaused = true;
-  //         }));
-  //   } else {
-  //     video.play().then((value) => setState(() {
-  //           isPaused = false;
-  //         }));
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +87,7 @@ class _PostImageContainerState extends State<PostImageContainer> {
                         },
                       )
                     : TikTokVideoPlayer(play: true, data: widget.post),
-                //double tap animation for likes (incomplete)
-                //not connected to like button and like count yet
+                //double tap animation for likes (complete)
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 200),
                   opacity: isLikeAnimating ? 1 : 0,
