@@ -105,7 +105,7 @@ class _PostPageState extends State<PostPage> {
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Theme.of(context).backgroundColor,
         elevation: .5,
-        title: const Text("Add Post", style: TextStyle(color: Colors.black)),
+        title: const Text("Add Post", style: TextStyle(color: Colors.black, fontSize: 15)),
         centerTitle: true,
         actions: [
           TextButton(

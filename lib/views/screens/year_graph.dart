@@ -13,7 +13,8 @@ class _YearGraphState extends State<YearGraph> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Year to Year'),
+        title: Text('Year to Year Overview', 
+        style: TextStyle(fontSize: 15)),
         centerTitle: true,
       ),
       body: ListView(
@@ -45,7 +46,7 @@ class _YearGraphState extends State<YearGraph> {
                       style: TextStyle(fontSize: 15),
                     ),
                     Text(
-                      '10,000,000',
+                      '20,000,000',
                       // jsonList.isEmpty ? 'No Data' : jsonList.toString()
                       style: TextStyle(color: Colors.brown, fontSize: 20),
                     ),
