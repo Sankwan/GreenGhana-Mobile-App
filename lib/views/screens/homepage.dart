@@ -128,11 +128,11 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              // nextNav(context, SearchScreen());
-              showSearch(
-                context: context,
-                delegate: SearchWidget(),
-              );
+              nextNav(context, SearchPageWidget());
+              // showSearch(
+              //   context: context,
+              //   delegate: SearchWidget(),
+              // );
             },
             icon: const Icon(
               Icons.search,

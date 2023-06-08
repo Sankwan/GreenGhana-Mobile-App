@@ -67,11 +67,9 @@ class _GraphState extends State<Graph> {
   void getHTTP() async {
     try {
       var response = await dio.get(
-          'http://api.fcghana.org/green-ghana/v1/seedlings.php'
+          'http://196.44.97.4/api/green-ghana/v1/seedlings.php'
           );
       if (response.statusCode == 200) {
-        //store response here
-        logger.d(response.data);
         setState(() {
           str = response.data;
         });

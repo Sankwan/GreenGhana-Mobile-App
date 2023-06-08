@@ -53,7 +53,7 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Theme.of(context).backgroundColor,
         elevation: .5,
-        title: const Text("Post video", style: TextStyle(color: Colors.black)),
+        title: const Text("Post video", style: TextStyle(color: Colors.black, fontSize: 15),),
         centerTitle: true,
       ),
       body: ListView(

@@ -23,6 +23,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
   Future afterSplash() async {
+    // mAuth.signOut();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('intro')) {
       await prefs.setBool('intro', true);
