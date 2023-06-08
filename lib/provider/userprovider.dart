@@ -4,7 +4,6 @@ import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/utils/app_utils.dart';
 
-import '../views/widgets/custom_widgets.dart';
 
 // class UserProvider with ChangeNotifier {
 //   final userControl = UserControllerImplement();

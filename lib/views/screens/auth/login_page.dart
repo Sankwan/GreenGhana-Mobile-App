@@ -1,17 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:instagram_aa/controllers/auth_controller.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/form_fields_controller.dart';
-import 'package:instagram_aa/models/posts_model.dart';
-import 'package:instagram_aa/models/usermodel.dart';
-import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/app_utils.dart';
 import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/views/screens/auth/signup_page.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../animation/slideanimate.dart';

@@ -1,11 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 class SeedlingChart extends StatefulWidget {
   final num target;
-  final num distributed;
+  final int distributed;
   SeedlingChart({super.key, required this.target, required this.distributed});
   final Color leftBarColor = Colors.greenAccent;
   final Color rightBarColor = Colors.brown;
@@ -47,6 +46,7 @@ class SeedlingChartState extends State<SeedlingChart> {
 
   @override
   Widget build(BuildContext context) {
+    double highestFigure = target > distributed? target : distributed;
     // logger.d(target);
     return AspectRatio(
       aspectRatio: 1,
@@ -56,12 +56,12 @@ class SeedlingChartState extends State<SeedlingChart> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(
-              height: target < 10 ? 38 : 200,
+              height: highestFigure < 10 ? 2 : 20,
             ),
             Expanded(
               child: BarChart(
                 BarChartData(
-                  maxY: target,
+                  maxY: highestFigure,
                   barTouchData: BarTouchData(
                     touchTooltipData: BarTouchTooltipData(
                       tooltipBgColor: Colors.grey,
@@ -159,12 +159,13 @@ class SeedlingChartState extends State<SeedlingChart> {
       fontSize: 12,
     );
     String text;
+    double highestFigure = target > distributed? target : distributed;
     if (value == 0) {
       text = '1M';
-    } else if (value == target / 2) {
-      text = '${(target / 2).toInt()}M';
-    } else if (value == target) {
-      text = '${target.toInt()}M';
+    } else if (value == 5) {
+      text = '5M';
+    } else if (value == highestFigure) {
+      text = highestFigure > 10? '${highestFigure.ceil()}M':'10M';
     } else {
       return Container();
     }

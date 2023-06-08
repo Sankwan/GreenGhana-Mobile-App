@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/form_fields_controller.dart';
-import 'package:instagram_aa/views/screens/auth/profile_setter.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 class Otp_Page extends StatefulWidget {
   final String phoneNumber;

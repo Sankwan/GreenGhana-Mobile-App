@@ -6,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
-import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/custom_theme.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
@@ -15,8 +14,6 @@ import 'package:instagram_aa/views/widgets/edit_profile_pic.dart';
 import 'package:instagram_aa/views/widgets/requestwidgets/form_input_builder.dart';
 import 'package:instagram_aa/views/widgets/showOtpDialog.dart';
 
-import '../../animation/slideanimate.dart';
-import '../../utils/pagesnavigator.dart';
 import '../../utils/progressloader.dart';
 
 class EditProfile extends StatefulWidget {
@@ -84,7 +81,7 @@ class _EditProfileState extends State<EditProfile> {
     // String img = widget.avatar;
     String avatar = widget.avatar;
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text('Edit your Profile'),
         centerTitle: true,

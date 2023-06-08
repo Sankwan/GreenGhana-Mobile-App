@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/provider/add_post_provider.dart';
-import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/custombutton.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
@@ -51,7 +50,7 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         elevation: .5,
         title: const Text("Post video", style: TextStyle(color: Colors.black, fontSize: 15),),
         centerTitle: true,
@@ -190,11 +189,11 @@ class _UploadVideoPageState extends State<UploadVideoPage> {
     );
     bool isPosted = await controller.addPost(
         post: PostsModel(
-      userName: p.usermodel!.userName,
+      userName: p.usermodel.userName,
       videoUrl: videoUrl,
       imageUrl: [],
       likes: [],
-      userAvatar: p.usermodel!.avatar ?? p.usermodel!.userName,
+      userAvatar: p.usermodel.avatar ?? p.usermodel.userName,
       caption: captionController.text.toString(),
       datePublished: DateTime.now().toString(),
       longitude: p.longitude,

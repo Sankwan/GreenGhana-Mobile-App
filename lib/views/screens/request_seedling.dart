@@ -61,7 +61,7 @@ class _RequestSeedlingState extends State<RequestSeedling> {
     check_request();
     RequestProvider rp = context.watch<RequestProvider>();
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         actions: [
           GlithEffect(
@@ -337,7 +337,7 @@ class _RequestSeedlingState extends State<RequestSeedling> {
                                 children: [
                                   // Text('Username: ${}'),
                                   Text(
-                                      'Phone Number: ${user_request!.userPhoneNumber!}'),
+                                      'Phone Number: ${user_request.userPhoneNumber!}'),
                                   Column(
                                     children:
                                         user_request.seedRequest!.map((each) {
@@ -409,7 +409,7 @@ class _RequestSeedlingState extends State<RequestSeedling> {
           pickupLocation: rp.selectedLocation,
           seedRequest: cart,
           userPhoneNumber:
-              context.read<UserProvider>().usermodel!.userPhoneNumber),
+              context.read<UserProvider>().usermodel.userPhoneNumber),
     );
     if (isRequested) {
       cancelProgressLoader();

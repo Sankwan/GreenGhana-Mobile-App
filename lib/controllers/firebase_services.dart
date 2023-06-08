@@ -6,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/models/comment.dart';
-import 'package:instagram_aa/views/screens/auth/signup_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 import '../views/screens/auth/login_page.dart';

@@ -39,7 +39,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 abstract class UserController {
   Future<bool> addUser({UserModel? usermodel});

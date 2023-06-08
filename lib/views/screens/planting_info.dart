@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:instagram_aa/controllers/firebase_services.dart';
-import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/screens/full_plant_info.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 

@@ -1,5 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
@@ -39,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
         logger.d(snapshot.data!.userName);
 
         return Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).colorScheme.background,
             appBar: AppBar(
               // iconTheme: IconThemeData(),
               title: const Text('Profile'),

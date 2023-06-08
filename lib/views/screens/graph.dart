@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:instagram_aa/theme/colors.dart';
 import 'package:instagram_aa/views/screens/year_graph.dart';
 import 'package:instagram_aa/views/widgets/seedling_chart.dart';
@@ -28,19 +28,13 @@ class _GraphState extends State<Graph> {
   bool isAlertSet = false;
   var dio = Dio();
   var jsonRes;
-  String str = '';
+  int dist = 0;
   var logger = Logger();
 
   @override
   void initState() {
     getConnectivity();
-    SchedulerBinding.instance.addPostFrameCallback(
-      (_) {
-        getHTTP();
-        // Timer.periodic(Duration(minutes: 2), (timer) {
-        // });
-      },
-    );
+    getHTTP();
     super.initState();
   }
 
@@ -66,12 +60,12 @@ class _GraphState extends State<Graph> {
 //trying out dio
   void getHTTP() async {
     try {
-      var response = await dio.get(
-          'http://196.44.97.4/api/green-ghana/v1/seedlings.php'
-          );
+      var response =
+          await dio.get('http://196.44.97.4/api/green-ghana/v1/seedlings.php');
       if (response.statusCode == 200) {
+        var jsonRes = await jsonDecode(response.data);
         setState(() {
-          str = response.data;
+          dist = int.parse(jsonRes['masterlist'][0]['seedling_distributed']);
         });
       } else {
         print(response.statusCode);
@@ -84,7 +78,6 @@ class _GraphState extends State<Graph> {
 
   @override
   Widget build(BuildContext context) {
-    // getHTTP();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -92,6 +85,13 @@ class _GraphState extends State<Graph> {
           style: TextStyle(fontSize: 15),
         ),
         centerTitle: true,
+        actions: [
+          TextButton(
+              onPressed: () {
+                getHTTP();
+              },
+              child: Text('Refresh', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),))
+        ],
       ),
       body: ListView(
         children: [
@@ -172,7 +172,7 @@ class _GraphState extends State<Graph> {
                     ),
                     Text(
                       // '0',
-                      str.isEmpty ? 'No Data' : str.substring(40, 48),
+                      dist.toString(),
                       // ['masterlist'][0]['seedling_distributed'],
                       style: TextStyle(color: acceptedColor, fontSize: 20),
                     )
@@ -183,7 +183,7 @@ class _GraphState extends State<Graph> {
           ),
           // SizedBox(height: 30,),
           SizedBox(
-            height: 400,
+            // height: 800,
             child: Padding(
               padding: const EdgeInsets.only(left: 8, right: 8),
               child: Card(
@@ -192,10 +192,12 @@ class _GraphState extends State<Graph> {
                       Radius.circular(30),
                     ),
                   ),
-                  child: str.isEmpty ? Container() : SeedlingChart(
-                    target: 10000000,
-                    distributed: num.parse(str.substring(40, 48)),
-                  )),
+                  child: dist <= 0
+                      ? Container()
+                      : SeedlingChart(
+                          target: 10000000,
+                          distributed: dist,
+                        )),
             ),
           ),
         ],

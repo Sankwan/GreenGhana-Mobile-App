@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_aa/views/screens/planting_info.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 class RequestHistory extends StatefulWidget {
   const RequestHistory({super.key});

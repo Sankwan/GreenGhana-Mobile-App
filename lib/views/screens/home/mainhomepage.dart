@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram_aa/provider/homepageprovider.dart';
-import 'package:instagram_aa/utils/tablist.dart';
 import 'package:instagram_aa/views/screens/homepage.dart';
 import 'package:instagram_aa/views/screens/request_seedling.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +22,7 @@ class _MainHomepageState extends State<MainHomepage> {
   Widget build(BuildContext context) {
     final hp = context.watch<HomeProvider>();
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: true,
           selectedFontSize: 14,

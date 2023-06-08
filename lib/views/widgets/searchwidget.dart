@@ -105,7 +105,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
 
 import '../screens/profile_page.dart';

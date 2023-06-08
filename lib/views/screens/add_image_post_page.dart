@@ -50,7 +50,6 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/animation/slideanimate.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
@@ -103,7 +102,7 @@ class _PostPageState extends State<PostPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         elevation: .5,
         title: const Text("Add Post", style: TextStyle(color: Colors.black, fontSize: 15)),
         centerTitle: true,
@@ -283,7 +282,7 @@ class _PostPageState extends State<PostPage> {
       return showSnackBar(context, 'Please select image');
     }
 
-    if (p!.userName == null) {
+    if (p.userName == null) {
       cancelProgressLoader();
       return showSnackBar(context, 'User Empty');
     }

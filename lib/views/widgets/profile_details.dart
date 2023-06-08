@@ -39,7 +39,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             SizedBox(
               height: 20,
             ),
-            CustomCircleAvatar(avatar: user!.avatar!),
+            CustomCircleAvatar(avatar: user.avatar!),
             SizedBox(
               height: 10,
             ),

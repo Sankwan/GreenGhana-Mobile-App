@@ -46,9 +46,9 @@ class _UserNamePageState extends State<UserNamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         elevation: .5,
         title: const Text('Personal Information'),
         automaticallyImplyLeading: false,

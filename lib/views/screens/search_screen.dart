@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:instagram_aa/views/widgets/searchwidget.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/controllers/auth_controller.dart';
 import 'package:instagram_aa/controllers/form_fields_controller.dart';
-import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/app_utils.dart';
-import 'package:instagram_aa/views/screens/auth/login_page.dart';
-import 'package:instagram_aa/views/widgets/custom_widgets.dart';
-import 'package:instagram_aa/views/widgets/glitch.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
