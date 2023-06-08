@@ -21,10 +21,10 @@ class _SearchScreenState extends State<SearchScreen> {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              showSearch(
-                context: context,
-                delegate: SearchWidget(),
-              );
+              // showSearch(
+              //   context: context,
+              //   delegate: SearchWidget(),
+              // );
             },
           ),
         ],

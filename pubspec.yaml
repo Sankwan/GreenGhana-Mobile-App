@@ -42,7 +42,6 @@ dependencies:
   video_compress: ^3.1.2
   cached_network_image: ^3.2.0
   timeago: ^3.2.2
-  google_fonts: ^3.0.1
   flutter_native_splash: ^2.2.14
   font_awesome_flutter: ^10.4.0
 
@@ -79,6 +78,7 @@ dependencies:
   introduction_screen: ^3.1.8
   permission_handler: ^10.2.0
   photo_view: ^0.14.0
+  google_fonts: ^4.0.4
 
 
 dev_dependencies:

@@ -110,8 +110,8 @@ class _LoginPageState extends State<LoginPage> {
                   if (_formKey.currentState!.validate()) {
                     String normalNumber =
                         AppUtils.normalizePhoneNumber(_numberController.text);
-                    logger.d("+233$normalNumber");
-                    logger.d(await userList('+233$normalNumber'));
+                    // logger.d("+233$normalNumber");
+                    // logger.d(await userList('+233$normalNumber'));
                     if (await userList('+233$normalNumber')) {
                       FirebaseAuthLoginMethod()
                           .phoneLogIn(context, "+233$normalNumber");
