@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
@@ -24,6 +25,12 @@ class PostImageContainer extends StatefulWidget {
 }
 
 class _PostImageContainerState extends State<PostImageContainer> {
+    Stream<PostsModel> streamLikes() {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      var snapshot =
+          firestore.collection('posts').doc(widget.post.postId).snapshots();
+      return snapshot.map((event) => PostsModel.fromJson(event.data()!));
+    }
   bool isLikeAnimating = false;
   PostControllerImplement pController = PostControllerImplement();
 
@@ -125,11 +132,6 @@ class _PostImageContainerState extends State<PostImageContainer> {
                         Wrap(
                           spacing: 0,
                           children: [
-                            // Icon(
-                            //   Icons.favorite_border_outlined,
-                            //   size: 28,
-                            //   color: Colors.white,
-                            // ),
                             IconButton(
                               onPressed: () {
                                 // FirebaseServices().likedVideo(post.userId!);

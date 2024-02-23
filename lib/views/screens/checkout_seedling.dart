@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_aa/views/screens/request_status.dart';
+
+import './requests/request_status.dart';
 
 class CheckoutSeedling extends StatefulWidget {
   final List<Map> cartItems;

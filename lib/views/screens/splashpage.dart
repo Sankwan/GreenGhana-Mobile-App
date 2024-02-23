@@ -6,7 +6,7 @@ import 'package:instagram_aa/provider/userprovider.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/screens/auth/login_page.dart';
 import 'package:instagram_aa/views/screens/auth/onboarding_screen.dart';
-import 'package:instagram_aa/views/screens/home/mainhomepage.dart';
+import 'package:instagram_aa/views/screens/home_display/bottom_nav_bar.dart';
 import 'package:instagram_aa/views/widgets/app_name.dart';
 import 'package:instagram_aa/views/widgets/loader.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +35,7 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
           .getUserDataAsync(mAuth.currentUser!.uid);
 
       Future.delayed(const Duration(seconds: 1)).then((value) {
-        nextScreenClosePrev(context, FadeAnimate(const MainHomepage()));
+        nextScreenClosePrev(context, FadeAnimate(const BottomNavBar()));
       });
     } else {
       // await context
@@ -53,6 +53,11 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
     afterSplash();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

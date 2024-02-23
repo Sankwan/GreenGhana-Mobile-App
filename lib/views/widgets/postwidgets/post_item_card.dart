@@ -1,15 +1,16 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_aa/controllers/user_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/utils/custom_theme.dart';
-import 'package:instagram_aa/views/screens/homepage.dart';
-import 'package:instagram_aa/views/screens/profile_page.dart';
+import 'package:instagram_aa/views/screens/profile/profile_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/post_image_containe.dart';
 import 'package:jiffy/jiffy.dart';
+
+import '../../screens/home_display/homepage.dart';
 
 class PostItemCard extends StatefulWidget {
   final PostsModel post;
@@ -44,6 +45,13 @@ class _PostItemCardState extends State<PostItemCard> {
     }
   }
 
+  Stream<PostsModel> streamLikes() {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var snapshot =
+        firestore.collection('posts').doc(widget.post.postId).snapshots();
+    return snapshot.map((event) => PostsModel.fromJson(event.data()!));
+  }
+
   @override
   bool expand = false;
   Widget build(BuildContext context) {
@@ -69,11 +77,6 @@ class _PostItemCardState extends State<PostItemCard> {
                 children: [
                   ListTile(
                     onTap: _onTap,
-                    // () async {
-                    //   await updateLikeCount(widget.post.userId);
-                    //   await updatePostCount(widget.post.userId);
-                    //   nextNav(context, ProfilePage(id: widget.post.userId!));
-                    // },
                     contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                     leading: CustomCircleAvatar(avatar: snapshot.data!.avatar!),
                     title: Text(
@@ -90,41 +93,72 @@ class _PostItemCardState extends State<PostItemCard> {
                           color: Theme.of(context).colorScheme.secondary,
                           fontWeight: FontWeight.w400),
                     ),
-                    // trailing: IconButton(
-                    //   onPressed: () {},
-                    //   icon: Icon(
-                    //     Icons.more_vert,
-                    //     size: 22,
-                    //     color: Colors.grey.shade500,
-                    //   ),
-                    // ),
                   ),
                   PostImageContainer(
                     post: widget.post,
                   ),
                   Row(
                     children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 5, top: 12, bottom: 5),
-                        child: Text(
-                          '${widget.post.likes?.length} likes',
-                          style: subtitlestlye.copyWith(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
+                      StreamBuilder<PostsModel>(
+                        stream: streamLikes(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 5, top: 12, bottom: 5),
+                              child: Text(
+                                '${widget.post.likes?.length} likes',
+                                style: subtitlestlye.copyWith(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                              ),
+                            );
+                          final post = snapshot.data!;
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                left: 5, top: 12, bottom: 5),
+                            child: Text(
+                              '${post.likes?.length} likes',
+                              style: subtitlestlye.copyWith(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                          );
+                        },
                       ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 5, top: 12, bottom: 5),
-                        child: Text(
-                          '${widget.post.comments?.length != null ? widget.post.comments?.length : 0} comments',
-                          style: subtitlestlye.copyWith(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
+                      
+                      StreamBuilder<PostsModel>(
+                        stream: streamLikes(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 5, top: 12, bottom: 5),
+                              child: Text(
+                                '${widget.post.comments?.length != null ? widget.post.comments?.length : 0} comments',
+                                style: subtitlestlye.copyWith(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                              ),
+                            );
+                          final post = snapshot.data!;
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                left: 5, top: 12, bottom: 5),
+                            child: Text(
+                              '${widget.post.comments?.length != null ? widget.post.comments?.length : 0} comments',
+                              style: subtitlestlye.copyWith(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),

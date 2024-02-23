@@ -10,7 +10,8 @@ import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 abstract class PostController {
   Future<bool> addPost({PostsModel? post});
   Future<String?> getDownloadUrl(File file, String bucket);
-  Stream<List<PostsModel>> loadPosts();
+  Future<List<PostsModel>> loadPosts();
+  Future<List<PostsModel>> loadMorePosts({required int limit, required DocumentSnapshot<Map<String, dynamic>> document});
   Future likePost({String? postId});
 }
 
@@ -40,14 +41,33 @@ class PostControllerImplement implements PostController {
   }
 
   @override
-  Stream<List<PostsModel>> loadPosts() {
-    final posts = postcol
-        .orderBy('date_published', descending: true)
-        .snapshots()
-        .map((event) =>
-            event.docs.map((e) => PostsModel.fromJson(e.data())).toList());
-    return posts;
-    // return posts.docs.map((e) => PostsModel.fromJson(e.data())).toList();
+  Future<List<PostsModel>> loadPosts({int? limit}) async{
+    if (limit == null) {
+      final postsData = await postcol
+          .orderBy('date_published', descending: true)
+          .get();
+      final posts = postsData.docs.map((e) => PostsModel.fromJson(e.data())).toList();
+      return posts;
+    } else {
+      final postsData = await postcol
+          .limit(limit)
+          .orderBy('date_published', descending: true)
+          .get();
+      final posts = postsData.docs.map((e) => PostsModel.fromJson(e.data())).toList();
+      return posts;
+    }
+  }
+
+  @override
+  Future<List<PostsModel>> loadMorePosts({required int limit, required DocumentSnapshot<Map<String, dynamic>> document}) async{
+      final postsData = await postcol
+          .limit(limit)
+          .orderBy('date_published', descending: true)
+          .startAfterDocument(document)
+          .get();
+      final documents = postsData.docs;
+      final posts = postsData.docs.map((e) => PostsModel.fromJson(e.data())).toList();
+      return posts;
   }
 
   @override

@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/models/comment.dart';
+import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 
 import '../views/screens/auth/login_page.dart';
@@ -51,8 +53,8 @@ class FirebaseServices {
 
 //takes user to loginPage
 //login and logout edited. take note
-  logout(BuildContext context) {
-    auth
+  logout(BuildContext context) async{
+    await auth
         .signOut()
         .whenComplete(() => nextNavRemoveHistory(context, LoginPage()));
   }
@@ -92,9 +94,9 @@ class FirebaseServices {
 
     int newShareCount = (doc.data() as dynamic)["shareCount"] + 1;
     await FirebaseFirestore.instance
-        .collection("videos")
-        .doc(vidId)
-        .update({"shareCount": newShareCount});
+        .collection("videos");
+        // .doc(vidId)
+        // .update({"shareCount": newShareCount});
   }
 
   // Uplaod Profile Image
@@ -327,5 +329,29 @@ class FirebaseServices {
       //     .doc(id)
       //     .delete();
     }
+  }
+
+  Future<void> deleteAccount() async{
+    var userColRef = await firebaseFireStore.collection('users');
+    var postColRef = await firebaseFireStore.collection('posts');
+    var requestColRef = await firebaseFireStore.collection('seedlings-request');
+
+    var reqRef = await requestColRef.where('user_id', isEqualTo: mAuth.currentUser!.uid).get();
+    var postRef = await postColRef.where('user_id', isEqualTo: mAuth.currentUser!.uid).get();
+    
+    await reqRef.docs.map((e) => requestColRef.doc(e.id).delete());
+    await postRef.docs.map((e) => postColRef.doc(e.id).delete());
+
+    await userColRef.doc(mAuth.currentUser!.uid).delete();
+  }
+
+
+  Future<void>getToken() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken();
+    firebaseFireStore
+        .collection('users')
+        .doc(mAuth.currentUser!.uid)
+        .set({'token': token}, SetOptions(merge: true));
   }
 }

@@ -13,6 +13,8 @@ import 'package:instagram_aa/views/widgets/postwidgets/single_post.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/tiktok_video_player.dart';
 import 'package:provider/provider.dart';
 
+import '../grid_builder.dart';
+
 class ProfileDetails extends StatefulWidget {
   final UserModel user;
   const ProfileDetails({
@@ -34,6 +36,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     var postCount = context.watch<UserPostsProvider>().postCount;
     return ListView(
       children: [
+        // User Profile Details
         Column(
           children: [
             SizedBox(
@@ -66,10 +69,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   ],
                 ),
                 const SizedBox(
-                  width: 20,
-                ),
-                const SizedBox(
-                  width: 20,
+                  width: 40,
                 ),
                 Column(
                   children: [
@@ -111,6 +111,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             ),
           ],
         ),
+        
+        // User Posts
         FutureBuilder<List<PostsModel>>(
           future: post.getUserProfileAsync(user.userId!),
           builder: (context, snapshot) {
@@ -121,11 +123,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             }
             if (snapshot.hasData) {
               SchedulerBinding.instance.addPostFrameCallback((_) {
-                // context
-                //     .read<UserPostsProvider>()
-                //     .getPostCount(snapshot.data!.length);
               });
-              // setState(() {});
             }
 
             if (snapshot.data!.isEmpty) {
@@ -139,15 +137,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             List<PostsModel> data = snapshot.data!;
             return Padding(
               padding: const EdgeInsets.all(5),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
+              child: GridBuilder(
                 itemCount: data.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.8,
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 2,
-                    crossAxisSpacing: 2),
                 itemBuilder: (context, index) {
                   return data[index].imageUrl!.isNotEmpty
                       ? InkWell(

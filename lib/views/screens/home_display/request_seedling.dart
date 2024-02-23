@@ -13,11 +13,12 @@ import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/glitch.dart';
 import 'package:provider/provider.dart';
 
-import '../../controllers/request_controller.dart';
-import '../../utils/custom_theme.dart';
-import '../../utils/custombutton.dart';
-import '../widgets/custominputfield.dart';
-import '../widgets/requestwidgets/form_input_builder.dart';
+import '../../../controllers/request_controller.dart';
+import '../../../utils/custom_theme.dart';
+import '../../../utils/custombutton.dart';
+import '../../widgets/custominputfield.dart';
+import '../../widgets/requestwidgets/appbar.dart';
+import '../../widgets/requestwidgets/form_input_builder.dart';
 
 class RequestSeedling extends StatefulWidget {
   const RequestSeedling({super.key});
@@ -40,7 +41,6 @@ class _RequestSeedlingState extends State<RequestSeedling> {
         .get();
     if (request.docs.isNotEmpty) {
       user_request = RequestModel.fromJson(request.docs[0].data());
-      // logger.d(request.docs[0].data());
     }
   }
 
@@ -62,37 +62,7 @@ class _RequestSeedlingState extends State<RequestSeedling> {
     RequestProvider rp = context.watch<RequestProvider>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        actions: [
-          GlithEffect(
-            child: IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: Text('Guide to Make a Request'),
-                            content: Text(
-                                'Making one Seedling Request:\n1. Select the type of Seedling\n2. Enter the number of Seedlings you want for the selected seedling\n3. Tap the Add Button below\n4. If you are okay with the request, select the location where you want to pick-up the seedling.\n5. Tap Submit\n\nMaking multiple requests:\n1. Follow steps 1 to 3 above\n2. After tapping the Add button, go back and repeat steps 1 to 3 to add additional seedlings to your requests.\n3. You can do this over and over before selecting a location.\nNote: After submitting your request in the end, you can\'t make another request'),
-                            actions: [
-                              ElevatedButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: Text('Ok'))
-                            ],
-                          ));
-                },
-                icon: const Icon(
-                  Icons.info,
-                  color: Colors.green,
-                )),
-          )
-        ],
-        title: const Text(
-          'Make a Seedling Request',
-          style: TextStyle(fontSize: 15),
-        ),
-        centerTitle: true,
-        elevation: .5,
-      ),
+      appBar: RequestAppBar(),
       body: ListView(
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
@@ -195,7 +165,6 @@ class _RequestSeedlingState extends State<RequestSeedling> {
                   'Confirm your request',
                   textAlign: TextAlign.center,
                   style: subtitlestlye.copyWith(
-                      // color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.w600,
                       fontSize: 18),
                 )
@@ -207,7 +176,6 @@ class _RequestSeedlingState extends State<RequestSeedling> {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(cart[index]['seed_type']),
-                // subtitle: Text(cart[index]['pickup_location']),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:instagram_aa/views/screens/home/mainhomepage.dart';
+import 'package:instagram_aa/views/screens/home_display/bottom_nav_bar.dart';
 import 'package:instagram_aa/views/screens/planting_info.dart';
 
 //working
@@ -49,7 +49,7 @@ class RequestStatus extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MainHomepage()),
+                          builder: (context) => const BottomNavBar()),
                       (route) => false,
                     );
                   },

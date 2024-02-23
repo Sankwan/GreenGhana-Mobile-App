@@ -9,6 +9,7 @@ import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/services/firebase_service.dart';
 import 'package:instagram_aa/utils/custom_theme.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
+import 'package:instagram_aa/views/screens/auth/deleteaccount_page.dart';
 import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:instagram_aa/views/widgets/edit_profile_pic.dart';
 import 'package:instagram_aa/views/widgets/requestwidgets/form_input_builder.dart';
@@ -267,6 +268,14 @@ class _EditProfileState extends State<EditProfile> {
                     child: CircularProgressIndicator(),
                   ),
                 ),
+                SizedBox(
+                  height: 250,
+                ),
+                TextButton(onPressed: (){                 
+                  // FirebaseServices().deleteAccount();
+                  showDialog(context: context, builder: (context) => AccountDeletionButton(number: widget.number,));
+                                      
+                }, child: Text('Delete Account', style: TextStyle(color: Colors.grey),))
             ],
           ),
         ),

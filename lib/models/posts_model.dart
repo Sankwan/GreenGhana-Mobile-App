@@ -11,6 +11,7 @@ class PostsModel {
   List<dynamic>? comments;
   double? latitude;
   double? longitude;
+  DateTime? datePublishedTime; 
 
   PostsModel(
       {this.postId,
@@ -24,7 +25,8 @@ class PostsModel {
       this.longitude,
       this.userAvatar,
       this.caption,
-      this.datePublished});
+      this.datePublished,
+      this.datePublishedTime,});
 
   PostsModel.fromJson(Map<String, dynamic> snap) {
     postId = snap['post_id'];
@@ -39,6 +41,7 @@ class PostsModel {
     caption = snap['caption'];
     userAvatar = snap['user_avatar'];
     datePublished = snap['date_published'];
+    datePublishedTime = snap['date_published_time'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,6 +58,7 @@ class PostsModel {
     data['user_avatar'] = userAvatar;
     data['caption'] = caption;
     data['date_published'] = datePublished;
+    data['date_published_time'] =datePublishedTime;
 
     return data;
   }

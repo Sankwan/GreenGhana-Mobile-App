@@ -5,7 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
 
-import '../../models/posts_model.dart';
+import '../../../models/posts_model.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -55,6 +55,12 @@ class _MapPageState extends State<MapPage> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: currentLoc == null
@@ -62,8 +68,8 @@ class _MapPageState extends State<MapPage> {
               child: SizedBox(
                   height: 50, width: 50, child: CircularProgressIndicator()),
             )
-          : StreamBuilder<List<PostsModel>>(
-              stream: post.loadPosts(),
+          : FutureBuilder<List<PostsModel>>(
+              future: post.loadPosts(),
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
                   return Container();

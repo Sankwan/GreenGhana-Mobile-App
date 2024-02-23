@@ -12,7 +12,7 @@ import 'package:instagram_aa/utils/custombutton.dart';
 import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
-import 'package:instagram_aa/views/screens/home/mainhomepage.dart';
+import 'package:instagram_aa/views/screens/home_display/bottom_nav_bar.dart';
 
 import '../../../services/firebase_service.dart';
 import '../../widgets/edit_profile_pic.dart';
@@ -119,7 +119,8 @@ class _UserNamePageState extends State<UserNamePage> {
         });
       });
       cancelProgressLoader();
-      nextscreenRemovePredicate(context, SlideAnimate(const MainHomepage()));
+      // Naviagte the the home page with a bottom nav bar as a refence point
+      nextscreenRemovePredicate(context, SlideAnimate(const BottomNavBar()));
     }).onError((error, stackTrace) {
       showSnackBar(context, error.toString());
       cancelProgressLoader();

@@ -10,8 +10,8 @@ import 'package:instagram_aa/views/widgets/seedling_chart.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:logger/logger.dart';
 
-import '../../animation/bottomupanimate.dart';
-import '../../utils/pagesnavigator.dart';
+import '../../../animation/bottomupanimate.dart';
+import '../../../utils/pagesnavigator.dart';
 
 class Graph extends StatefulWidget {
   const Graph({super.key});
