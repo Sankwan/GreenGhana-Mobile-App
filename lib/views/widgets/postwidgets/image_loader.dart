@@ -26,10 +26,12 @@ class ImageLoader extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius),
         clipBehavior: Clip.hardEdge,
         child: CachedNetworkImage(
+          memCacheHeight: 300,
+          memCacheWidth: 350,
           imageUrl: imageUrl,
           fit: fit,
-          memCacheHeight: height?.toInt(),
-          memCacheWidth: MediaQuery.of(context).size.width.toInt(),
+          // memCacheHeight: height?.toInt(),
+          // memCacheWidth: MediaQuery.of(context).size.width.toInt(),
           progressIndicatorBuilder: (context, url, downloadProgress) => Center(
             child: Shimmer.fromColors(
               baseColor: const Color.fromARGB(255, 180, 180, 180),

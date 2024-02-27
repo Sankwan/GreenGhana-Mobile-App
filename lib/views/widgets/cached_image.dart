@@ -21,6 +21,8 @@ class CustomCacheImage extends StatelessWidget {
           bottomLeft: Radius.circular(circularShape == false ? 0 : radius),
           bottomRight: Radius.circular(circularShape == false ? 0 : radius)),
       child: CachedNetworkImage(
+        memCacheHeight: 300,
+        memCacheWidth: 350,
         imageUrl: imageUrl!,
         fit: BoxFit.cover,
         height: MediaQuery.of(context).size.height,

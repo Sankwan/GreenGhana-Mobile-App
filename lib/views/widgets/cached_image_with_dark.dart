@@ -28,6 +28,8 @@ class CustomCacheImageWithDarkFilterFull extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: CachedNetworkImage(
+              memCacheHeight: 300,
+              memCacheWidth: 350,
               imageUrl: imageUrl,
               fit: BoxFit.cover,
               height: MediaQuery.of(context).size.height,
