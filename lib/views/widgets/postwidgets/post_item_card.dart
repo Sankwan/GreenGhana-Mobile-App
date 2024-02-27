@@ -10,6 +10,7 @@ import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart
 import 'package:instagram_aa/views/widgets/postwidgets/post_image_containe.dart';
 import 'package:jiffy/jiffy.dart';
 
+import '../../../services/firebase_service.dart';
 import '../../screens/home_display/homepage.dart';
 
 class PostItemCard extends StatefulWidget {
@@ -24,6 +25,39 @@ class PostItemCard extends StatefulWidget {
 class _PostItemCardState extends State<PostItemCard> {
   UserControllerImplement user = UserControllerImplement();
   bool _isLoading = false;
+  List likes = [];
+  List comments = [];
+
+//   updatePostCount(id) async {
+//   final getPost = await firebaseFireStore
+//       .collection('posts')
+//       .where('user_id', isEqualTo: id)
+//       .get();
+//   return firebaseFireStore
+//       .collection('users')
+//       .doc(id)
+//       .update({'total_posts': getPost.docs.length});
+// }
+
+// updateLikeCount(id) async {
+//   int likeCount = 0;
+//   await firebaseFireStore
+//       .collection('posts')
+//       .where('user_id', isEqualTo: id)
+//       .get()
+//       .then((value) {
+//     var list = value.docs.map((e) {
+//       var count = PostsModel.fromJson(e.data());
+//       likeCount += count.likes!.length;
+//     });
+//     logger.d(list);
+//     logger.d(likeCount);
+//   });
+//   return firebaseFireStore
+//       .collection('users')
+//       .doc(id)
+//       .update({'total_likes': likeCount});
+// }
 
 //prevents multiple pages of to open when we tap this multiple times
   void _onTap() async {
@@ -45,15 +79,43 @@ class _PostItemCardState extends State<PostItemCard> {
     }
   }
 
-  Stream<PostsModel> streamLikes() {
+  _updateLike() {
+    if (widget.post.likes == null) return;
+    if (widget.post.likes!.contains(mAuth.currentUser!.uid)) {
+      likes.remove(mAuth.currentUser!.uid);
+    } else {
+      likes.add(mAuth.currentUser!.uid);
+    }
+    setState(() {});
+  }
+
+  _updateComment() {
+    if (widget.post.comments == null) return;
+    if (widget.post.comments!.contains(mAuth.currentUser!.uid)) {
+      comments.remove(mAuth.currentUser!.uid);
+    } else {
+      comments.add(mAuth.currentUser!.uid);
+    }
+    setState(() {});
+  }
+
+  Future<PostsModel> streamLikes() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    var snapshot =
-        firestore.collection('posts').doc(widget.post.postId).snapshots();
-    return snapshot.map((event) => PostsModel.fromJson(event.data()!));
+    var snapshot = firestore.collection('posts').doc(widget.post.postId).get();
+    return snapshot.then((value) => PostsModel.fromJson(value.data()!));
+  }
+
+  bool expand = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    likes = widget.post.likes ?? [];
+    comments = widget.post.comments ?? [];
+    super.initState();
   }
 
   @override
-  bool expand = false;
   Widget build(BuildContext context) {
     final timeago = Jiffy(widget.post.datePublished).fromNow();
     return FutureBuilder<UserModel>(
@@ -96,69 +158,34 @@ class _PostItemCardState extends State<PostItemCard> {
                   ),
                   PostImageContainer(
                     post: widget.post,
+                    likes: likes,
+                    comments: comments,
+                    updateLike: _updateLike,
+                    updateComment: _updateComment,
                   ),
                   Row(
                     children: [
-                      StreamBuilder<PostsModel>(
-                        stream: streamLikes(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData)
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 5, top: 12, bottom: 5),
-                              child: Text(
-                                '${widget.post.likes?.length} likes',
-                                style: subtitlestlye.copyWith(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                            );
-                          final post = snapshot.data!;
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 5, top: 12, bottom: 5),
-                            child: Text(
-                              '${post.likes?.length} likes',
-                              style: subtitlestlye.copyWith(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).colorScheme.primary),
-                            ),
-                          );
-                        },
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 5, top: 12, bottom: 5),
+                        child: Text(
+                          '${likes.length} likes',
+                          style: subtitlestlye.copyWith(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
                       ),
-                      
-                      StreamBuilder<PostsModel>(
-                        stream: streamLikes(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData)
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 5, top: 12, bottom: 5),
-                              child: Text(
-                                '${widget.post.comments?.length != null ? widget.post.comments?.length : 0} comments',
-                                style: subtitlestlye.copyWith(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                            );
-                          final post = snapshot.data!;
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 5, top: 12, bottom: 5),
-                            child: Text(
-                              '${widget.post.comments?.length != null ? widget.post.comments?.length : 0} comments',
-                              style: subtitlestlye.copyWith(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).colorScheme.primary),
-                            ),
-                          );
-                        },
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 5, top: 12, bottom: 5),
+                        child: Text(
+                          '${widget.post.comments?.length != null ? widget.post.comments?.length : 0} comments',
+                          style: subtitlestlye.copyWith(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
                       ),
                     ],
                   ),

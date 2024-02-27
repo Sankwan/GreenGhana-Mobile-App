@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart';
 
 import '../screens/profile/profile_page.dart';
@@ -46,12 +47,19 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                   itemBuilder: (context, index) {
                     var data = snapshots.data!.docs[index].data()
                         as Map<String, dynamic>;
-                    String username = data["user_name"];
-                    String userId = data["user_id"];
-                    String userAvatar = data["avatar"];
+                    // logger.wtf(data);
+                    UserModel user = UserModel.fromJson(snapshots.data!.docs[index]);
+                    if (user.userId == null) {
+                      logger.d(user.userName);
+                      return Container();
+                    }
+
+                    String username = user.userName!;
+                    String userId = user.userId!;
+                    String userAvatar = user.avatar!;
                     if (name.isEmpty) {
                       return ListTile(
-                        onTap: (){
+                        onTap: () {
                           nextNav(context, ProfilePage(id: userId));
                         },
                         title: Text("$username "),
@@ -68,7 +76,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                       String userId = data["user_id"];
                       String userAvatar = data["avatar"];
                       return ListTile(
-                        onTap: (){
+                        onTap: () {
                           nextNav(context, ProfilePage(id: userId));
                         },
                         title: Text("$username "),

@@ -111,7 +111,7 @@ class _GraphState extends State<Graph> {
               TextButton(
                 onPressed: () {},
                 child: Text(
-                  '2023',
+                  '2024',
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w900,
@@ -125,7 +125,7 @@ class _GraphState extends State<Graph> {
                   nextScreen(context, BottomUpAnimate(const YearGraph()));
                 },
                 child: Text(
-                  'Year to year',
+                  'History',
                   style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18),
                 ),
               ),

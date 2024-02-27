@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:instagram_aa/controllers/firebase_services.dart';
 import 'package:instagram_aa/models/request_model.dart';
 import 'package:instagram_aa/provider/request_provider.dart';
@@ -97,6 +98,8 @@ class _RequestSeedlingState extends State<RequestSeedling> {
                 onChanged: rp.onSeedSelect,
                 icon: const Icon(Icons.unfold_more_outlined),
                 isExpanded: true,
+                menuMaxHeight: 300,
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
           ),
@@ -117,6 +120,9 @@ class _RequestSeedlingState extends State<RequestSeedling> {
             hintText: '...',
             keyboardType: TextInputType.phone,
             controller: seedCountController,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
           ),
           const SizedBox(
             height: 16,

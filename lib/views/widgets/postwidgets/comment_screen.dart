@@ -9,9 +9,16 @@ import 'package:instagram_aa/views/widgets/postwidgets/custom_circle_avatar.dart
 import 'package:instagram_aa/views/widgets/requestwidgets/form_input_builder.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../models/comment.dart';
+
 class Comments extends StatefulWidget {
   final String id;
-  const Comments({super.key, required this.id});
+  final Function()? updateComment;
+  const Comments({
+    super.key,
+    required this.id,
+    this.updateComment,
+  });
 
   @override
   State<Comments> createState() => _CommentsState();
@@ -21,25 +28,35 @@ class _CommentsState extends State<Comments> {
   TextEditingController comment = TextEditingController();
   var user = UserControllerImplement();
   DateTime date = DateTime.now();
+  List<Comment> commentList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // var user = context.watch<UserProvider>().usermodel;
-    var comments = FirebaseFirestore.instance
-        .collection('posts')
-        .doc(widget.id)
-        .snapshots();
+    var comments =
+        FirebaseFirestore.instance.collection('posts').doc(widget.id).get();
     final size = MediaQuery.of(context).size;
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
     return ListView(children: [
       Column(
         children: [
           Text('Comments'),
-          StreamBuilder<DocumentSnapshot>(
-            stream: comments,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Divider(),
+          ),
+          FutureBuilder<DocumentSnapshot>(
+            future: comments,
             builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.38,
+                    height: MediaQuery.of(context).size.height * 0.33,
                     child: const Center(child: CircularProgressIndicator()));
               }
               if (snapshot.data == null) {
@@ -49,21 +66,27 @@ class _CommentsState extends State<Comments> {
                   snapshot.data!.data() as Map<String, dynamic>;
               if (data['comments'] == null || data['comments'].isEmpty) {
                 return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.38,
+                    height: MediaQuery.of(context).size.height * 0.33,
                     child: const Center(child: Text('No Comments')));
               }
+              List commentData = data['comments']
+                  .where((element) => element["user_id"] != null)
+                  .toList();
+              commentList =
+                  commentData.map<Comment>((e) => Comment.fromSnap(e)).toList();
               // logger.d(data['comments'][0]);
               return SingleChildScrollView(
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.38,
+                  height: MediaQuery.of(context).size.height * 0.33,
                   child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: data['comments'].length,
+                      itemCount: commentList.length,
                       itemBuilder: (context, index) {
-                        var commentData = data['comments'][index];
-                        var userData;
+                        Comment commentData = commentList[index];
+                        //     Comment.fromSnap(data['comments'][index]);
+                        // var userData;
                         return FutureBuilder(
-                          future: user.getUserDataAsync(commentData['user_id']),
+                          future: user.getUserDataAsync(commentData.user_id),
                           builder:
                               (context, AsyncSnapshot<UserModel> snapshot) {
                             if (!snapshot.hasData) {
@@ -71,9 +94,8 @@ class _CommentsState extends State<Comments> {
                             }
                             // var data = snapshot.data
                             return ListTile(
-                              leading:
-                              CustomCircleAvatar(avatar: snapshot.data!.avatar!
-                              ),
+                              leading: CustomCircleAvatar(
+                                  avatar: snapshot.data!.avatar!),
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -84,14 +106,13 @@ class _CommentsState extends State<Comments> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    commentData['comment'],
+                                    commentData.comment,
                                     style: TextStyle(fontSize: 15),
                                   ),
                                 ],
                               ),
                               subtitle: Text(
-                                timeago
-                                    .format(commentData['createdAt'].toDate()),
+                                timeago.format(commentData.createdAt!.toDate()),
                                 style: subtitlestlye.copyWith(
                                     fontSize: 12,
                                     color:
@@ -102,44 +123,6 @@ class _CommentsState extends State<Comments> {
                             );
                           },
                         );
-                        // getUser() async {
-                        //   DocumentReference commentUser = firebaseFireStore
-                        //       .collection('users')
-                        //       .doc(data['comments'][index]['user_id']);
-                        //   await commentUser.get().then((value) {
-                        //     userData = value.data() as Map<String, dynamic>;
-                        //     return ListTile(
-                        //       leading: CircleAvatar(
-                        //         backgroundImage:
-                        //             NetworkImage(userData['avatar']),
-                        //       ),
-                        //       title: Column(
-                        //         crossAxisAlignment: CrossAxisAlignment.start,
-                        //         children: [
-                        //           Text(
-                        //             userData['user_name'],
-                        //             style: const TextStyle(
-                        //                 fontSize: 14,
-                        //                 fontWeight: FontWeight.bold),
-                        //           ),
-                        //           Text(commentData['comment']),
-                        //         ],
-                        //       ),
-                        //       subtitle: Text(
-                        //         timeago
-                        //             .format(commentData['createdAt'].toDate()),
-                        //         style: subtitlestlye.copyWith(
-                        //             fontSize: 12,
-                        //             color:
-                        //                 Theme.of(context).colorScheme.secondary,
-                        //             fontWeight: FontWeight.w400),
-                        //       ),
-                        //     );
-                        //   });
-                        // }
-
-                        // getUser();
-                        // return Container();
                       }),
                 ),
               );
@@ -149,7 +132,7 @@ class _CommentsState extends State<Comments> {
             thickness: 2,
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 30),
+            padding: const EdgeInsets.only(bottom: 15),
             child: ListTile(
               //add comment avatar not completed
               // leading: CustomCircleAvatar(avatar: '',),
@@ -163,6 +146,13 @@ class _CommentsState extends State<Comments> {
                     if (comment.text == '') {
                       return;
                     }
+                    commentList.add(Comment(
+                      comment: comment.text,
+                      user_id: mAuth.currentUser!.uid,
+                      createdAt: Timestamp.fromDate(DateTime.now()),
+                    ));
+                    // setState(() {});
+                    widget.updateComment!();
                     List posts = [];
                     DocumentReference postRef = FirebaseFirestore.instance
                         .collection('posts')
@@ -178,7 +168,6 @@ class _CommentsState extends State<Comments> {
                         'comment': comment.text,
                         'createdAt': date,
                         'user_id': mAuth.currentUser!.uid,
-                        // user!.userId,
                       });
                       postRef.set({
                         'comments': posts,

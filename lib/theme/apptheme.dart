@@ -6,6 +6,7 @@ class AppTheme {
   final lightTheme = ThemeData(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       // primarySwatch: Colors.pink,
+      useMaterial3: true,
       primaryColor: Colors.green,
       scaffoldBackgroundColor: Colors.grey[100],
       shadowColor: Colors.grey[200],

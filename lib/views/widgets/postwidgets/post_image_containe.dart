@@ -17,20 +17,30 @@ import '../cached_image.dart';
 
 class PostImageContainer extends StatefulWidget {
   final PostsModel post;
-
-  const PostImageContainer({super.key, required this.post});
+  final List likes;
+  final List comments;
+  final Function() updateLike;
+  final Function() updateComment;
+  const PostImageContainer({
+    super.key,
+    required this.post,
+    required this.likes,
+    required this.comments,
+    required this.updateLike,
+    required this.updateComment,
+  });
 
   @override
   State<PostImageContainer> createState() => _PostImageContainerState();
 }
 
 class _PostImageContainerState extends State<PostImageContainer> {
-    Stream<PostsModel> streamLikes() {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      var snapshot =
-          firestore.collection('posts').doc(widget.post.postId).snapshots();
-      return snapshot.map((event) => PostsModel.fromJson(event.data()!));
-    }
+  Future<PostsModel> streamLikes() {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var snapshot = firestore.collection('posts').doc(widget.post.postId).get();
+    return snapshot.then((value) => PostsModel.fromJson(value.data()!));
+  }
+
   bool isLikeAnimating = false;
   PostControllerImplement pController = PostControllerImplement();
 
@@ -135,17 +145,20 @@ class _PostImageContainerState extends State<PostImageContainer> {
                             IconButton(
                               onPressed: () {
                                 // FirebaseServices().likedVideo(post.userId!);
+                                widget.updateLike();
                                 pController.likePost(
                                     postId: widget.post.postId);
                               },
                               icon: Icon(
-                                widget.post.likes!
-                                        .contains(auth.currentUser!.uid)
+                                widget.post.likes
+                                            ?.contains(auth.currentUser!.uid) ??
+                                        false
                                     ? Icons.favorite
                                     : Icons.favorite_border_outlined,
                                 size: 28,
-                                color: widget.post.likes!
-                                        .contains(auth.currentUser!.uid)
+                                color: widget.post.likes
+                                            ?.contains(auth.currentUser!.uid) ??
+                                        false
                                     ? Colors.red
                                     : Colors.white,
                               ),
@@ -154,6 +167,7 @@ class _PostImageContainerState extends State<PostImageContainer> {
                               onPressed: () {
                                 try {
                                   showModalBottomSheet(
+                                    backgroundColor: Colors.white,
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.vertical(
                                             top: Radius.circular(20))),
@@ -168,14 +182,17 @@ class _PostImageContainerState extends State<PostImageContainer> {
                                                 .viewInsets
                                                 .bottom),
                                         child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.5,
-                                            child: Comments(
-                                                id: widget.post.postId!)
-                                            // CommentScreen(id: data['id'])
-                                            ),
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.5,
+                                          child: Comments(
+                                            id: widget.post.postId!,
+                                            updateComment: mounted
+                                                ? widget.updateComment
+                                                : null,
+                                          ),
+                                        ),
                                       );
                                     },
                                   );

@@ -68,7 +68,7 @@ class FirebaseServices {
 
   // Get All Videos
   getVideos() {
-    return firebaseFireStore.collection('videos').snapshots();
+    return firebaseFireStore.collection('videos').get();
   }
 
   // Like Videos
@@ -128,7 +128,7 @@ class FirebaseServices {
         .collection("videos")
         .doc(_postID)
         .collection("comments")
-        .snapshots();
+        .get();
   }
 
   // Like Comment
@@ -183,7 +183,7 @@ class FirebaseServices {
             datePub: DateTime.now(),
             likes: [],
             profilePic: (userDoc.data() as dynamic)['profilePic'],
-            uid: FirebaseAuth.instance.currentUser!.uid,
+            user_id: FirebaseAuth.instance.currentUser!.uid,
             id: 'Comment $len');
 
         await FirebaseFirestore.instance
@@ -217,7 +217,7 @@ class FirebaseServices {
     return firebaseFireStore
         .collection('users')
         .where('name', isGreaterThanOrEqualTo: query)
-        .snapshots();
+        .get();
   }
 
   // Get User Info
@@ -234,7 +234,7 @@ class FirebaseServices {
         .collection('users')
         .doc(id)
         .collection('followers')
-        .snapshots();
+        .get();
   }
 
   // Get Followers
@@ -296,7 +296,7 @@ class FirebaseServices {
         .collection('users')
         .doc(id)
         .collection('followers')
-        .snapshots();
+        .get();
   }
 
   followering(String id) {
@@ -304,7 +304,7 @@ class FirebaseServices {
         .collection('users')
         .doc(id)
         .collection('following')
-        .snapshots();
+        .get();
   }
 
   followUser(String id) async {

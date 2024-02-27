@@ -7,7 +7,7 @@ class PostsModel {
   String? caption;
   String? datePublished;
   List? imageUrl;
-  List<dynamic>? likes;
+  List? likes;
   List<dynamic>? comments;
   double? latitude;
   double? longitude;
