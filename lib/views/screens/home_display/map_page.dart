@@ -1,9 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
+import 'package:instagram_aa/utils/app_utils.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets/timeout_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../models/posts_model.dart';
 
@@ -18,33 +23,52 @@ class _MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   Position? currentLoc;
+  String errorMessage = '';
+  bool showErrorDialog = true;
   final post = PostControllerImplement();
 
-  Future<Position> _determinePosition() async {
+  Future _determinePosition() async {
+    logger.d("Getting position");
+    setState(() {
+      errorMessage = '';
+    });
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
+    try {
+      // Test if location services are enabled.
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+      if (!serviceEnabled) {
+        throw Exception('Location services are disabled.');
       }
-    }
 
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        logger.wtf(permission);
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          throw Exception('Location permissions are denied');
+        }
+
+        await Geolocator.requestPermission();
+        if (permission == LocationPermission.deniedForever) {
+          // await Geolocator.openAppSettings();
+          throw Exception(
+              'Location permissions are permanently denied, we cannot request permissions.');
+        }
+      }
+
+      errorMessage = '';
+      currentLoc = await Geolocator.getCurrentPosition();
+      setState(() {});
+      // return currentLoc!;
+    } catch (e) {
+      errorMessage = e.toString();
+      setState(() {});
     }
-    currentLoc = await Geolocator.getCurrentPosition();
-    setState(() {});
-    return currentLoc!;
   }
 
   @override
@@ -63,50 +87,92 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: currentLoc == null
-          ? const Center(
-              child: SizedBox(
-                  height: 50, width: 50, child: CircularProgressIndicator()),
+      body: currentLoc == null && errorMessage.isEmpty
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(errorMessage),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await Geolocator.openAppSettings();
+                          _determinePosition();
+                        },
+                        child: Text("Try Again"))
+                  ],
+                ),
+              ),
             )
-          : FutureBuilder<List<PostsModel>>(
-              future: post.loadPosts(),
-              builder: (context, snapshot) {
-                if (snapshot.data == null) {
-                  return Container();
-                }
-                if (snapshot.data!.isEmpty) {
-                  return Container();
-                }
-                var data = snapshot.data!;
-                Set<Marker> markers = Set<Marker>.from(data.map((e) {
-                  return Marker(
-                    markerId: MarkerId('MarkerId'),
-                    position: LatLng(e.latitude!, e.longitude!),
-                    infoWindow: InfoWindow(
-                        title: 'Green Ghana Day', snippet: 'Seedlings were distributed here'),
-                    // icon: await BitmapDescriptor.fromAssetImage(
-                    //     ImageConfiguration(
-                    //         size: Size(1, 1), devicePixelRatio: 0.5),
-                    //     'assets/images/p-marker.png'),
-                  );
-                }));
-                return GoogleMap(
-                  padding: EdgeInsets.only(top: 20),
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(currentLoc!.latitude, currentLoc!.longitude),
-                    zoom: 10,
-                  ),
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
+          : errorMessage.isNotEmpty
+              ? FutureBuilder(
+                  future: Future.delayed(Duration.zero),
+                  builder: (context, snapshot) {
+                    SchedulerBinding.instance.addPersistentFrameCallback(
+                      (_) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(errorMessage),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: _determinePosition,
+                                    child: Text("Try again"))
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    );
+                    return Container();
                   },
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
-                  zoomControlsEnabled: false,
-                  markers: markers,
-                );
-              },
-            ),
+                )
+              : FutureBuilder<List<PostsModel>>(
+                  future: post.loadPosts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.data == null) {
+                      return Container();
+                    }
+                    if (snapshot.data!.isEmpty) {
+                      return Container();
+                    }
+                    var data = snapshot.data!;
+                    Set<Marker> markers = Set<Marker>.from(data.map((e) {
+                      return Marker(
+                        markerId: MarkerId('MarkerId'),
+                        position: LatLng(e.latitude!, e.longitude!),
+                        infoWindow: InfoWindow(
+                            title: 'Green Ghana Day',
+                            snippet: 'Seedlings were distributed here'),
+                        // icon: await BitmapDescriptor.fromAssetImage(
+                        //     ImageConfiguration(
+                        //         size: Size(1, 1), devicePixelRatio: 0.5),
+                        //     'assets/images/p-marker.png'),
+                      );
+                    }));
+                    return GoogleMap(
+                      padding: EdgeInsets.only(top: 20),
+                      mapType: MapType.normal,
+                      initialCameraPosition: CameraPosition(
+                        target:
+                            LatLng(currentLoc!.latitude, currentLoc!.longitude),
+                        zoom: 10,
+                      ),
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                      },
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: true,
+                      zoomControlsEnabled: false,
+                      markers: markers,
+                    );
+                  },
+                ),
     );
   }
 }

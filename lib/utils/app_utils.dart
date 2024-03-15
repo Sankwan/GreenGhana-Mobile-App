@@ -19,33 +19,36 @@ class AppUtils {
     return number;
   }
 
-  Future<Position> determinePosition() async {
+  Future<Position?> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      logger.d(serviceEnabled);
-      serviceEnabled = await Geolocator.openLocationSettings();
-      if (!serviceEnabled) {
-        return Future.error('Location services are disabled.');
-      }
-    }
+    // if (!serviceEnabled) {
+    //   logger.d(serviceEnabled);
+    //   serviceEnabled = await Geolocator.openLocationSettings();
+    //   if (!serviceEnabled) {
+    //     // return Future.error('Location services are disabled.');
+    //     return null;
+    //   }
+    // }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       logger.d(permission);
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         logger.d(permission);
-        return Future.error('Location permissions are denied');
+        // return Future.error('Location permissions are denied');
+        return null;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       logger.d(permission);
-      return Future.error('Location permissions are permanently denied,'
-          ' we cannot request permissions.');
+      // return Future.error('Location permissions are permanently denied,'
+      //     ' we cannot request permissions.');
+      return null;
     }
-    Position position = await Geolocator.getCurrentPosition(
+    Position? position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     logger.d(position);
     return position;

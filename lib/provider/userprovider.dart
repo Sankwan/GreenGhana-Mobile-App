@@ -28,19 +28,19 @@ import 'package:instagram_aa/utils/app_utils.dart';
 class UserProvider with ChangeNotifier {
   final userControl = UserControllerImplement();
   late UserModel _usermodel;
-  late double _latitiude;
-  late double _longitude;
+  double? _latitiude;
+  double? _longitude;
 
   UserModel get usermodel => _usermodel;
-  double get latitude => _latitiude;
-  double get longitude => _longitude;
+  double? get latitude => _latitiude;
+  double? get longitude => _longitude;
 
   Future getUserDataAsync(String id) async {
-    Position position = await AppUtils().determinePosition();
+    Position? position = await AppUtils().determinePosition();
     UserModel um = await userControl.getUserDataAsync(id);
     _usermodel = um;
-    _latitiude = position.latitude;
-    _longitude = position.longitude;
+    _latitiude = position?.latitude;
+    _longitude = position?.longitude;
     notifyListeners();
   }
 }
