@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -45,17 +46,18 @@ class _MapPageState extends State<MapPage> {
 
       permission = await Geolocator.checkPermission();
 
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
+      if (permission == LocationPermission.denied) {
         logger.wtf(permission);
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
           throw Exception('Location permissions are denied');
         }
+      }
 
-        await Geolocator.requestPermission();
-        if (permission == LocationPermission.deniedForever) {
-          // await Geolocator.openAppSettings();
+      if (permission == LocationPermission.deniedForever) {
+        var openAppSettings = await Geolocator.openLocationSettings();
+        if (openAppSettings) {
+        } else {
           throw Exception(
               'Location permissions are permanently denied, we cannot request permissions.');
         }
@@ -89,49 +91,54 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       body: currentLoc == null && errorMessage.isEmpty
           ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(errorMessage),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                        onPressed: () async {
-                          await Geolocator.openAppSettings();
-                          _determinePosition();
-                        },
-                        child: Text("Try Again"))
-                  ],
-                ),
-              ),
+              // child: Padding(
+              //   padding: const EdgeInsets.all(12),
+              //   child: Column(
+              //     mainAxisSize: MainAxisSize.min,
+              //     children: [
+              //       Text(errorMessage),
+              //       SizedBox(
+              //         height: 20,
+              //       ),
+              //       ElevatedButton(
+              //           onPressed: () async {
+              //             await Geolocator.openAppSettings();
+              //             _determinePosition();
+              //           },
+              //           child: Text("Try Again"))
+              //     ],
+              //   ),
+              // ),
+              child: CircularProgressIndicator(),
             )
           : errorMessage.isNotEmpty
-              ? FutureBuilder(
-                  future: Future.delayed(Duration.zero),
-                  builder: (context, snapshot) {
-                    SchedulerBinding.instance.addPersistentFrameCallback(
-                      (_) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(errorMessage),
-                              actions: [
-                                ElevatedButton(
-                                    onPressed: _determinePosition,
-                                    child: Text("Try again"))
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    );
-                    return Container();
-                  },
+              ? TimeoutWidget(
+                  message: errorMessage,
+                  callBack: _determinePosition,
                 )
+              // ? FutureBuilder(
+              //     future: Future.delayed(Duration.zero),
+              //     builder: (context, snapshot) {
+              //       SchedulerBinding.instance.addPersistentFrameCallback(
+              //         (_) {
+              //           showDialog(
+              //             context: context,
+              //             builder: (context) {
+              //               return AlertDialog(
+              //                 title: Text(errorMessage),
+              //                 actions: [
+              //                   ElevatedButton(
+              //                       onPressed: _determinePosition,
+              //                       child: Text("Try again"))
+              //                 ],
+              //               );
+              //             },
+              //           );
+              //         },
+              //       );
+              //       return Container();
+              //     },
+              //   )
               : FutureBuilder<List<PostsModel>>(
                   future: post.loadPosts(),
                   builder: (context, snapshot) {

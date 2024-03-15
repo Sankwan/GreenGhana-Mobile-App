@@ -286,8 +286,13 @@ class _PostPageState extends State<PostPage> {
       cancelProgressLoader();
       return showSnackBar(context, 'User Empty');
     }
-    if(pos == null) {
-      return showSnackBar(context, 'No Location');
+    
+    if (pos.latitude == null && pos.longitude == null) {
+      await context.read<UserProvider>().getUserDataAsync(mAuth.currentUser!.uid);
+      if (pos.latitude == null && pos.longitude == null) {
+        cancelProgressLoader();
+        return showSnackBar(context, 'Location Not Enabled');
+      }
     }
 
     bool isPosted = await controller.addPost(
