@@ -43,11 +43,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs access to your camera to access photos and videos.</string>
+	<string>This app needs access to your camera to access photos and videos in order to be able to post plant content on the app.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
+	<string>Green Ghana app needs access to location when in background in order to track and display locations of where seedlings have been planted.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>Green Ghana app needs access to location when open in order to track and display locations of where seedlings have been planted.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app needs access your microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
