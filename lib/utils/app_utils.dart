@@ -43,6 +43,7 @@ class AppUtils {
     }
 
     if (permission == LocationPermission.deniedForever) {
+      permission = await Geolocator.requestPermission();
       logger.d(permission);
       // return Future.error('Location permissions are permanently denied,'
       //     ' we cannot request permissions.');

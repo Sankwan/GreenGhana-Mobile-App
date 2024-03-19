@@ -50,16 +50,19 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_aa/animation/slideanimate.dart';
 import 'package:instagram_aa/controllers/post_controller.dart';
 import 'package:instagram_aa/models/posts_model.dart';
 import 'package:instagram_aa/models/usermodel.dart';
 import 'package:instagram_aa/provider/userprovider.dart';
+import 'package:instagram_aa/utils/app_utils.dart';
 import 'package:instagram_aa/utils/pagesnavigator.dart';
 import 'package:instagram_aa/utils/progressloader.dart';
 import 'package:instagram_aa/utils/showsnackbar.dart';
 import 'package:instagram_aa/views/screens/upload_video_page.dart';
+import 'package:instagram_aa/views/widgets/custom_widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart' as Path;
 import 'package:provider/provider.dart';
@@ -104,7 +107,8 @@ class _PostPageState extends State<PostPage> {
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: .5,
-        title: const Text("Add Post", style: TextStyle(color: Colors.black, fontSize: 15)),
+        title: const Text("Add Post",
+            style: TextStyle(color: Colors.black, fontSize: 15)),
         centerTitle: true,
         actions: [
           TextButton(
@@ -256,11 +260,71 @@ class _PostPageState extends State<PostPage> {
     }
   }
 
+  // Location Error Dialog
+  _locationDialog() {
+    final pos = context.read<UserProvider>();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        icon: Icon(
+          Icons.warning_rounded,
+          color: Colors.red,
+          size: 36,
+        ),
+        title: Text(
+            "Location settings and permissions for the app has not been enabled,\n Open settings to enable"),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("No")),
+          ElevatedButton(
+              onPressed: () async {
+                bool locationSettingsAllowed =
+                    await Geolocator.openAppSettings();
+                if (locationSettingsAllowed) {
+                  await pos.getUserDataAsync(mAuth.currentUser!.uid);
+                  Navigator.pop(context);
+                  return addPost();
+                } else {
+                  Navigator.pop(context);
+                }
+              },
+              child: Text("Yes, open settings")),
+        ],
+      ),
+    );
+  }
+
+  // Handle Location Error
+  _handleLocationError() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      _locationDialog();
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      _locationDialog();
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      _locationDialog();
+    }
+  }
+
   void addPost() async {
     UserModel? p = context.read<UserProvider>().usermodel;
     final pos = context.read<UserProvider>();
+    logger.wtf(pos.latitude, pos.longitude);
+    dwdImgList?.clear();
     if (captionController.text.isEmpty) {
-      return showSnackBar(context, 'please add caption');
+      return showSnackBar(context, 'Please add caption');
     }
     showProgressLoader();
     int i = 1;
@@ -286,13 +350,16 @@ class _PostPageState extends State<PostPage> {
       cancelProgressLoader();
       return showSnackBar(context, 'User Empty');
     }
-    
+
     if (pos.latitude == null && pos.longitude == null) {
-      await context.read<UserProvider>().getUserDataAsync(mAuth.currentUser!.uid);
-      if (pos.latitude == null && pos.longitude == null) {
-        cancelProgressLoader();
-        return showSnackBar(context, 'Location Not Enabled');
-      }
+      cancelProgressLoader();
+      return _handleLocationError();
+      // await context
+      //     .read<UserProvider>()
+      //     .getUserDataAsync(mAuth.currentUser!.uid);
+      // if (pos.latitude == null && pos.longitude == null) {
+      //   return showSnackBar(context, 'Location Not Enabled');
+      // }
     }
 
     bool isPosted = await controller.addPost(

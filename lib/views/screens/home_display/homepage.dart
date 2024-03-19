@@ -166,7 +166,7 @@ class _HomePageState extends State<HomePage> {
         color: Colors.green,
         onRefresh: () async {
           _posts.clear();
-          // await p.getPosts(limit: 5);
+          await p.getPosts(limit: 5);
           setState(() {});
         },
         child: FutureBuilder<List<PostsModel>>(
@@ -200,7 +200,6 @@ class _HomePageState extends State<HomePage> {
                           p.loadMorePosts(limit: 5, document: lastPost);
                           setState(() {});
                         }
-
                         getLastPost();
                       }
                     }
@@ -217,6 +216,7 @@ class _HomePageState extends State<HomePage> {
                   // },
                   child: _posts.length > 0
                       ? SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
                         child: Column(
                           children: [
                             ListView.separated(
@@ -238,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                                   );
                                 },
                               ),
-                              StatusProgressLoader()
+                            StatusProgressLoader()
                           ],
                         ),
                       )
